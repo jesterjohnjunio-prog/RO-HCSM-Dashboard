@@ -42,10 +42,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
         }
 
-        /* Logo Container - Full Width */
+        /* Logo Container - Centered */
         .logo-container {
             width: 100%;
             display: flex;
@@ -54,10 +54,24 @@
         }
 
         .mwss-logo {
-            width: 100%;
-            max-width: 900px; /* Limits maximum size on very large screens */
-            height: auto;      /* Height adjusts automatically to maintain 1694:369 ratio */
+            width: 80%; /* Reduced to 80% of container width */
+            max-width: 720px; /* 80% of original 900px max-width */
+            height: auto;
             object-fit: contain;
+        }
+
+        /* Subtitle Styling */
+        .dashboard-subtitle {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #0f6f84;
+            text-align: center;
+            margin: 0.2rem 0 0.5rem 0;
+            letter-spacing: -0.3px;
+            background: linear-gradient(145deg, #0a5a6b, #107a95);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* Badge Container */
@@ -67,6 +81,7 @@
             flex-wrap: wrap;
             justify-content: center;
             width: 100%;
+            margin-top: 0.25rem;
         }
 
         .badge {
@@ -92,7 +107,7 @@
             font-size: 0.9rem;
         }
 
-        /* Service Toggle - Clean & Professional */
+        /* Service Toggle */
         .toggle-lead {
             display: flex;
             justify-content: center;
@@ -133,7 +148,7 @@
             font-size: 0.9rem;
         }
 
-        /* Chart Grid - Perfect 2x4 Layout */
+        /* Chart Grid */
         .chart-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -143,10 +158,10 @@
         @media (max-width: 1000px) {
             .chart-grid { grid-template-columns: 1fr; }
             .switch-btn { padding: 0.8rem 1.8rem; }
-            .mwss-logo { max-width: 100%; }
+            .dashboard-subtitle { font-size: 1.2rem; }
         }
 
-        /* Chart Cards - Elegant & Clean */
+        /* Chart Cards */
         .chart-panel {
             background: white;
             border-radius: 28px;
@@ -203,7 +218,6 @@
             margin: 0.3rem 0 0.8rem;
         }
 
-        /* Clean Legend Styling - WITH FULL TEXTS RETAINED */
         .data-legend {
             display: flex;
             flex-wrap: wrap;
@@ -223,7 +237,6 @@
             color: #0a4e5e;
         }
 
-        /* Status Footer - Updated Text */
         .status-footer {
             margin-top: 2.5rem;
             text-align: center;
@@ -245,7 +258,6 @@
             color: #a17f28;
         }
 
-        /* Loading State */
         .loading-state {
             grid-column: 1/-1;
             text-align: center;
@@ -259,7 +271,7 @@
 <body>
 <div class="dashboard">
 
-    <!-- Hero Section - With Full Width Logo -->
+    <!-- Hero Section with Logo, Subtitle, and Badges -->
     <div class="hero">
         <div class="logo-container">
             <img 
@@ -268,8 +280,14 @@
                 class="mwss-logo"
             >
         </div>
+        
+        <!-- Subtitle -->
+        <div class="dashboard-subtitle">
+            Harmonized Client Satisfaction Measurement Dashboard
+        </div>
+        
+        <!-- Badges (Live Data and Key Metrics only) -->
         <div class="badge-container">
-            <span class="badge"><i class="fas fa-clipboard-check"></i> Harmonized Client Satisfaction Measurement</span>
             <span class="badge"><i class="fas fa-database"></i> Live Data</span>
             <span class="badge badge-gold"><i class="fas fa-chart-pie"></i> 7 Key Metrics</span>
         </div>
@@ -293,7 +311,7 @@
     <!-- Chart Grid -->
     <div class="chart-grid" id="chartGrid"></div>
 
-    <!-- Footer - Updated Text -->
+    <!-- Footer -->
     <div class="status-footer">
         <span class="live-badge" id="liveStatus">
             <i class="fas fa-circle"></i> Connected to Live Data
