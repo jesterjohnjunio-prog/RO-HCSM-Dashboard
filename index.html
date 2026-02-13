@@ -35,42 +35,61 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-radius: 32px;
-            padding: 2rem 2.5rem;
+            padding: 2.5rem 2.5rem 1.5rem 2.5rem;
             margin-bottom: 2rem;
             box-shadow: 0 8px 32px rgba(0, 70, 90, 0.06);
             border: 1px solid rgba(255,255,255,0.8);
-        }
-
-        h1 {
-            font-weight: 700;
-            font-size: 2.2rem;
-            background: linear-gradient(145deg, #0a5a6b, #0f7a95);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.01em;
-            margin-bottom: 0.5rem;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 1.5rem;
         }
 
-        .subhead {
-            font-size: 0.95rem;
-            color: #3a6e7c;
-            font-weight: 500;
+        /* Logo Container - Full Width */
+        .logo-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem 0;
+        }
+
+        .mwss-logo {
+            width: 100%;
+            max-width: 900px; /* Limits maximum size on very large screens */
+            height: auto;      /* Height adjusts automatically to maintain 1694:369 ratio */
+            object-fit: contain;
+        }
+
+        /* Badge Container */
+        .badge-container {
             display: flex;
             gap: 1.5rem;
             flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
         }
 
         .badge {
             background: rgba(18,128,155,0.08);
-            padding: 0.3rem 1.2rem;
+            padding: 0.4rem 1.5rem;
             border-radius: 60px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: #0f6f84;
             border: 1px solid rgba(18,128,155,0.15);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge-gold {
+            background: rgba(212, 175, 55, 0.08);
+            color: #a17f28;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .badge i {
+            font-size: 0.9rem;
         }
 
         /* Service Toggle - Clean & Professional */
@@ -123,8 +142,8 @@
 
         @media (max-width: 1000px) {
             .chart-grid { grid-template-columns: 1fr; }
-            h1 { font-size: 1.8rem; }
             .switch-btn { padding: 0.8rem 1.8rem; }
+            .mwss-logo { max-width: 100%; }
         }
 
         /* Chart Cards - Elegant & Clean */
@@ -240,16 +259,19 @@
 <body>
 <div class="dashboard">
 
-    <!-- Hero Section - Clean & Professional -->
+    <!-- Hero Section - With Full Width Logo -->
     <div class="hero">
-        <h1>
-            <i class="fas fa-chart-line" style="-webkit-text-fill-color: #c9a227;"></i> 
-            MWSS RO · HCSM
-        </h1>
-        <div class="subhead">
-            <span><i class="fas fa-clipboard-check"></i> Harmonized Client Satisfaction Measurement</span>
-            <span class="badge"><i class="fas fa-database"></i> Live Data · Google Sheets Integration</span>
-            <span class="badge"><i class="fas fa-chart-pie"></i> 7 Key Metrics</span>
+        <div class="logo-container">
+            <img 
+                src="https://i.ibb.co/KjjLW3nt/mwss-logo-horiz-flat-01.png" 
+                alt="MWSS Regulatory Office Logo" 
+                class="mwss-logo"
+            >
+        </div>
+        <div class="badge-container">
+            <span class="badge"><i class="fas fa-clipboard-check"></i> Harmonized Client Satisfaction Measurement</span>
+            <span class="badge"><i class="fas fa-database"></i> Live Data</span>
+            <span class="badge badge-gold"><i class="fas fa-chart-pie"></i> 7 Key Metrics</span>
         </div>
     </div>
 
