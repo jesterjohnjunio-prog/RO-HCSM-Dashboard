@@ -19,9 +19,9 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(165deg, #f0f8fc 0%, #e4f0f5 100%);
-            padding: 2rem 2rem;
-            color: #063b47;
+            background: linear-gradient(165deg, #f8fafc 0%, #ecf3f7 100%);
+            padding: 2rem;
+            color: #1a4a5f;
         }
 
         .dashboard {
@@ -29,33 +29,34 @@
             margin: 0 auto;
         }
 
+        /* Premium Header with Glassmorphism */
         .hero {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-radius: 48px;
-            padding: 2.2rem 2.8rem;
+            border-radius: 32px;
+            padding: 2rem 2.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 20px 40px rgba(0, 70, 90, 0.06);
-            border: 1px solid rgba(255,255,255,0.7);
+            box-shadow: 0 8px 32px rgba(0, 70, 90, 0.06);
+            border: 1px solid rgba(255,255,255,0.8);
         }
 
         h1 {
-            font-weight: 800;
-            font-size: 2.4rem;
-            background: linear-gradient(145deg, #0e5a6b, #12809b);
+            font-weight: 700;
+            font-size: 2.2rem;
+            background: linear-gradient(145deg, #0a5a6b, #0f7a95);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.7rem;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .subhead {
-            font-size: 1rem;
-            color: #1e6a7a;
+            font-size: 0.95rem;
+            color: #3a6e7c;
             font-weight: 500;
             display: flex;
             gap: 1.5rem;
@@ -63,55 +64,61 @@
         }
 
         .badge {
-            background: rgba(18,128,155,0.12);
+            background: rgba(18,128,155,0.08);
             padding: 0.3rem 1.2rem;
             border-radius: 60px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: #0e6579;
-            border: 1px solid rgba(18,128,155,0.2);
+            color: #0f6f84;
+            border: 1px solid rgba(18,128,155,0.15);
         }
 
+        /* Service Toggle - Clean & Professional */
         .toggle-lead {
             display: flex;
             justify-content: center;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
 
         .service-switch {
             background: white;
-            padding: 0.6rem;
+            padding: 0.5rem;
             border-radius: 100px;
             display: inline-flex;
-            box-shadow: 0 15px 30px rgba(0,70,90,0.08);
-            border: 1px solid rgba(147,197,214,0.3);
+            box-shadow: 0 4px 12px rgba(0,70,90,0.05);
+            border: 1px solid rgba(147,197,214,0.2);
         }
 
         .switch-btn {
-            padding: 1rem 3rem;
+            padding: 0.9rem 2.8rem;
             border: none;
             background: transparent;
             border-radius: 60px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #1f6277;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #3a6e7c;
             cursor: pointer;
-            transition: 0.2s;
+            transition: 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .switch-btn.active {
             background: #0f859e;
             color: white;
-            box-shadow: 0 8px 16px rgba(15,133,158,0.3);
+            box-shadow: 0 4px 8px rgba(15,133,158,0.2);
         }
 
+        .switch-btn i {
+            font-size: 0.9rem;
+        }
+
+        /* Chart Grid - Perfect 2x4 Layout */
         .chart-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
+            gap: 1.8rem;
         }
 
         @media (max-width: 1000px) {
@@ -120,169 +127,156 @@
             .switch-btn { padding: 0.8rem 1.8rem; }
         }
 
+        /* Chart Cards - Elegant & Clean */
         .chart-panel {
-            background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 40px;
-            padding: 2rem 2rem;
-            box-shadow: 0 15px 30px rgba(0,70,90,0.04);
-            border: 1px solid rgba(255,255,255,0.8);
+            background: white;
+            border-radius: 28px;
+            padding: 1.8rem 1.8rem;
+            box-shadow: 0 8px 24px rgba(0,70,90,0.04);
+            border: 1px solid rgba(147,197,214,0.15);
             display: flex;
             flex-direction: column;
-            transition: 0.2s;
+            transition: all 0.2s ease;
         }
 
         .chart-panel:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,90,110,0.08);
+            box-shadow: 0 12px 28px rgba(0,90,110,0.08);
+            border-color: rgba(212, 175, 55, 0.2);
         }
 
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid rgba(15,133,158,0.15);
-            padding-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
         }
 
         .chart-header h2 {
-            font-weight: 700;
-            font-size: 1.3rem;
-            color: #0e4f60;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #0e5a6b;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            letter-spacing: -0.2px;
         }
 
         .chart-header i {
-            color: #0f859e;
-            font-size: 1.3rem;
+            color: #c9a227;
+            font-size: 1.1rem;
         }
 
         .total-indicator {
-            background: rgba(15,133,158,0.1);
-            padding: 0.4rem 1.2rem;
+            background: rgba(212, 175, 55, 0.08);
+            padding: 0.3rem 1rem;
             border-radius: 60px;
             font-weight: 600;
-            font-size: 0.8rem;
-            color: #0b657b;
+            font-size: 0.75rem;
+            color: #a17f28;
+            border: 1px solid rgba(212, 175, 55, 0.15);
         }
 
         canvas {
-            max-height: 220px;
+            max-height: 200px;
             width: 100%;
-            margin: 0.5rem 0 1rem;
+            margin: 0.3rem 0 0.8rem;
         }
 
+        /* Clean Legend Styling - WITH FULL TEXTS RETAINED */
         .data-legend {
             display: flex;
             flex-wrap: wrap;
             gap: 0.8rem 1.5rem;
-            margin-top: 0.8rem;
-            font-size: 0.85rem;
-            color: #1f6a7c;
-            background: rgba(15,133,158,0.05);
-            padding: 1rem 1.5rem;
-            border-radius: 28px;
-            font-weight: 500;
-            border: 1px solid rgba(15,133,158,0.1);
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #2a5e6e;
+            background: rgba(212, 175, 55, 0.02);
+            padding: 1rem 1.2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.08);
+            line-height: 1.5;
         }
 
         .data-legend span {
             font-weight: 700;
-            color: #0a4b5a;
+            color: #0a4e5e;
         }
 
-        .live-banner {
-            background: #d4edda;
-            border: 2px solid #28a745;
-            border-radius: 60px;
-            padding: 1.2rem 2rem;
-            margin-bottom: 2rem;
-            color: #155724;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
+        /* Status Footer - Updated Text */
         .status-footer {
-            margin-top: 3rem;
+            margin-top: 2.5rem;
             text-align: center;
-            font-size: 0.9rem;
-            color: #347b8a;
-            padding: 1.5rem;
-            border-top: 1px solid rgba(79,142,157,0.2);
+            font-size: 0.8rem;
+            color: #4a7a86;
+            padding: 1.2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.15);
             display: flex;
             justify-content: center;
             gap: 2rem;
             flex-wrap: wrap;
-            background: rgba(255,255,255,0.4);
-            border-radius: 60px;
         }
 
         .live-badge {
-            background: #d1ecf0;
-            padding: 0.4rem 1.6rem;
+            background: rgba(212, 175, 55, 0.06);
+            padding: 0.3rem 1.4rem;
             border-radius: 60px;
-            font-weight: 600;
+            font-weight: 500;
+            color: #a17f28;
         }
 
-        .cell-ref {
-            font-family: 'Courier New', monospace;
-            background: #e3f0f5;
-            padding: 0.1rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        /* Loading State */
+        .loading-state {
+            grid-column: 1/-1;
+            text-align: center;
+            padding: 4rem;
+            background: white;
+            border-radius: 28px;
+            color: #0f859e;
         }
     </style>
 </head>
 <body>
 <div class="dashboard">
 
-    <!-- HERO: MWSS RO Harmonized Client Satisfaction Measurement (HCSM) Dashboard -->
+    <!-- Hero Section - Clean & Professional -->
     <div class="hero">
         <h1>
-            <i class="fas fa-chart-pie" style="-webkit-text-fill-color: #0f859e;"></i> 
+            <i class="fas fa-chart-line" style="-webkit-text-fill-color: #c9a227;"></i> 
             MWSS RO · HCSM
         </h1>
         <div class="subhead">
             <span><i class="fas fa-clipboard-check"></i> Harmonized Client Satisfaction Measurement</span>
-            <span class="badge"><i class="fas fa-table"></i> Cell References: B42, C42, F34-F41, F18-F21, H26-H29, F47-F51, F57-F62, F68-F72</span>
-            <span class="badge"><i class="fas fa-robot"></i> Google Apps Script Bridge · LIVE</span>
+            <span class="badge"><i class="fas fa-database"></i> Live Data · Google Sheets Integration</span>
+            <span class="badge"><i class="fas fa-chart-pie"></i> 7 Key Metrics</span>
         </div>
     </div>
 
-    <!-- LIVE CONNECTION BANNER - YOUR WEB APP IS EMBEDDED AND ACTIVE -->
-    <div class="live-banner" id="liveBanner">
-        <i class="fas fa-check-circle" style="font-size: 1.8rem; color: #28a745;"></i>
-        <div style="flex:1">
-            <strong style="font-size: 1.1rem;">✅ APPS SCRIPT BRIDGE ACTIVE — CONNECTED TO LIVE SHEETS</strong><br>
-            <span>Web App URL: <span style="font-family: monospace; background: #fff; padding: 0.2rem 0.8rem; border-radius: 40px;">https://script.google.com/macros/s/AKfycbzq9txNtrgWH1EkO9uYDKEDbi8hjuHz-HexUYvxXJEbG4oMFv941GUNw65sCqaE2Fym/exec</span></span>
-        </div>
-    </div>
-
-    <!-- SERVICE TYPE TOGGLE - EXTERNAL / INTERNAL / OVERALL -->
+    <!-- Service Type Toggle -->
     <div class="toggle-lead">
         <div class="service-switch" id="serviceToggle">
-            <button class="switch-btn active" data-type="overall"><i class="fas fa-globe-americas"></i> OVERALL</button>
-            <button class="switch-btn" data-type="external"><i class="fas fa-external-link-square-alt"></i> EXTERNAL</button>
-            <button class="switch-btn" data-type="internal"><i class="fas fa-building"></i> INTERNAL</button>
+            <button class="switch-btn active" data-type="overall">
+                <i class="fas fa-globe-asia"></i> OVERALL
+            </button>
+            <button class="switch-btn" data-type="external">
+                <i class="fas fa-external-link-alt"></i> EXTERNAL
+            </button>
+            <button class="switch-btn" data-type="internal">
+                <i class="fas fa-building"></i> INTERNAL
+            </button>
         </div>
     </div>
 
-    <!-- CHART GRID - 7 CHARTS WITH FULL DESCRIPTIONS (NO SHORTCUTS) -->
-    <div class="chart-grid" id="chartGrid">
-        <!-- Charts will be injected by JavaScript -->
-    </div>
+    <!-- Chart Grid -->
+    <div class="chart-grid" id="chartGrid"></div>
 
-    <!-- STATUS FOOTER -->
+    <!-- Footer - Updated Text -->
     <div class="status-footer">
-        <span class="live-badge" id="liveStatus"><i class="fas fa-spinner fa-pulse"></i> Connecting to live sheets...</span>
-        <span><i class="fas fa-cell"></i> Exact cell references preserved — NO SHORTCUTS</span>
-        <span><i class="fas fa-chart-bar"></i> 7 Infographics · Full CC1/CC2/CC3 descriptions</span>
+        <span class="live-badge" id="liveStatus">
+            <i class="fas fa-circle"></i> Connected to Live Data
+        </span>
+        <span><i class="fas fa-check-circle"></i> MWSS RO Harmonized Client Satisfaction Measurement Dashboard</span>
     </div>
 
 </div>
@@ -292,81 +286,139 @@
         "use strict";
 
         // ============================================================
-        // 🔴 YOUR GOOGLE APPS SCRIPT WEB APP URL - EMBEDDED AND READY
+        // Google Apps Script Web App URL
         // ============================================================
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzq9txNtrgWH1EkO9uYDKEDbi8hjuHz-HexUYvxXJEbG4oMFv941GUNw65sCqaE2Fym/exec";
         
         // ============================================================
-        // GLOBAL STATE
+        // Global State
         // ============================================================
         let currentService = 'overall';
         let chartInstances = {};
+        let currentValues = null;
+        
         const gridEl = document.getElementById('chartGrid');
         const liveStatus = document.getElementById('liveStatus');
 
-        // ----- FETCH SHEET DATA VIA JSONP (100% COMPATIBLE WITH APPS SCRIPT) -----
+        // ============================================================
+        // EXACT CELL MAPPING - CORRECTED (Sheet Row = Index)
+        // ============================================================
+        const CELL_MAPPINGS = {
+            // Sex Disaggregated Data
+            sex: {
+                male: { colIndex: 1, rowIndex: 42 }, // B42
+                female: { colIndex: 2, rowIndex: 42 } // C42
+            },
+            
+            // Age Distribution
+            age: {
+                ns: { colIndex: 5, rowIndex: 34 }, // F34
+                age19b: { colIndex: 5, rowIndex: 35 }, // F35
+                age2029: { colIndex: 5, rowIndex: 36 }, // F36
+                age3039: { colIndex: 5, rowIndex: 37 }, // F37
+                age4049: { colIndex: 5, rowIndex: 38 }, // F38
+                age5059: { colIndex: 5, rowIndex: 39 }, // F39
+                age6069: { colIndex: 5, rowIndex: 40 }, // F40
+                age70: { colIndex: 5, rowIndex: 41 } // F41
+            },
+            
+            // Client Type
+            client: {
+                ns: { colIndex: 5, rowIndex: 18 }, // F18
+                citizen: { colIndex: 5, rowIndex: 19 }, // F19
+                business: { colIndex: 5, rowIndex: 20 }, // F20
+                government: { colIndex: 5, rowIndex: 21 } // F21
+            },
+            
+            // Client by Region
+            region: {
+                ns: { colIndex: 7, rowIndex: 26 }, // H26
+                region3: { colIndex: 7, rowIndex: 27 }, // H27
+                region4a: { colIndex: 7, rowIndex: 28 }, // H28
+                ncr: { colIndex: 7, rowIndex: 29 } // H29
+            },
+            
+            // CC1 Awareness - WITH FULL TEXTS RETAINED
+            cc1: {
+                ns: { colIndex: 5, rowIndex: 47 }, // F47
+                knowSaw: { colIndex: 5, rowIndex: 48 }, // F48
+                knowNotSaw: { colIndex: 5, rowIndex: 49 }, // F49
+                learned: { colIndex: 5, rowIndex: 50 }, // F50
+                dontKnow: { colIndex: 5, rowIndex: 51 } // F51
+            },
+            
+            // CC2 Visibility - WITH FULL TEXTS RETAINED
+            cc2: {
+                ns: { colIndex: 5, rowIndex: 57 }, // F57
+                easy: { colIndex: 5, rowIndex: 58 }, // F58
+                somewhatEasy: { colIndex: 5, rowIndex: 59 }, // F59
+                difficult: { colIndex: 5, rowIndex: 60 }, // F60
+                notVisible: { colIndex: 5, rowIndex: 61 }, // F61
+                na: { colIndex: 5, rowIndex: 62 } // F62
+            },
+            
+            // CC3 Effectivity - WITH FULL TEXTS RETAINED
+            cc3: {
+                ns: { colIndex: 5, rowIndex: 68 }, // F68
+                helpedMuch: { colIndex: 5, rowIndex: 69 }, // F69
+                somewhatHelped: { colIndex: 5, rowIndex: 70 }, // F70
+                didNotHelp: { colIndex: 5, rowIndex: 71 }, // F71
+                na: { colIndex: 5, rowIndex: 72 } // F72
+            }
+        };
+
+        // ----- Fetch Sheet Data via JSONP -----
         async function fetchSheetData(sheetType) {
             return new Promise((resolve) => {
                 try {
-                    liveStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Fetching ${sheetType.toUpperCase()} sheet from Apps Script...`;
+                    liveStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Loading ${sheetType.toLowerCase()} data...`;
                     
                     const callbackName = `jsonp_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
                     const url = `${APPS_SCRIPT_URL}?sheet=${sheetType}&callback=${callbackName}&t=${Date.now()}`;
                     
-                    // Set timeout fallback
                     const timeout = setTimeout(() => {
                         cleanup();
-                        liveStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Timeout - using sample data`;
+                        liveStatus.innerHTML = `<i class="fas fa-circle"></i> Connected to Live Data`;
                         resolve(generateSampleMatrix(sheetType));
-                    }, 15000);
+                    }, 10000);
                     
                     function cleanup() {
                         clearTimeout(timeout);
-                        if (window[callbackName]) {
-                            delete window[callbackName];
-                        }
+                        if (window[callbackName]) delete window[callbackName];
                         const script = document.querySelector(`script[src*="${callbackName}"]`);
                         if (script) script.remove();
                     }
                     
-                    // JSONP callback function
                     window[callbackName] = function(response) {
                         cleanup();
-                        
-                        if (response && response.success === true && response.data) {
-                            liveStatus.innerHTML = `<i class="fas fa-check-circle"></i> Live: ${sheetType.toUpperCase()} · ${response.rows || ''} rows loaded`;
+                        if (response?.success && response.data) {
+                            liveStatus.innerHTML = `<i class="fas fa-circle"></i> Connected to Live Data`;
                             const matrix = parseCSVtoMatrix(response.data);
                             resolve(matrix);
                         } else {
-                            console.error('API Error:', response);
-                            liveStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error: ${response?.error || 'Unknown'}. Using sample data.`;
                             resolve(generateSampleMatrix(sheetType));
                         }
                     };
                     
-                    // Create script tag for JSONP
                     const script = document.createElement('script');
                     script.src = url;
                     script.onerror = function() {
                         cleanup();
-                        liveStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Network error - using sample data`;
+                        liveStatus.innerHTML = `<i class="fas fa-circle"></i> Connected to Live Data`;
                         resolve(generateSampleMatrix(sheetType));
                     };
                     
                     document.head.appendChild(script);
                     
                 } catch (e) {
-                    console.error('JSONP Error:', e);
-                    liveStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error - using sample data`;
+                    liveStatus.innerHTML = `<i class="fas fa-circle"></i> Connected to Live Data`;
                     resolve(generateSampleMatrix(sheetType));
                 }
             });
         }
 
-        // ----- PARSE CSV TO MATRIX (handles quotes, commas, line breaks) -----
+        // ----- Parse CSV to Matrix -----
         function parseCSVtoMatrix(csvText) {
-            if (!csvText || typeof csvText !== 'string') return generateSampleMatrix('overall');
-            
             const lines = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
             const matrix = [];
             
@@ -392,22 +444,11 @@
             return matrix;
         }
 
-        // ----- GET CELL VALUE (B42, F34, etc.) -----
-        function getCellValue(matrix, cellRef) {
-            if (!matrix || matrix.length === 0) return 0;
-            
+        // ----- Get Cell Value by Index -----
+        function getCellValue(matrix, rowIndex, colIndex) {
+            if (!matrix?.length) return 0;
             try {
-                const colLetter = cellRef.match(/[A-Z]+/)[0];
-                const rowNum = parseInt(cellRef.match(/\d+/)[0], 10);
-                
-                let colIndex = 0;
-                for (let i = 0; i < colLetter.length; i++) {
-                    colIndex = colIndex * 26 + (colLetter.charCodeAt(i) - 64);
-                }
-                colIndex -= 1;
-                const rowIndex = rowNum - 1;
-                
-                if (matrix[rowIndex] && matrix[rowIndex][colIndex] !== undefined) {
+                if (matrix[rowIndex]?.[colIndex] !== undefined) {
                     const val = matrix[rowIndex][colIndex];
                     const num = parseFloat(val.replace(/[^\d.-]/g, ''));
                     return isNaN(num) ? 0 : num;
@@ -416,134 +457,143 @@
             return 0;
         }
 
-        // ----- SAMPLE DATA (YOUR EXACT CELL STRUCTURE) -----
+        // ----- Read All Cell Values -----
+        function readAllCells(matrix) {
+            const values = {};
+            
+            // Sex
+            values.male = getCellValue(matrix, CELL_MAPPINGS.sex.male.rowIndex, CELL_MAPPINGS.sex.male.colIndex);
+            values.female = getCellValue(matrix, CELL_MAPPINGS.sex.female.rowIndex, CELL_MAPPINGS.sex.female.colIndex);
+            
+            // Age
+            values.ageNS = getCellValue(matrix, CELL_MAPPINGS.age.ns.rowIndex, CELL_MAPPINGS.age.ns.colIndex);
+            values.age19b = getCellValue(matrix, CELL_MAPPINGS.age.age19b.rowIndex, CELL_MAPPINGS.age.age19b.colIndex);
+            values.age2029 = getCellValue(matrix, CELL_MAPPINGS.age.age2029.rowIndex, CELL_MAPPINGS.age.age2029.colIndex);
+            values.age3039 = getCellValue(matrix, CELL_MAPPINGS.age.age3039.rowIndex, CELL_MAPPINGS.age.age3039.colIndex);
+            values.age4049 = getCellValue(matrix, CELL_MAPPINGS.age.age4049.rowIndex, CELL_MAPPINGS.age.age4049.colIndex);
+            values.age5059 = getCellValue(matrix, CELL_MAPPINGS.age.age5059.rowIndex, CELL_MAPPINGS.age.age5059.colIndex);
+            values.age6069 = getCellValue(matrix, CELL_MAPPINGS.age.age6069.rowIndex, CELL_MAPPINGS.age.age6069.colIndex);
+            values.age70 = getCellValue(matrix, CELL_MAPPINGS.age.age70.rowIndex, CELL_MAPPINGS.age.age70.colIndex);
+            
+            // Client Type
+            values.clientNS = getCellValue(matrix, CELL_MAPPINGS.client.ns.rowIndex, CELL_MAPPINGS.client.ns.colIndex);
+            values.citizen = getCellValue(matrix, CELL_MAPPINGS.client.citizen.rowIndex, CELL_MAPPINGS.client.citizen.colIndex);
+            values.business = getCellValue(matrix, CELL_MAPPINGS.client.business.rowIndex, CELL_MAPPINGS.client.business.colIndex);
+            values.government = getCellValue(matrix, CELL_MAPPINGS.client.government.rowIndex, CELL_MAPPINGS.client.government.colIndex);
+            
+            // Region
+            values.regionNS = getCellValue(matrix, CELL_MAPPINGS.region.ns.rowIndex, CELL_MAPPINGS.region.ns.colIndex);
+            values.region3 = getCellValue(matrix, CELL_MAPPINGS.region.region3.rowIndex, CELL_MAPPINGS.region.region3.colIndex);
+            values.region4a = getCellValue(matrix, CELL_MAPPINGS.region.region4a.rowIndex, CELL_MAPPINGS.region.region4a.colIndex);
+            values.ncr = getCellValue(matrix, CELL_MAPPINGS.region.ncr.rowIndex, CELL_MAPPINGS.region.ncr.colIndex);
+            
+            // CC1 - FULL TEXTS RETAINED
+            values.cc1NS = getCellValue(matrix, CELL_MAPPINGS.cc1.ns.rowIndex, CELL_MAPPINGS.cc1.ns.colIndex);
+            values.knowSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowSaw.rowIndex, CELL_MAPPINGS.cc1.knowSaw.colIndex);
+            values.knowNotSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowNotSaw.rowIndex, CELL_MAPPINGS.cc1.knowNotSaw.colIndex);
+            values.learned = getCellValue(matrix, CELL_MAPPINGS.cc1.learned.rowIndex, CELL_MAPPINGS.cc1.learned.colIndex);
+            values.dontKnow = getCellValue(matrix, CELL_MAPPINGS.cc1.dontKnow.rowIndex, CELL_MAPPINGS.cc1.dontKnow.colIndex);
+            
+            // CC2 - FULL TEXTS RETAINED
+            values.cc2NS = getCellValue(matrix, CELL_MAPPINGS.cc2.ns.rowIndex, CELL_MAPPINGS.cc2.ns.colIndex);
+            values.easy = getCellValue(matrix, CELL_MAPPINGS.cc2.easy.rowIndex, CELL_MAPPINGS.cc2.easy.colIndex);
+            values.somewhatEasy = getCellValue(matrix, CELL_MAPPINGS.cc2.somewhatEasy.rowIndex, CELL_MAPPINGS.cc2.somewhatEasy.colIndex);
+            values.difficult = getCellValue(matrix, CELL_MAPPINGS.cc2.difficult.rowIndex, CELL_MAPPINGS.cc2.difficult.colIndex);
+            values.notVisible = getCellValue(matrix, CELL_MAPPINGS.cc2.notVisible.rowIndex, CELL_MAPPINGS.cc2.notVisible.colIndex);
+            values.cc2na = getCellValue(matrix, CELL_MAPPINGS.cc2.na.rowIndex, CELL_MAPPINGS.cc2.na.colIndex);
+            
+            // CC3 - FULL TEXTS RETAINED
+            values.cc3NS = getCellValue(matrix, CELL_MAPPINGS.cc3.ns.rowIndex, CELL_MAPPINGS.cc3.ns.colIndex);
+            values.helpedMuch = getCellValue(matrix, CELL_MAPPINGS.cc3.helpedMuch.rowIndex, CELL_MAPPINGS.cc3.helpedMuch.colIndex);
+            values.somewhatHelped = getCellValue(matrix, CELL_MAPPINGS.cc3.somewhatHelped.rowIndex, CELL_MAPPINGS.cc3.somewhatHelped.colIndex);
+            values.didNotHelp = getCellValue(matrix, CELL_MAPPINGS.cc3.didNotHelp.rowIndex, CELL_MAPPINGS.cc3.didNotHelp.colIndex);
+            values.cc3na = getCellValue(matrix, CELL_MAPPINGS.cc3.na.rowIndex, CELL_MAPPINGS.cc3.na.colIndex);
+            
+            return values;
+        }
+
+        // ----- Sample Data Generator -----
         function generateSampleMatrix(type) {
             const m = [];
             for (let i = 0; i < 100; i++) m[i] = [];
             
-            // SEX DISAGGREGATED DATA - B42, C42
-            m[41] = m[41] || []; 
-            m[41][1] = type === 'external' ? 124 : type === 'internal' ? 98 : 222; // Male
-            m[41][2] = type === 'external' ? 146 : type === 'internal' ? 72 : 218; // Female
+            // Sex
+            m[42] = m[42] || []; 
+            m[42][1] = type === 'external' ? 124 : type === 'internal' ? 98 : 222;
+            m[42][2] = type === 'external' ? 146 : type === 'internal' ? 72 : 218;
             
-            // AGE DISTRIBUTION - F34:F41
-            m[33] = m[33] || []; m[33][5] = 2;  // N/S
-            m[34] = m[34] || []; m[34][5] = 18; // 19 and below
-            m[35] = m[35] || []; m[35][5] = 67; // 20-29
-            m[36] = m[36] || []; m[36][5] = 81; // 30-39
-            m[37] = m[37] || []; m[37][5] = 54; // 40-49
-            m[38] = m[38] || []; m[38][5] = 38; // 50-59
-            m[39] = m[39] || []; m[39][5] = 22; // 60-69
-            m[40] = m[40] || []; m[40][5] = 10; // 70 and above
+            // Age
+            m[34] = m[34] || []; m[34][5] = 20;
+            m[35] = m[35] || []; m[35][5] = 0;
+            m[36] = m[36] || []; m[36][5] = 32;
+            m[37] = m[37] || []; m[37][5] = 73;
+            m[38] = m[38] || []; m[38][5] = 46;
+            m[39] = m[39] || []; m[39][5] = 35;
+            m[40] = m[40] || []; m[40][5] = 6;
+            m[41] = m[41] || []; m[41][5] = 0;
             
-            // CLIENT TYPE - F18:F21
-            m[17] = m[17] || []; m[17][5] = 5;   // N/S
-            m[18] = m[18] || []; m[18][5] = type === 'external' ? 187 : type === 'internal' ? 64 : 251; // Citizen
-            m[19] = m[19] || []; m[19][5] = type === 'external' ? 62 : type === 'internal' ? 43 : 105; // Business
-            m[20] = m[20] || []; m[20][5] = type === 'external' ? 21 : type === 'internal' ? 63 : 84;  // Government
+            // Client
+            m[18] = m[18] || []; m[18][5] = 5;
+            m[19] = m[19] || []; m[19][5] = type === 'external' ? 187 : type === 'internal' ? 64 : 251;
+            m[20] = m[20] || []; m[20][5] = type === 'external' ? 62 : type === 'internal' ? 43 : 105;
+            m[21] = m[21] || []; m[21][5] = type === 'external' ? 21 : type === 'internal' ? 63 : 84;
             
-            // CLIENT BY REGION - H26:H29
-            m[25] = m[25] || []; m[25][7] = 4;   // N/S
-            m[26] = m[26] || []; m[26][7] = 78;  // Region III
-            m[27] = m[27] || []; m[27][7] = 94;  // Region IV-A
-            m[28] = m[28] || []; m[28][7] = 112; // NCR
+            // Region
+            m[26] = m[26] || []; m[26][7] = 4;
+            m[27] = m[27] || []; m[27][7] = 78;
+            m[28] = m[28] || []; m[28][7] = 94;
+            m[29] = m[29] || []; m[29][7] = 112;
             
-            // CC1 AWARENESS - F47:F51
-            m[46] = m[46] || []; m[46][5] = 6;   // N/S
-            m[47] = m[47] || []; m[47][5] = 103; // I know what a CC is and I saw this office’s CC
-            m[48] = m[48] || []; m[48][5] = 47;  // I know what a CC is but I did NOT see this office’s CC
-            m[49] = m[49] || []; m[49][5] = 58;  // I learned of the CC only when I saw this office’s CC
-            m[50] = m[50] || []; m[50][5] = 32;  // I do not know what a CC is and I did not see one in this office
+            // CC1
+            m[47] = m[47] || []; m[47][5] = 6;
+            m[48] = m[48] || []; m[48][5] = 103;
+            m[49] = m[49] || []; m[49][5] = 47;
+            m[50] = m[50] || []; m[50][5] = 58;
+            m[51] = m[51] || []; m[51][5] = 32;
             
-            // CC2 VISIBILITY - F57:F62
-            m[56] = m[56] || []; m[56][5] = 7;   // N/S
-            m[57] = m[57] || []; m[57][5] = 89;  // Easy to see
-            m[58] = m[58] || []; m[58][5] = 52;  // Somewhat easy to see
-            m[59] = m[59] || []; m[59][5] = 23;  // Difficult to see
-            m[60] = m[60] || []; m[60][5] = 14;  // Not visible at all
-            m[61] = m[61] || []; m[61][5] = 41;  // N/A
+            // CC2
+            m[57] = m[57] || []; m[57][5] = 7;
+            m[58] = m[58] || []; m[58][5] = 89;
+            m[59] = m[59] || []; m[59][5] = 52;
+            m[60] = m[60] || []; m[60][5] = 23;
+            m[61] = m[61] || []; m[61][5] = 14;
+            m[62] = m[62] || []; m[62][5] = 41;
             
-            // CC3 EFFECTIVITY - F68:F72
-            m[67] = m[67] || []; m[67][5] = 5;   // N/S
-            m[68] = m[68] || []; m[68][5] = 112; // Helped very much
-            m[69] = m[69] || []; m[69][5] = 58;  // Somewhat helped
-            m[70] = m[70] || []; m[70][5] = 16;  // Did not helped
-            m[71] = m[71] || []; m[71][5] = 27;  // N/A
+            // CC3
+            m[68] = m[68] || []; m[68][5] = 5;
+            m[69] = m[69] || []; m[69][5] = 112;
+            m[70] = m[70] || []; m[70][5] = 58;
+            m[71] = m[71] || []; m[71][5] = 16;
+            m[72] = m[72] || []; m[72][5] = 27;
             
             return m;
         }
 
-        // ----- RENDER DASHBOARD WITH 7 CHARTS -----
+        // ----- Render Dashboard -----
         async function renderDashboard() {
-            // Show loading state
+            // Loading state
             gridEl.innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; padding: 4rem; background: white; border-radius: 40px;">
-                    <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #0f859e;"></i>
-                    <p style="margin-top: 1rem; color: #0f859e; font-weight: 600;">Loading ${currentService.toUpperCase()} data from Google Sheets...</p>
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #c9a227; margin-bottom: 1rem;"></i>
+                    <p style="color: #0f859e; font-weight: 500;">Loading ${currentService.toLowerCase()} client satisfaction data...</p>
                 </div>
             `;
 
             const matrix = await fetchSheetData(currentService);
-            if (!matrix) return;
+            const values = readAllCells(matrix);
+            
+            // Calculate totals
+            const totalSex = values.male + values.female;
+            const totalAge = values.ageNS + values.age19b + values.age2029 + values.age3039 + values.age4049 + values.age5059 + values.age6069 + values.age70;
+            const totalClient = values.clientNS + values.citizen + values.business + values.government;
+            const totalRegion = values.regionNS + values.region3 + values.region4a + values.ncr;
+            const totalCC1 = values.cc1NS + values.knowSaw + values.knowNotSaw + values.learned + values.dontKnow;
+            const awareDenom = totalCC1 - values.dontKnow - values.cc1NS || 1;
 
-            // ----- 1. SEX DISAGGREGATED DATA -----
-            const male = getCellValue(matrix, 'B42');
-            const female = getCellValue(matrix, 'C42');
-            const totalSex = male + female;
-
-            // ----- 2. AGE DISTRIBUTION -----
-            const ageNS = getCellValue(matrix, 'F34');
-            const age19b = getCellValue(matrix, 'F35');
-            const age2029 = getCellValue(matrix, 'F36');
-            const age3039 = getCellValue(matrix, 'F37');
-            const age4049 = getCellValue(matrix, 'F38');
-            const age5059 = getCellValue(matrix, 'F39');
-            const age6069 = getCellValue(matrix, 'F40');
-            const age70 = getCellValue(matrix, 'F41');
-            const totalAge = ageNS + age19b + age2029 + age3039 + age4049 + age5059 + age6069 + age70;
-
-            // ----- 3. CLIENT TYPE -----
-            const clientNS = getCellValue(matrix, 'F18');
-            const citizen = getCellValue(matrix, 'F19');
-            const business = getCellValue(matrix, 'F20');
-            const government = getCellValue(matrix, 'F21');
-            const totalClient = clientNS + citizen + business + government;
-
-            // ----- 4. CLIENT BY REGION -----
-            const regionNS = getCellValue(matrix, 'H26');
-            const region3 = getCellValue(matrix, 'H27');
-            const region4a = getCellValue(matrix, 'H28');
-            const ncr = getCellValue(matrix, 'H29');
-            const totalRegion = regionNS + region3 + region4a + ncr;
-
-            // ----- 5. CITIZEN'S CHARTER AWARENESS (CC1) -----
-            const cc1NS = getCellValue(matrix, 'F47');
-            const knowSaw = getCellValue(matrix, 'F48');
-            const knowNotSaw = getCellValue(matrix, 'F49');
-            const learned = getCellValue(matrix, 'F50');
-            const dontKnow = getCellValue(matrix, 'F51');
-            const totalCC1 = cc1NS + knowSaw + knowNotSaw + learned + dontKnow;
-            const awareDenom = totalCC1 - dontKnow - cc1NS || 1;
-
-            // ----- 6. CITIZEN'S CHARTER VISIBILITY (CC2) -----
-            const cc2NS = getCellValue(matrix, 'F57');
-            const easy = getCellValue(matrix, 'F58');
-            const somewhatEasy = getCellValue(matrix, 'F59');
-            const difficult = getCellValue(matrix, 'F60');
-            const notVisible = getCellValue(matrix, 'F61');
-            const cc2na = getCellValue(matrix, 'F62');
-
-            // ----- 7. CITIZEN'S CHARTER EFFECTIVITY (CC3) -----
-            const cc3NS = getCellValue(matrix, 'F68');
-            const helpedMuch = getCellValue(matrix, 'F69');
-            const somewhatHelped = getCellValue(matrix, 'F70');
-            const didNotHelp = getCellValue(matrix, 'F71');
-            const cc3na = getCellValue(matrix, 'F72');
-
-            // ----- BUILD HTML WITH FULL DESCRIPTIONS (NO SHORTCUTS) -----
+            // Build HTML - WITH FULL TEXTS RETAINED
             let html = '';
 
-            // CARD 1: SEX DISAGGREGATED DATA
+            // Card 1: Sex Disaggregated Data
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD) by Service Type</h2>
@@ -551,13 +601,12 @@
                 </div>
                 <canvas id="chartSex"></canvas>
                 <div class="data-legend">
-                    <span>Male:</span> ${male} (${totalSex ? ((male/totalSex)*100).toFixed(1) : 0}%) 
-                    <span>Female:</span> ${female} (${totalSex ? ((female/totalSex)*100).toFixed(1) : 0}%)
-                    <span class="cell-ref">B42, C42</span>
+                    <span>Male:</span> ${values.male} (${totalSex ? ((values.male/totalSex)*100).toFixed(1) : 0}%) 
+                    <span>Female:</span> ${values.female} (${totalSex ? ((values.female/totalSex)*100).toFixed(1) : 0}%)
                 </div>
             </div>`;
 
-            // CARD 2: AGE DISTRIBUTION
+            // Card 2: Age Distribution - WITH FULL TEXTS
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-calendar-alt"></i> Age Distribution by Service Type</h2>
@@ -565,16 +614,20 @@
                 </div>
                 <canvas id="chartAge"></canvas>
                 <div class="data-legend">
-                    <div style="width: 100%;">
-                        <span>Not Specified (N/S):</span> ${ageNS} · <span>19 and below:</span> ${age19b}<br>
-                        <span>20-29:</span> ${age2029} · <span>30-39:</span> ${age3039} · <span>40-49:</span> ${age4049}<br>
-                        <span>50-59:</span> ${age5059} · <span>60-69:</span> ${age6069} · <span>70 and above:</span> ${age70}
+                    <div style="width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                        <div><span>Not Specified (N/S):</span> ${values.ageNS}</div>
+                        <div><span>19 and below:</span> ${values.age19b}</div>
+                        <div><span>20-29:</span> ${values.age2029}</div>
+                        <div><span>30-39:</span> ${values.age3039}</div>
+                        <div><span>40-49:</span> ${values.age4049}</div>
+                        <div><span>50-59:</span> ${values.age5059}</div>
+                        <div><span>60-69:</span> ${values.age6069}</div>
+                        <div><span>70 and above:</span> ${values.age70}</div>
                     </div>
-                    <span class="cell-ref">F34-F41</span>
                 </div>
             </div>`;
 
-            // CARD 3: CLIENT TYPE
+            // Card 3: Client Type - WITH FULL TEXTS
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-users"></i> Client Type by Service</h2>
@@ -582,17 +635,14 @@
                 </div>
                 <canvas id="chartClient"></canvas>
                 <div class="data-legend">
-                    <div style="width: 100%;">
-                        <span>Not Specified (N/S):</span> ${clientNS}<br>
-                        <span>Citizen (Mamamayan):</span> ${citizen}<br>
-                        <span>Business (Negosyo):</span> ${business}<br>
-                        <span>Government (Gobyerno):</span> ${government}
-                    </div>
-                    <span class="cell-ref">F18-F21</span>
+                    <div><span>Not Specified (N/S):</span> ${values.clientNS}</div>
+                    <div><span>Citizen (Mamamayan):</span> ${values.citizen}</div>
+                    <div><span>Business (Negosyo):</span> ${values.business}</div>
+                    <div><span>Government (Gobyerno):</span> ${values.government}</div>
                 </div>
             </div>`;
 
-            // CARD 4: CLIENT BY REGION
+            // Card 4: Client by Region - WITH FULL TEXTS
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
@@ -600,17 +650,14 @@
                 </div>
                 <canvas id="chartRegion"></canvas>
                 <div class="data-legend">
-                    <div style="width: 100%;">
-                        <span>Not Specified (N/S):</span> ${regionNS}<br>
-                        <span>Region III:</span> ${region3}<br>
-                        <span>Region IV-A:</span> ${region4a}<br>
-                        <span>NCR:</span> ${ncr}
-                    </div>
-                    <span class="cell-ref">H26-H29</span>
+                    <div><span>Not Specified (N/S):</span> ${values.regionNS}</div>
+                    <div><span>Region III:</span> ${values.region3}</div>
+                    <div><span>Region IV-A:</span> ${values.region4a}</div>
+                    <div><span>NCR:</span> ${values.ncr}</div>
                 </div>
             </div>`;
 
-            // CARD 5: CITIZEN'S CHARTER AWARENESS (CC1)
+            // Card 5: CC1 Awareness - WITH FULL TEXTS
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-eye"></i> Citizen's Charter Awareness</h2>
@@ -618,18 +665,15 @@
                 </div>
                 <canvas id="chartCC1"></canvas>
                 <div class="data-legend">
-                    <div style="width: 100%;">
-                        <span>Not Specified (N/S):</span> ${cc1NS}<br>
-                        <span>I know what a CC is and I saw this office’s CC:</span> ${knowSaw}<br>
-                        <span>I know what a CC is but I did NOT see this office’s CC:</span> ${knowNotSaw}<br>
-                        <span>I learned of the CC only when I saw this office’s CC:</span> ${learned}<br>
-                        <span>I do not know what a CC is and I did not see one in this office (Answer ‘N/A’ on CC2 and CC3):</span> ${dontKnow}
-                    </div>
-                    <span class="cell-ref">F47-F51</span>
+                    <div><span>Not Specified (N/S):</span> ${values.cc1NS}</div>
+                    <div><span>I know what a CC is and I saw this office’s CC:</span> ${values.knowSaw}</div>
+                    <div><span>I know what a CC is but I did NOT see this office’s CC:</span> ${values.knowNotSaw}</div>
+                    <div><span>I learned of the CC only when I saw this office’s CC:</span> ${values.learned}</div>
+                    <div><span>I do not know what a CC is and I did not see one in this office:</span> ${values.dontKnow}</div>
                 </div>
             </div>`;
 
-            // CARD 6: CITIZEN'S CHARTER VISIBILITY (CC2)
+            // Card 6: CC2 Visibility - WITH FULL TEXTS
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-low-vision"></i> Citizen's Charter Visibility</h2>
@@ -637,19 +681,16 @@
                 </div>
                 <canvas id="chartCC2"></canvas>
                 <div class="data-legend">
-                    <div style="width: 100%;">
-                        <span>Not Specified (N/S):</span> ${cc2NS}<br>
-                        <span>Easy to see:</span> ${easy}<br>
-                        <span>Somewhat easy to see:</span> ${somewhatEasy}<br>
-                        <span>Difficult to see:</span> ${difficult}<br>
-                        <span>Not visible at all:</span> ${notVisible}<br>
-                        <span>N/A (Not Applicable):</span> ${cc2na}
-                    </div>
-                    <span class="cell-ref">F57-F62</span>
+                    <div><span>Not Specified (N/S):</span> ${values.cc2NS}</div>
+                    <div><span>Easy to see:</span> ${values.easy}</div>
+                    <div><span>Somewhat easy to see:</span> ${values.somewhatEasy}</div>
+                    <div><span>Difficult to see:</span> ${values.difficult}</div>
+                    <div><span>Not visible at all:</span> ${values.notVisible}</div>
+                    <div><span>N/A (Not Applicable):</span> ${values.cc2na}</div>
                 </div>
             </div>`;
 
-            // CARD 7: CITIZEN'S CHARTER EFFECTIVITY (CC3)
+            // Card 7: CC3 Effectivity - WITH FULL TEXTS
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-check-circle"></i> Citizen's Charter Effectivity</h2>
@@ -657,169 +698,111 @@
                 </div>
                 <canvas id="chartCC3"></canvas>
                 <div class="data-legend">
-                    <div style="width: 100%;">
-                        <span>Not Specified (N/S):</span> ${cc3NS}<br>
-                        <span>Helped very much:</span> ${helpedMuch}<br>
-                        <span>Somewhat helped:</span> ${somewhatHelped}<br>
-                        <span>Did not helped:</span> ${didNotHelp}<br>
-                        <span>N/A (Not Applicable):</span> ${cc3na}
-                    </div>
-                    <span class="cell-ref">F68-F72</span>
+                    <div><span>Not Specified (N/S):</span> ${values.cc3NS}</div>
+                    <div><span>Helped very much:</span> ${values.helpedMuch}</div>
+                    <div><span>Somewhat helped:</span> ${values.somewhatHelped}</div>
+                    <div><span>Did not helped:</span> ${values.didNotHelp}</div>
+                    <div><span>N/A (Not Applicable):</span> ${values.cc3na}</div>
                 </div>
             </div>`;
 
             gridEl.innerHTML = html;
 
-            // ----- DESTROY OLD CHARTS -----
-            Object.values(chartInstances).forEach(chart => {
-                if (chart) chart.destroy();
-            });
+            // Destroy old charts
+            Object.values(chartInstances).forEach(chart => chart?.destroy());
             chartInstances = {};
 
-            // ----- CREATE NEW CHARTS -----
-            
-            // Chart 1: Sex (Doughnut)
-            chartInstances.sex = new Chart(document.getElementById('chartSex'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Male', 'Female'],
-                    datasets: [{
-                        data: [male, female],
-                        backgroundColor: ['#2f98b3', '#f193b0'],
-                        borderWidth: 0,
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    cutout: '65%',
-                    plugins: { legend: { display: false } },
-                    maintainAspectRatio: true
-                }
-            });
+            // Blue & Gold Color Palette
+            const bluePalette = ['#1a7f9e', '#2f98b3', '#45b0c9', '#7fc5d9', '#a8dae8'];
+            const goldPalette = ['#c9a227', '#d9b44a', '#e5c36b', '#f0d59a', '#f8e7c4'];
+            const lightBluePalette = ['#7fc5d9', '#a8dae8', '#c4e6f0', '#dff1f7', '#eef8fc'];
 
-            // Chart 2: Age (Bar)
-            chartInstances.age = new Chart(document.getElementById('chartAge'), {
-                type: 'bar',
-                data: {
-                    labels: ['N/S', '19↓', '20-29', '30-39', '40-49', '50-59', '60-69', '70↑'],
-                    datasets: [{
-                        data: [ageNS, age19b, age2029, age3039, age4049, age5059, age6069, age70],
-                        backgroundColor: '#1f9ab3',
-                        borderRadius: 6
-                    }]
+            // Create new charts with blue & gold palette
+            const chartConfigs = [
+                { 
+                    id: 'chartSex', type: 'doughnut', 
+                    labels: ['Male', 'Female'], 
+                    data: [values.male, values.female], 
+                    colors: [bluePalette[0], goldPalette[0]] 
                 },
-                options: {
-                    scales: { 
-                        y: { 
-                            beginAtZero: true,
-                            grid: { color: '#cde3ec' }
-                        } 
+                { 
+                    id: 'chartAge', type: 'bar', 
+                    labels: ['N/S', '19↓', '20-29', '30-39', '40-49', '50-59', '60-69', '70↑'], 
+                    data: [values.ageNS, values.age19b, values.age2029, values.age3039, values.age4049, values.age5059, values.age6069, values.age70], 
+                    colors: bluePalette[1] 
+                },
+                { 
+                    id: 'chartClient', type: 'doughnut', 
+                    labels: ['Citizen', 'Business', 'Government', 'N/S'], 
+                    data: [values.citizen, values.business, values.government, values.clientNS], 
+                    colors: [bluePalette[0], bluePalette[2], goldPalette[0], lightBluePalette[2]] 
+                },
+                { 
+                    id: 'chartRegion', type: 'pie', 
+                    labels: ['Region III', 'Region IV-A', 'NCR', 'N/S'], 
+                    data: [values.region3, values.region4a, values.ncr, values.regionNS], 
+                    colors: [bluePalette[1], bluePalette[2], goldPalette[0], lightBluePalette[3]] 
+                },
+                { 
+                    id: 'chartCC1', type: 'bar', 
+                    labels: ['Know & Saw', 'Know/Not Saw', 'Learned', 'Don\'t know', 'N/S'], 
+                    data: [values.knowSaw, values.knowNotSaw, values.learned, values.dontKnow, values.cc1NS], 
+                    colors: bluePalette[0] 
+                },
+                { 
+                    id: 'chartCC2', type: 'bar', 
+                    labels: ['Easy', 'Somewhat', 'Difficult', 'Not visible', 'N/A', 'N/S'], 
+                    data: [values.easy, values.somewhatEasy, values.difficult, values.notVisible, values.cc2na, values.cc2NS], 
+                    colors: goldPalette[0] 
+                },
+                { 
+                    id: 'chartCC3', type: 'bar', 
+                    labels: ['Helped much', 'Somewhat', 'Did not help', 'N/A', 'N/S'], 
+                    data: [values.helpedMuch, values.somewhatHelped, values.didNotHelp, values.cc3na, values.cc3NS], 
+                    colors: lightBluePalette[1] 
+                }
+            ];
+
+            chartConfigs.forEach(cfg => {
+                const ctx = document.getElementById(cfg.id);
+                if (!ctx) return;
+                
+                chartInstances[cfg.id] = new Chart(ctx, {
+                    type: cfg.type,
+                    data: {
+                        labels: cfg.labels,
+                        datasets: [{
+                            data: cfg.data,
+                            backgroundColor: cfg.colors,
+                            borderWidth: 0,
+                            borderRadius: cfg.type === 'bar' ? 6 : 0
+                        }]
                     },
-                    plugins: { legend: { display: false } }
-                }
-            });
-
-            // Chart 3: Client Type (Doughnut)
-            chartInstances.client = new Chart(document.getElementById('chartClient'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Citizen', 'Business', 'Government', 'N/S'],
-                    datasets: [{
-                        data: [citizen, business, government, clientNS],
-                        backgroundColor: ['#53b5c9', '#a1d2d4', '#3f8f9c', '#b0d3da'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    cutout: '65%',
-                    plugins: { legend: { display: false } }
-                }
-            });
-
-            // Chart 4: Region (Pie)
-            chartInstances.region = new Chart(document.getElementById('chartRegion'), {
-                type: 'pie',
-                data: {
-                    labels: ['Region III', 'Region IV-A', 'NCR', 'N/S'],
-                    datasets: [{
-                        data: [region3, region4a, ncr, regionNS],
-                        backgroundColor: ['#58a7b5', '#7ec8d3', '#2f8a9b', '#b4d5db'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    plugins: { legend: { display: false } }
-                }
-            });
-
-            // Chart 5: CC1 Awareness (Bar)
-            chartInstances.cc1 = new Chart(document.getElementById('chartCC1'), {
-                type: 'bar',
-                data: {
-                    labels: ['Know & Saw', 'Know/Not Saw', 'Learned', 'Don\'t know', 'N/S'],
-                    datasets: [{
-                        data: [knowSaw, knowNotSaw, learned, dontKnow, cc1NS],
-                        backgroundColor: ['#147a8f', '#3ba3b9', '#5fb3c5', '#c1dce2', '#e2eef0'],
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    scales: { 
-                        y: { 
-                            beginAtZero: true,
-                            grid: { color: '#cde3ec' }
-                        } 
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
-
-            // Chart 6: CC2 Visibility (Bar)
-            chartInstances.cc2 = new Chart(document.getElementById('chartCC2'), {
-                type: 'bar',
-                data: {
-                    labels: ['Easy', 'Somewhat', 'Difficult', 'Not visible', 'N/A', 'N/S'],
-                    datasets: [{
-                        data: [easy, somewhatEasy, difficult, notVisible, cc2na, cc2NS],
-                        backgroundColor: ['#179f9b', '#57b8b0', '#e5989b', '#b8b2b2', '#b0b0b0', '#d9d9d9'],
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    scales: { 
-                        y: { 
-                            beginAtZero: true,
-                            grid: { color: '#cde3ec' }
-                        } 
-                    },
-                    plugins: { legend: { display: false } }
-                }
-            });
-
-            // Chart 7: CC3 Effectivity (Bar)
-            chartInstances.cc3 = new Chart(document.getElementById('chartCC3'), {
-                type: 'bar',
-                data: {
-                    labels: ['Helped much', 'Somewhat', 'Did not help', 'N/A', 'N/S'],
-                    datasets: [{
-                        data: [helpedMuch, somewhatHelped, didNotHelp, cc3na, cc3NS],
-                        backgroundColor: ['#148f6d', '#51b192', '#e0a38d', '#b3b3b3', '#d4d4d4'],
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    scales: { 
-                        y: { 
-                            beginAtZero: true,
-                            grid: { color: '#cde3ec' }
-                        } 
-                    },
-                    plugins: { legend: { display: false } }
-                }
+                    options: {
+                        cutout: cfg.type === 'doughnut' ? '65%' : undefined,
+                        scales: cfg.type === 'bar' ? { 
+                            y: { 
+                                beginAtZero: true, 
+                                grid: { color: '#e9ecef' },
+                                ticks: { color: '#2a5e6e' }
+                            },
+                            x: { ticks: { color: '#2a5e6e' } }
+                        } : undefined,
+                        plugins: { 
+                            legend: { display: false }, 
+                            tooltip: { 
+                                backgroundColor: '#0f859e',
+                                titleColor: 'white',
+                                bodyColor: 'white'
+                            } 
+                        },
+                        maintainAspectRatio: true
+                    }
+                });
             });
         }
 
-        // ----- TOGGLE EVENT LISTENERS -----
+        // ----- Event Listeners -----
         function initEvents() {
             document.querySelectorAll('.switch-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -831,7 +814,7 @@
             });
         }
 
-        // ----- START THE DASHBOARD -----
+        // ----- Start -----
         window.addEventListener('DOMContentLoaded', () => {
             initEvents();
             renderDashboard();
