@@ -54,8 +54,8 @@
         }
 
         .mwss-logo {
-            width: 80%; /* Reduced to 80% of container width */
-            max-width: 720px; /* 80% of original 900px max-width */
+            width: 80%;
+            max-width: 720px;
             height: auto;
             object-fit: contain;
         }
@@ -148,6 +148,25 @@
             font-size: 0.9rem;
         }
 
+        /* Section Headers */
+        .section-header {
+            grid-column: 1/-1;
+            margin: 1rem 0 0.5rem 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0e5a6b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .section-header i {
+            color: #c9a227;
+            font-size: 1.3rem;
+        }
+
         /* Chart Grid */
         .chart-grid {
             display: grid;
@@ -155,13 +174,105 @@
             gap: 1.8rem;
         }
 
+        /* SQD Charts Container */
+        .sqd-charts-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1.5rem;
+            margin: 1rem 0;
+            align-items: stretch;
+        }
+
+        /* Percentage cards (for SQD 0 and Overall) */
+        .percentage-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0,70,90,0.04);
+            border: 1px solid rgba(147,197,214,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            height: 100%;
+        }
+
+        .percentage-card:hover {
+            box-shadow: 0 12px 28px rgba(0,90,110,0.08);
+            border-color: rgba(212, 175, 55, 0.2);
+        }
+
+        .percentage-card h3 {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #0e5a6b;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .percentage-value {
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: #c9a227;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .percentage-label {
+            font-size: 0.85rem;
+            color: #4a7a86;
+        }
+
+        /* Main chart panel for SQD 1-8 */
+        .sqd-chart-panel {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem 1.5rem;
+            box-shadow: 0 8px 24px rgba(0,70,90,0.04);
+            border: 1px solid rgba(147,197,214,0.15);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+            height: 100%;
+        }
+
+        .sqd-chart-panel:hover {
+            box-shadow: 0 12px 28px rgba(0,90,110,0.08);
+            border-color: rgba(212, 175, 55, 0.2);
+        }
+
+        .sqd-chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .sqd-chart-header h2 {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #0e5a6b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sqd-chart-header i {
+            color: #c9a227;
+            font-size: 1.1rem;
+        }
+
         @media (max-width: 1000px) {
             .chart-grid { grid-template-columns: 1fr; }
+            .sqd-charts-container { grid-template-columns: 1fr; }
             .switch-btn { padding: 0.8rem 1.8rem; }
             .dashboard-subtitle { font-size: 1.2rem; }
         }
 
-        /* Chart Cards */
+        /* Chart Cards (existing) */
         .chart-panel {
             background: white;
             border-radius: 28px;
@@ -286,10 +397,11 @@
             Harmonized Client Satisfaction Measurement Dashboard
         </div>
         
-        <!-- Badges (Live Data and Key Metrics only) -->
+        <!-- Badges -->
         <div class="badge-container">
             <span class="badge"><i class="fas fa-database"></i> Live Data</span>
             <span class="badge badge-gold"><i class="fas fa-chart-pie"></i> 7 Key Metrics</span>
+            <span class="badge"><i class="fas fa-star"></i> SQD 0-8</span>
         </div>
     </div>
 
@@ -308,8 +420,20 @@
         </div>
     </div>
 
-    <!-- Chart Grid -->
-    <div class="chart-grid" id="chartGrid"></div>
+    <!-- Main Content Grid -->
+    <div class="chart-grid" id="mainChartGrid"></div>
+
+    <!-- SQD Section Header -->
+    <div class="section-header" id="sqdSectionHeader">
+        <i class="fas fa-star"></i> Service Quality Dimensions (SQD 0-8)
+    </div>
+
+    <!-- SQD Charts Container (3 columns) -->
+    <div class="sqd-charts-container" id="sqdChartsContainer">
+        <!-- SQD 0 will go here -->
+        <!-- SQD 1-8 chart will go here -->
+        <!-- Overall SQD will go here -->
+    </div>
 
     <!-- Footer -->
     <div class="status-footer">
@@ -337,20 +461,20 @@
         let chartInstances = {};
         let currentValues = null;
         
-        const gridEl = document.getElementById('chartGrid');
+        const mainGridEl = document.getElementById('mainChartGrid');
+        const sqdChartsContainer = document.getElementById('sqdChartsContainer');
+        const sqdSectionHeader = document.getElementById('sqdSectionHeader');
         const liveStatus = document.getElementById('liveStatus');
 
         // ============================================================
-        // EXACT CELL MAPPING - CORRECTED (Sheet Row = Index)
+        // EXACT CELL MAPPING - INCLUDING SQD CELLS
         // ============================================================
         const CELL_MAPPINGS = {
-            // Sex Disaggregated Data
+            // Original mappings (kept exactly as before)
             sex: {
                 male: { colIndex: 1, rowIndex: 42 }, // B42
                 female: { colIndex: 2, rowIndex: 42 } // C42
             },
-            
-            // Age Distribution
             age: {
                 ns: { colIndex: 5, rowIndex: 34 }, // F34
                 age19b: { colIndex: 5, rowIndex: 35 }, // F35
@@ -361,24 +485,18 @@
                 age6069: { colIndex: 5, rowIndex: 40 }, // F40
                 age70: { colIndex: 5, rowIndex: 41 } // F41
             },
-            
-            // Client Type
             client: {
                 ns: { colIndex: 5, rowIndex: 18 }, // F18
                 citizen: { colIndex: 5, rowIndex: 19 }, // F19
                 business: { colIndex: 5, rowIndex: 20 }, // F20
                 government: { colIndex: 5, rowIndex: 21 } // F21
             },
-            
-            // Client by Region
             region: {
                 ns: { colIndex: 7, rowIndex: 26 }, // H26
                 region3: { colIndex: 7, rowIndex: 27 }, // H27
                 region4a: { colIndex: 7, rowIndex: 28 }, // H28
                 ncr: { colIndex: 7, rowIndex: 29 } // H29
             },
-            
-            // CC1 Awareness - WITH FULL TEXTS RETAINED
             cc1: {
                 ns: { colIndex: 5, rowIndex: 47 }, // F47
                 knowSaw: { colIndex: 5, rowIndex: 48 }, // F48
@@ -386,8 +504,6 @@
                 learned: { colIndex: 5, rowIndex: 50 }, // F50
                 dontKnow: { colIndex: 5, rowIndex: 51 } // F51
             },
-            
-            // CC2 Visibility - WITH FULL TEXTS RETAINED
             cc2: {
                 ns: { colIndex: 5, rowIndex: 57 }, // F57
                 easy: { colIndex: 5, rowIndex: 58 }, // F58
@@ -396,14 +512,26 @@
                 notVisible: { colIndex: 5, rowIndex: 61 }, // F61
                 na: { colIndex: 5, rowIndex: 62 } // F62
             },
-            
-            // CC3 Effectivity - WITH FULL TEXTS RETAINED
             cc3: {
                 ns: { colIndex: 5, rowIndex: 68 }, // F68
                 helpedMuch: { colIndex: 5, rowIndex: 69 }, // F69
                 somewhatHelped: { colIndex: 5, rowIndex: 70 }, // F70
                 didNotHelp: { colIndex: 5, rowIndex: 71 }, // F71
                 na: { colIndex: 5, rowIndex: 72 } // F72
+            },
+            
+            // SQD CELL MAPPINGS
+            sqd: {
+                sqd0: { colIndex: 8, rowIndex: 109 }, // I109
+                sqd1: { colIndex: 8, rowIndex: 111 }, // I111
+                sqd2: { colIndex: 8, rowIndex: 112 }, // I112
+                sqd3: { colIndex: 8, rowIndex: 113 }, // I113
+                sqd4: { colIndex: 8, rowIndex: 114 }, // I114
+                sqd5: { colIndex: 8, rowIndex: 115 }, // I115
+                sqd6: { colIndex: 8, rowIndex: 116 }, // I116
+                sqd7: { colIndex: 8, rowIndex: 117 }, // I117
+                sqd8: { colIndex: 8, rowIndex: 118 }, // I118
+                sqdOverall: { colIndex: 8, rowIndex: 119 } // I119
             }
         };
 
@@ -490,6 +618,7 @@
             try {
                 if (matrix[rowIndex]?.[colIndex] !== undefined) {
                     const val = matrix[rowIndex][colIndex];
+                    // Remove % sign if present and convert to number
                     const num = parseFloat(val.replace(/[^\d.-]/g, ''));
                     return isNaN(num) ? 0 : num;
                 }
@@ -497,15 +626,14 @@
             return 0;
         }
 
-        // ----- Read All Cell Values -----
+        // ----- Read All Cell Values (including SQD) -----
         function readAllCells(matrix) {
             const values = {};
             
-            // Sex
+            // Original values (kept exactly as before)
             values.male = getCellValue(matrix, CELL_MAPPINGS.sex.male.rowIndex, CELL_MAPPINGS.sex.male.colIndex);
             values.female = getCellValue(matrix, CELL_MAPPINGS.sex.female.rowIndex, CELL_MAPPINGS.sex.female.colIndex);
             
-            // Age
             values.ageNS = getCellValue(matrix, CELL_MAPPINGS.age.ns.rowIndex, CELL_MAPPINGS.age.ns.colIndex);
             values.age19b = getCellValue(matrix, CELL_MAPPINGS.age.age19b.rowIndex, CELL_MAPPINGS.age.age19b.colIndex);
             values.age2029 = getCellValue(matrix, CELL_MAPPINGS.age.age2029.rowIndex, CELL_MAPPINGS.age.age2029.colIndex);
@@ -515,26 +643,22 @@
             values.age6069 = getCellValue(matrix, CELL_MAPPINGS.age.age6069.rowIndex, CELL_MAPPINGS.age.age6069.colIndex);
             values.age70 = getCellValue(matrix, CELL_MAPPINGS.age.age70.rowIndex, CELL_MAPPINGS.age.age70.colIndex);
             
-            // Client Type
             values.clientNS = getCellValue(matrix, CELL_MAPPINGS.client.ns.rowIndex, CELL_MAPPINGS.client.ns.colIndex);
             values.citizen = getCellValue(matrix, CELL_MAPPINGS.client.citizen.rowIndex, CELL_MAPPINGS.client.citizen.colIndex);
             values.business = getCellValue(matrix, CELL_MAPPINGS.client.business.rowIndex, CELL_MAPPINGS.client.business.colIndex);
             values.government = getCellValue(matrix, CELL_MAPPINGS.client.government.rowIndex, CELL_MAPPINGS.client.government.colIndex);
             
-            // Region
             values.regionNS = getCellValue(matrix, CELL_MAPPINGS.region.ns.rowIndex, CELL_MAPPINGS.region.ns.colIndex);
             values.region3 = getCellValue(matrix, CELL_MAPPINGS.region.region3.rowIndex, CELL_MAPPINGS.region.region3.colIndex);
             values.region4a = getCellValue(matrix, CELL_MAPPINGS.region.region4a.rowIndex, CELL_MAPPINGS.region.region4a.colIndex);
             values.ncr = getCellValue(matrix, CELL_MAPPINGS.region.ncr.rowIndex, CELL_MAPPINGS.region.ncr.colIndex);
             
-            // CC1 - FULL TEXTS RETAINED
             values.cc1NS = getCellValue(matrix, CELL_MAPPINGS.cc1.ns.rowIndex, CELL_MAPPINGS.cc1.ns.colIndex);
             values.knowSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowSaw.rowIndex, CELL_MAPPINGS.cc1.knowSaw.colIndex);
             values.knowNotSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowNotSaw.rowIndex, CELL_MAPPINGS.cc1.knowNotSaw.colIndex);
             values.learned = getCellValue(matrix, CELL_MAPPINGS.cc1.learned.rowIndex, CELL_MAPPINGS.cc1.learned.colIndex);
             values.dontKnow = getCellValue(matrix, CELL_MAPPINGS.cc1.dontKnow.rowIndex, CELL_MAPPINGS.cc1.dontKnow.colIndex);
             
-            // CC2 - FULL TEXTS RETAINED
             values.cc2NS = getCellValue(matrix, CELL_MAPPINGS.cc2.ns.rowIndex, CELL_MAPPINGS.cc2.ns.colIndex);
             values.easy = getCellValue(matrix, CELL_MAPPINGS.cc2.easy.rowIndex, CELL_MAPPINGS.cc2.easy.colIndex);
             values.somewhatEasy = getCellValue(matrix, CELL_MAPPINGS.cc2.somewhatEasy.rowIndex, CELL_MAPPINGS.cc2.somewhatEasy.colIndex);
@@ -542,27 +666,37 @@
             values.notVisible = getCellValue(matrix, CELL_MAPPINGS.cc2.notVisible.rowIndex, CELL_MAPPINGS.cc2.notVisible.colIndex);
             values.cc2na = getCellValue(matrix, CELL_MAPPINGS.cc2.na.rowIndex, CELL_MAPPINGS.cc2.na.colIndex);
             
-            // CC3 - FULL TEXTS RETAINED
             values.cc3NS = getCellValue(matrix, CELL_MAPPINGS.cc3.ns.rowIndex, CELL_MAPPINGS.cc3.ns.colIndex);
             values.helpedMuch = getCellValue(matrix, CELL_MAPPINGS.cc3.helpedMuch.rowIndex, CELL_MAPPINGS.cc3.helpedMuch.colIndex);
             values.somewhatHelped = getCellValue(matrix, CELL_MAPPINGS.cc3.somewhatHelped.rowIndex, CELL_MAPPINGS.cc3.somewhatHelped.colIndex);
             values.didNotHelp = getCellValue(matrix, CELL_MAPPINGS.cc3.didNotHelp.rowIndex, CELL_MAPPINGS.cc3.didNotHelp.colIndex);
             values.cc3na = getCellValue(matrix, CELL_MAPPINGS.cc3.na.rowIndex, CELL_MAPPINGS.cc3.na.colIndex);
             
+            // SQD VALUES
+            values.sqd0 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd0.rowIndex, CELL_MAPPINGS.sqd.sqd0.colIndex);
+            values.sqd1 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd1.rowIndex, CELL_MAPPINGS.sqd.sqd1.colIndex);
+            values.sqd2 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd2.rowIndex, CELL_MAPPINGS.sqd.sqd2.colIndex);
+            values.sqd3 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd3.rowIndex, CELL_MAPPINGS.sqd.sqd3.colIndex);
+            values.sqd4 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd4.rowIndex, CELL_MAPPINGS.sqd.sqd4.colIndex);
+            values.sqd5 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd5.rowIndex, CELL_MAPPINGS.sqd.sqd5.colIndex);
+            values.sqd6 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd6.rowIndex, CELL_MAPPINGS.sqd.sqd6.colIndex);
+            values.sqd7 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd7.rowIndex, CELL_MAPPINGS.sqd.sqd7.colIndex);
+            values.sqd8 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd8.rowIndex, CELL_MAPPINGS.sqd.sqd8.colIndex);
+            values.sqdOverall = getCellValue(matrix, CELL_MAPPINGS.sqd.sqdOverall.rowIndex, CELL_MAPPINGS.sqd.sqdOverall.colIndex);
+            
             return values;
         }
 
-        // ----- Sample Data Generator -----
+        // ----- Sample Data Generator (updated with SQD values) -----
         function generateSampleMatrix(type) {
             const m = [];
-            for (let i = 0; i < 100; i++) m[i] = [];
+            for (let i = 0; i < 150; i++) m[i] = [];
             
-            // Sex
+            // Original sample data (kept exactly as before)
             m[42] = m[42] || []; 
             m[42][1] = type === 'external' ? 124 : type === 'internal' ? 98 : 222;
             m[42][2] = type === 'external' ? 146 : type === 'internal' ? 72 : 218;
             
-            // Age
             m[34] = m[34] || []; m[34][5] = 20;
             m[35] = m[35] || []; m[35][5] = 0;
             m[36] = m[36] || []; m[36][5] = 32;
@@ -572,26 +706,22 @@
             m[40] = m[40] || []; m[40][5] = 6;
             m[41] = m[41] || []; m[41][5] = 0;
             
-            // Client
             m[18] = m[18] || []; m[18][5] = 5;
             m[19] = m[19] || []; m[19][5] = type === 'external' ? 187 : type === 'internal' ? 64 : 251;
             m[20] = m[20] || []; m[20][5] = type === 'external' ? 62 : type === 'internal' ? 43 : 105;
             m[21] = m[21] || []; m[21][5] = type === 'external' ? 21 : type === 'internal' ? 63 : 84;
             
-            // Region
             m[26] = m[26] || []; m[26][7] = 4;
             m[27] = m[27] || []; m[27][7] = 78;
             m[28] = m[28] || []; m[28][7] = 94;
             m[29] = m[29] || []; m[29][7] = 112;
             
-            // CC1
             m[47] = m[47] || []; m[47][5] = 6;
             m[48] = m[48] || []; m[48][5] = 103;
             m[49] = m[49] || []; m[49][5] = 47;
             m[50] = m[50] || []; m[50][5] = 58;
             m[51] = m[51] || []; m[51][5] = 32;
             
-            // CC2
             m[57] = m[57] || []; m[57][5] = 7;
             m[58] = m[58] || []; m[58][5] = 89;
             m[59] = m[59] || []; m[59][5] = 52;
@@ -599,30 +729,31 @@
             m[61] = m[61] || []; m[61][5] = 14;
             m[62] = m[62] || []; m[62][5] = 41;
             
-            // CC3
             m[68] = m[68] || []; m[68][5] = 5;
             m[69] = m[69] || []; m[69][5] = 112;
             m[70] = m[70] || []; m[70][5] = 58;
             m[71] = m[71] || []; m[71][5] = 16;
             m[72] = m[72] || []; m[72][5] = 27;
             
+            // SQD SAMPLE VALUES (I109, I111-I119) - WITH 2 DECIMAL PLACES
+            // Column I = index 8
+            const baseSQD = type === 'external' ? 92.45 : type === 'internal' ? 88.75 : 90.25;
+            m[109] = m[109] || []; m[109][8] = baseSQD; // SQD 0
+            m[111] = m[111] || []; m[111][8] = 89.25; // SQD 1
+            m[112] = m[112] || []; m[112][8] = 91.50; // SQD 2
+            m[113] = m[113] || []; m[113][8] = 87.75; // SQD 3
+            m[114] = m[114] || []; m[114][8] = 93.25; // SQD 4
+            m[115] = m[115] || []; m[115][8] = 90.50; // SQD 5
+            m[116] = m[116] || []; m[116][8] = 88.25; // SQD 6
+            m[117] = m[117] || []; m[117][8] = 92.75; // SQD 7
+            m[118] = m[118] || []; m[118][8] = 89.50; // SQD 8
+            m[119] = m[119] || []; m[119][8] = 90.35; // Overall SQD
+            
             return m;
         }
 
-        // ----- Render Dashboard -----
-        async function renderDashboard() {
-            // Loading state
-            gridEl.innerHTML = `
-                <div class="loading-state">
-                    <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #c9a227; margin-bottom: 1rem;"></i>
-                    <p style="color: #0f859e; font-weight: 500;">Loading ${currentService.toLowerCase()} client satisfaction data...</p>
-                </div>
-            `;
-
-            const matrix = await fetchSheetData(currentService);
-            const values = readAllCells(matrix);
-            
-            // Calculate totals
+        // ----- Render Main Charts (original 7) -----
+        function renderMainCharts(values) {
             const totalSex = values.male + values.female;
             const totalAge = values.ageNS + values.age19b + values.age2029 + values.age3039 + values.age4049 + values.age5059 + values.age6069 + values.age70;
             const totalClient = values.clientNS + values.citizen + values.business + values.government;
@@ -630,7 +761,6 @@
             const totalCC1 = values.cc1NS + values.knowSaw + values.knowNotSaw + values.learned + values.dontKnow;
             const awareDenom = totalCC1 - values.dontKnow - values.cc1NS || 1;
 
-            // Build HTML - WITH FULL TEXTS RETAINED
             let html = '';
 
             // Card 1: Sex Disaggregated Data
@@ -641,12 +771,12 @@
                 </div>
                 <canvas id="chartSex"></canvas>
                 <div class="data-legend">
-                    <span>Male:</span> ${values.male} (${totalSex ? ((values.male/totalSex)*100).toFixed(1) : 0}%) 
-                    <span>Female:</span> ${values.female} (${totalSex ? ((values.female/totalSex)*100).toFixed(1) : 0}%)
+                    <span>Male:</span> ${values.male} (${totalSex ? ((values.male/totalSex)*100).toFixed(2) : 0}%) 
+                    <span>Female:</span> ${values.female} (${totalSex ? ((values.female/totalSex)*100).toFixed(2) : 0}%)
                 </div>
             </div>`;
 
-            // Card 2: Age Distribution - WITH FULL TEXTS
+            // Card 2: Age Distribution
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-calendar-alt"></i> Age Distribution by Service Type</h2>
@@ -667,7 +797,7 @@
                 </div>
             </div>`;
 
-            // Card 3: Client Type - WITH FULL TEXTS
+            // Card 3: Client Type
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-users"></i> Client Type by Service</h2>
@@ -682,7 +812,7 @@
                 </div>
             </div>`;
 
-            // Card 4: Client by Region - WITH FULL TEXTS
+            // Card 4: Client by Region
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
@@ -697,7 +827,7 @@
                 </div>
             </div>`;
 
-            // Card 5: CC1 Awareness - WITH FULL TEXTS
+            // Card 5: CC1 Awareness
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-eye"></i> Citizen's Charter Awareness</h2>
@@ -713,7 +843,7 @@
                 </div>
             </div>`;
 
-            // Card 6: CC2 Visibility - WITH FULL TEXTS
+            // Card 6: CC2 Visibility
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-low-vision"></i> Citizen's Charter Visibility</h2>
@@ -730,7 +860,7 @@
                 </div>
             </div>`;
 
-            // Card 7: CC3 Effectivity - WITH FULL TEXTS
+            // Card 7: CC3 Effectivity
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-check-circle"></i> Citizen's Charter Effectivity</h2>
@@ -746,7 +876,7 @@
                 </div>
             </div>`;
 
-            gridEl.innerHTML = html;
+            mainGridEl.innerHTML = html;
 
             // Destroy old charts
             Object.values(chartInstances).forEach(chart => chart?.destroy());
@@ -757,50 +887,15 @@
             const goldPalette = ['#c9a227', '#d9b44a', '#e5c36b', '#f0d59a', '#f8e7c4'];
             const lightBluePalette = ['#7fc5d9', '#a8dae8', '#c4e6f0', '#dff1f7', '#eef8fc'];
 
-            // Create new charts with blue & gold palette
+            // Create charts
             const chartConfigs = [
-                { 
-                    id: 'chartSex', type: 'doughnut', 
-                    labels: ['Male', 'Female'], 
-                    data: [values.male, values.female], 
-                    colors: [bluePalette[0], goldPalette[0]] 
-                },
-                { 
-                    id: 'chartAge', type: 'bar', 
-                    labels: ['N/S', '19↓', '20-29', '30-39', '40-49', '50-59', '60-69', '70↑'], 
-                    data: [values.ageNS, values.age19b, values.age2029, values.age3039, values.age4049, values.age5059, values.age6069, values.age70], 
-                    colors: bluePalette[1] 
-                },
-                { 
-                    id: 'chartClient', type: 'doughnut', 
-                    labels: ['Citizen', 'Business', 'Government', 'N/S'], 
-                    data: [values.citizen, values.business, values.government, values.clientNS], 
-                    colors: [bluePalette[0], bluePalette[2], goldPalette[0], lightBluePalette[2]] 
-                },
-                { 
-                    id: 'chartRegion', type: 'pie', 
-                    labels: ['Region III', 'Region IV-A', 'NCR', 'N/S'], 
-                    data: [values.region3, values.region4a, values.ncr, values.regionNS], 
-                    colors: [bluePalette[1], bluePalette[2], goldPalette[0], lightBluePalette[3]] 
-                },
-                { 
-                    id: 'chartCC1', type: 'bar', 
-                    labels: ['Know & Saw', 'Know/Not Saw', 'Learned', 'Don\'t know', 'N/S'], 
-                    data: [values.knowSaw, values.knowNotSaw, values.learned, values.dontKnow, values.cc1NS], 
-                    colors: bluePalette[0] 
-                },
-                { 
-                    id: 'chartCC2', type: 'bar', 
-                    labels: ['Easy', 'Somewhat', 'Difficult', 'Not visible', 'N/A', 'N/S'], 
-                    data: [values.easy, values.somewhatEasy, values.difficult, values.notVisible, values.cc2na, values.cc2NS], 
-                    colors: goldPalette[0] 
-                },
-                { 
-                    id: 'chartCC3', type: 'bar', 
-                    labels: ['Helped much', 'Somewhat', 'Did not help', 'N/A', 'N/S'], 
-                    data: [values.helpedMuch, values.somewhatHelped, values.didNotHelp, values.cc3na, values.cc3NS], 
-                    colors: lightBluePalette[1] 
-                }
+                { id: 'chartSex', type: 'doughnut', labels: ['Male', 'Female'], data: [values.male, values.female], colors: [bluePalette[0], goldPalette[0]] },
+                { id: 'chartAge', type: 'bar', labels: ['N/S', '19↓', '20-29', '30-39', '40-49', '50-59', '60-69', '70↑'], data: [values.ageNS, values.age19b, values.age2029, values.age3039, values.age4049, values.age5059, values.age6069, values.age70], colors: bluePalette[1] },
+                { id: 'chartClient', type: 'doughnut', labels: ['Citizen', 'Business', 'Government', 'N/S'], data: [values.citizen, values.business, values.government, values.clientNS], colors: [bluePalette[0], bluePalette[2], goldPalette[0], lightBluePalette[2]] },
+                { id: 'chartRegion', type: 'pie', labels: ['Region III', 'Region IV-A', 'NCR', 'N/S'], data: [values.region3, values.region4a, values.ncr, values.regionNS], colors: [bluePalette[1], bluePalette[2], goldPalette[0], lightBluePalette[3]] },
+                { id: 'chartCC1', type: 'bar', labels: ['Know & Saw', 'Know/Not Saw', 'Learned', 'Don\'t know', 'N/S'], data: [values.knowSaw, values.knowNotSaw, values.learned, values.dontKnow, values.cc1NS], colors: bluePalette[0] },
+                { id: 'chartCC2', type: 'bar', labels: ['Easy', 'Somewhat', 'Difficult', 'Not visible', 'N/A', 'N/S'], data: [values.easy, values.somewhatEasy, values.difficult, values.notVisible, values.cc2na, values.cc2NS], colors: goldPalette[0] },
+                { id: 'chartCC3', type: 'bar', labels: ['Helped much', 'Somewhat', 'Did not help', 'N/A', 'N/S'], data: [values.helpedMuch, values.somewhatHelped, values.didNotHelp, values.cc3na, values.cc3NS], colors: lightBluePalette[1] }
             ];
 
             chartConfigs.forEach(cfg => {
@@ -821,25 +916,145 @@
                     options: {
                         cutout: cfg.type === 'doughnut' ? '65%' : undefined,
                         scales: cfg.type === 'bar' ? { 
-                            y: { 
-                                beginAtZero: true, 
-                                grid: { color: '#e9ecef' },
-                                ticks: { color: '#2a5e6e' }
-                            },
+                            y: { beginAtZero: true, grid: { color: '#e9ecef' }, ticks: { color: '#2a5e6e' } },
                             x: { ticks: { color: '#2a5e6e' } }
                         } : undefined,
-                        plugins: { 
-                            legend: { display: false }, 
-                            tooltip: { 
-                                backgroundColor: '#0f859e',
-                                titleColor: 'white',
-                                bodyColor: 'white'
-                            } 
-                        },
+                        plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0f859e', titleColor: 'white', bodyColor: 'white' } },
                         maintainAspectRatio: true
                     }
                 });
             });
+        }
+
+        // ----- Render SQD Section (with 2 decimal places and cohesive chart) -----
+        function renderSQDSection(values) {
+            // Prepare SQD 1-8 data for the cohesive chart
+            const sqdLabels = ['SQD 1', 'SQD 2', 'SQD 3', 'SQD 4', 'SQD 5', 'SQD 6', 'SQD 7', 'SQD 8'];
+            const sqdFullLabels = [
+                'Responsiveness',
+                'Reliability',
+                'Access & Facilities',
+                'Communication',
+                'Costs',
+                'Integrity',
+                'Assurance',
+                'Outcome'
+            ];
+            const sqdData = [
+                values.sqd1,
+                values.sqd2,
+                values.sqd3,
+                values.sqd4,
+                values.sqd5,
+                values.sqd6,
+                values.sqd7,
+                values.sqd8
+            ];
+
+            // Build the 3-column layout
+            let html = `
+                <!-- SQD 0 - Overall Satisfaction -->
+                <div class="percentage-card">
+                    <h3><i class="fas fa-star" style="color: #c9a227; margin-right: 5px;"></i> SQD 0 - Overall Satisfaction</h3>
+                    <div class="percentage-value">${values.sqd0.toFixed(2)}%</div>
+                    <div class="percentage-label">Satisfaction Rating</div>
+                </div>
+                
+                <!-- SQD 1-8 Cohesive Chart -->
+                <div class="sqd-chart-panel">
+                    <div class="sqd-chart-header">
+                        <h2><i class="fas fa-chart-bar"></i> SQD 1-8: Service Quality Dimensions</h2>
+                        <span class="total-indicator">8 Dimensions</span>
+                    </div>
+                    <canvas id="chartSQD1to8"></canvas>
+                    <div class="data-legend" style="margin-top: 0.8rem; padding: 0.8rem; font-size: 0.7rem;">
+                        ${sqdFullLabels.map((label, index) => `<span>${label}:</span> ${sqdData[index].toFixed(2)}%`).join(' · ')}
+                    </div>
+                </div>
+                
+                <!-- Overall SQD (1-8) -->
+                <div class="percentage-card">
+                    <h3><i class="fas fa-chart-pie" style="color: #c9a227; margin-right: 5px;"></i> Overall SQD (1-8)</h3>
+                    <div class="percentage-value">${values.sqdOverall.toFixed(2)}%</div>
+                    <div class="percentage-label">Average Satisfaction</div>
+                </div>
+            `;
+
+            sqdChartsContainer.innerHTML = html;
+
+            // Create the SQD 1-8 bar chart
+            const ctx = document.getElementById('chartSQD1to8');
+            if (ctx) {
+                // Blue gradient for bars
+                const bluePalette = ['#1a7f9e', '#2f98b3', '#45b0c9', '#7fc5d9', '#a8dae8'];
+                
+                chartInstances.sqdChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: sqdLabels,
+                        datasets: [{
+                            label: 'Satisfaction Percentage',
+                            data: sqdData,
+                            backgroundColor: bluePalette[0],
+                            borderRadius: 6,
+                            barPercentage: 0.7
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: '#0f859e',
+                                titleColor: 'white',
+                                bodyColor: 'white',
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${sqdFullLabels[context.dataIndex]}: ${context.raw.toFixed(2)}%`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                grid: { color: '#e9ecef' },
+                                ticks: { 
+                                    color: '#2a5e6e',
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                }
+                            },
+                            x: {
+                                ticks: { color: '#2a5e6e' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // ----- Render Dashboard -----
+        async function renderDashboard() {
+            // Show loading state
+            const loadingHTML = `
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #c9a227; margin-bottom: 1rem;"></i>
+                    <p style="color: #0f859e; font-weight: 500;">Loading ${currentService.toLowerCase()} client satisfaction data...</p>
+                </div>
+            `;
+            mainGridEl.innerHTML = loadingHTML;
+            sqdChartsContainer.innerHTML = '';
+
+            const matrix = await fetchSheetData(currentService);
+            const values = readAllCells(matrix);
+            
+            // Render all sections
+            renderMainCharts(values);
+            renderSQDSection(values);
         }
 
         // ----- Event Listeners -----
