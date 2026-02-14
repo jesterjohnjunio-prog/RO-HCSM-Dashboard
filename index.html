@@ -19,9 +19,10 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(165deg, #f8fafc 0%, #ecf3f7 100%);
+            background: linear-gradient(165deg, #f0f7fa 0%, #e6f0f5 100%);
             padding: 2rem;
             color: #1a4a5f;
+            min-height: 100vh;
         }
 
         .dashboard {
@@ -29,64 +30,106 @@
             margin: 0 auto;
         }
 
-        /* Premium Header with Glassmorphism */
+        /* ========== ANIMATED HEADER ========== */
         .hero {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 32px;
-            padding: 2.5rem 2.5rem 1.5rem 2.5rem;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 2rem 2.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 8px 32px rgba(0, 70, 90, 0.06);
-            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 20px 40px rgba(0, 70, 90, 0.08);
+            border: 1px solid rgba(255,255,255,0.9);
+            animation: slideDown 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 8s infinite;
+            pointer-events: none;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .header-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1rem;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Logo Container - Centered */
         .logo-container {
             width: 100%;
             display: flex;
             justify-content: center;
             padding: 0.5rem 0;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .mwss-logo {
-            width: 80%;
-            max-width: 720px;
+            width: 70%;
+            max-width: 600px;
             height: auto;
             object-fit: contain;
+            transition: transform 0.3s ease;
         }
 
-        /* Subtitle Styling */
+        .mwss-logo:hover {
+            transform: scale(1.02);
+        }
+
         .dashboard-subtitle {
             font-size: 1.4rem;
             font-weight: 500;
-            color: #0f6f84;
-            text-align: center;
-            margin: 0.2rem 0 0.5rem 0;
-            letter-spacing: -0.3px;
-            background: linear-gradient(145deg, #0a5a6b, #107a95);
+            background: linear-gradient(145deg, #0a5a6b, #107a95, #c9a227);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-align: center;
+            animation: slideUp 0.6s ease-out 0.3s both;
+            letter-spacing: -0.3px;
         }
 
-        /* Badge Container */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .badge-container {
             display: flex;
-            gap: 1.5rem;
+            gap: 1.2rem;
             flex-wrap: wrap;
             justify-content: center;
-            width: 100%;
-            margin-top: 0.25rem;
+            animation: fadeIn 0.6s ease-out 0.4s both;
         }
 
         .badge {
             background: rgba(18,128,155,0.08);
-            padding: 0.4rem 1.5rem;
+            padding: 0.5rem 1.5rem;
             border-radius: 60px;
             font-size: 0.9rem;
             font-weight: 600;
@@ -95,6 +138,13 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: rgba(18,128,155,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,70,90,0.1);
         }
 
         .badge-gold {
@@ -103,8 +153,92 @@
             border: 1px solid rgba(212, 175, 55, 0.15);
         }
 
+        .badge-gold:hover {
+            background: rgba(212, 175, 55, 0.15);
+        }
+
         .badge i {
             font-size: 0.9rem;
+        }
+
+        /* ========== FILTER SECTION ========== */
+        .filter-section {
+            background: white;
+            border-radius: 100px;
+            padding: 0.8rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(0,70,90,0.06);
+            border: 1px solid rgba(147,197,214,0.2);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            animation: slideUp 0.6s ease-out 0.5s both;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #0f6f84;
+            background: rgba(18,128,155,0.05);
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            border: 1px solid rgba(18,128,155,0.1);
+        }
+
+        .service-select {
+            border: 1px solid rgba(147,197,214,0.3);
+            border-radius: 60px;
+            padding: 0.6rem 2rem 0.6rem 1.2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #1a4a5f;
+            background: white;
+            cursor: pointer;
+            min-width: 280px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230f6f84' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            transition: all 0.3s ease;
+        }
+
+        .service-select:hover {
+            border-color: #c9a227;
+            box-shadow: 0 4px 12px rgba(201, 162, 39, 0.1);
+        }
+
+        .service-select:focus {
+            outline: none;
+            border-color: #0f859e;
+            box-shadow: 0 0 0 3px rgba(15,133,158,0.1);
+        }
+
+        .current-selection {
+            background: rgba(212, 175, 55, 0.08);
+            border-radius: 60px;
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+            color: #a17f28;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.2); }
+            70% { box-shadow: 0 0 0 6px rgba(201, 162, 39, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(201, 162, 39, 0); }
         }
 
         /* Service Toggle */
@@ -132,20 +266,26 @@
             font-size: 0.95rem;
             color: #3a6e7c;
             cursor: pointer;
-            transition: 0.2s ease;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
+        .switch-btn:hover {
+            background: rgba(15,133,158,0.05);
+            transform: translateY(-2px);
+        }
+
         .switch-btn.active {
             background: #0f859e;
             color: white;
-            box-shadow: 0 4px 8px rgba(15,133,158,0.2);
+            box-shadow: 0 4px 12px rgba(15,133,158,0.3);
         }
 
-        .switch-btn i {
-            font-size: 0.9rem;
+        .switch-btn.active:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(15,133,158,0.4);
         }
 
         /* Section Headers */
@@ -160,6 +300,7 @@
             gap: 10px;
             border-bottom: 2px solid rgba(212, 175, 55, 0.2);
             padding-bottom: 0.5rem;
+            animation: fadeIn 0.6s ease-out;
         }
 
         .section-header i {
@@ -172,6 +313,7 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.8rem;
+            animation: fadeIn 0.8s ease-out;
         }
 
         /* SQD Charts Container */
@@ -181,12 +323,13 @@
             gap: 1.5rem;
             margin: 1rem 0;
             align-items: stretch;
+            animation: fadeIn 0.8s ease-out 0.2s both;
         }
 
-        /* Percentage cards (for SQD 0 and Overall) */
+        /* Percentage cards */
         .percentage-card {
             background: white;
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 1.5rem;
             box-shadow: 0 8px 24px rgba(0,70,90,0.04);
             border: 1px solid rgba(147,197,214,0.15);
@@ -194,13 +337,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             height: 100%;
         }
 
         .percentage-card:hover {
-            box-shadow: 0 12px 28px rgba(0,90,110,0.08);
-            border-color: rgba(212, 175, 55, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0,90,110,0.1);
+            border-color: rgba(212, 175, 55, 0.3);
         }
 
         .percentage-card h3 {
@@ -224,22 +368,23 @@
             color: #4a7a86;
         }
 
-        /* Main chart panel for SQD 1-8 */
+        /* SQD Chart Panel */
         .sqd-chart-panel {
             background: white;
             border-radius: 28px;
-            padding: 1.5rem 1.5rem;
+            padding: 1.5rem;
             box-shadow: 0 8px 24px rgba(0,70,90,0.04);
             border: 1px solid rgba(147,197,214,0.15);
             display: flex;
             flex-direction: column;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             height: 100%;
         }
 
         .sqd-chart-panel:hover {
-            box-shadow: 0 12px 28px rgba(0,90,110,0.08);
-            border-color: rgba(212, 175, 55, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0,90,110,0.1);
+            border-color: rgba(212, 175, 55, 0.3);
         }
 
         .sqd-chart-header {
@@ -265,28 +410,22 @@
             font-size: 1.1rem;
         }
 
-        @media (max-width: 1000px) {
-            .chart-grid { grid-template-columns: 1fr; }
-            .sqd-charts-container { grid-template-columns: 1fr; }
-            .switch-btn { padding: 0.8rem 1.8rem; }
-            .dashboard-subtitle { font-size: 1.2rem; }
-        }
-
-        /* Chart Cards (existing) */
+        /* Chart Cards */
         .chart-panel {
             background: white;
             border-radius: 28px;
-            padding: 1.8rem 1.8rem;
+            padding: 1.8rem;
             box-shadow: 0 8px 24px rgba(0,70,90,0.04);
             border: 1px solid rgba(147,197,214,0.15);
             display: flex;
             flex-direction: column;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
         }
 
         .chart-panel:hover {
-            box-shadow: 0 12px 28px rgba(0,90,110,0.08);
-            border-color: rgba(212, 175, 55, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0,90,110,0.1);
+            border-color: rgba(212, 175, 55, 0.3);
         }
 
         .chart-header {
@@ -305,7 +444,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            letter-spacing: -0.2px;
         }
 
         .chart-header i {
@@ -353,17 +491,18 @@
             text-align: center;
             font-size: 0.8rem;
             color: #4a7a86;
-            padding: 1.2rem;
+            padding: 1.5rem;
             border-top: 1px solid rgba(212, 175, 55, 0.15);
             display: flex;
             justify-content: center;
             gap: 2rem;
             flex-wrap: wrap;
+            animation: fadeIn 1s ease-out;
         }
 
         .live-badge {
             background: rgba(212, 175, 55, 0.06);
-            padding: 0.3rem 1.4rem;
+            padding: 0.4rem 1.6rem;
             border-radius: 60px;
             font-weight: 500;
             color: #a17f28;
@@ -377,35 +516,94 @@
             border-radius: 28px;
             color: #0f859e;
         }
+
+        @media (max-width: 1200px) {
+            .sqd-charts-container { grid-template-columns: 1fr; }
+            .filter-section { flex-direction: column; padding: 1.2rem; }
+            .service-select { min-width: 250px; }
+        }
+
+        @media (max-width: 1000px) {
+            .chart-grid { grid-template-columns: 1fr; }
+            .switch-btn { padding: 0.8rem 1.8rem; }
+            .dashboard-subtitle { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body>
 <div class="dashboard">
 
-    <!-- Hero Section with Logo, Subtitle, and Badges -->
+    <!-- ANIMATED HEADER with Logo -->
     <div class="hero">
-        <div class="logo-container">
-            <img 
-                src="https://i.ibb.co/KjjLW3nt/mwss-logo-horiz-flat-01.png" 
-                alt="MWSS Regulatory Office Logo" 
-                class="mwss-logo"
-            >
-        </div>
-        
-        <!-- Subtitle -->
-        <div class="dashboard-subtitle">
-            Harmonized Client Satisfaction Measurement Dashboard
-        </div>
-        
-        <!-- Badges -->
-        <div class="badge-container">
-            <span class="badge"><i class="fas fa-database"></i> Live Data</span>
-            <span class="badge badge-gold"><i class="fas fa-chart-pie"></i> 7 Key Metrics</span>
-            <span class="badge"><i class="fas fa-star"></i> SQD 0-8</span>
+        <div class="header-content">
+            <div class="logo-container">
+                <img 
+                    src="https://i.ibb.co/KjjLW3nt/mwss-logo-horiz-flat-01.png" 
+                    alt="MWSS Regulatory Office Logo" 
+                    class="mwss-logo"
+                >
+            </div>
+            
+            <div class="dashboard-subtitle">
+                Harmonized Client Satisfaction Measurement Dashboard
+            </div>
+            
+            <div class="badge-container">
+                <span class="badge"><i class="fas fa-database"></i> Live Data</span>
+                <span class="badge badge-gold"><i class="fas fa-chart-pie"></i> 7 Key Metrics</span>
+                <span class="badge"><i class="fas fa-star"></i> SQD 0-8</span>
+                <span class="badge"><i class="fas fa-code-branch"></i> 25+ Services</span>
+            </div>
         </div>
     </div>
 
-    <!-- Service Type Toggle -->
+    <!-- FILTER SECTION - Separate External/Internal Dropdowns -->
+    <div class="filter-section">
+        <div class="filter-group">
+            <span class="filter-label"><i class="fas fa-globe"></i> EXTERNAL</span>
+            <select class="service-select" id="externalServiceSelect">
+                <option value="">-- Select External Service --</option>
+                <option value="RID">RID - Receiving of Incoming Documents (OCR)</option>
+                <option value="FRA">FRA - Filing of Rate Adjustment Application (OCR)</option>
+                <option value="HPP">HPP - Hiring of Plantilla Personnel (ALA)</option>
+                <option value="HIC">HIC - Hiring of Individual Contract (ALA)</option>
+                <option value="PPC">PPC - Processing of Payment of Claims (ALA)</option>
+                <option value="FCC">FCC - Filing of Customer Complaints</option>
+                <option value="RWS">RWS - Request of Water Sampling (TRA)</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <span class="filter-label"><i class="fas fa-building"></i> INTERNAL</span>
+            <select class="service-select" id="internalServiceSelect">
+                <option value="">-- Select Internal Service --</option>
+                <option value="ROD">ROD - Retrieval of Official Documents (OCR)</option>
+                <option value="RIC">RIC - ICT Infrastructure Maintenance (MIS)</option>
+                <option value="RWD">RWD - Website Development (MIS)</option>
+                <option value="AGN">AGN - GovMail - New Account (MIS)</option>
+                <option value="AGP">AGP - GovMail - Password Reset (MIS)</option>
+                <option value="AGS">AGS - GovMail - Storage Increase (MIS)</option>
+                <option value="REP">REP - Reimbursement from Petty Cash (Finance)</option>
+                <option value="RLC">RLC - Request & Liquidation Cash Advance (Finance)</option>
+                <option value="LCA">LCA - Liquidation of Cash Advance (Finance)</option>
+                <option value="PPF">PPF - Processing of Payments (Finance)</option>
+                <option value="PER">PER - Employment Records (HR)</option>
+                <option value="PCB">PCB - Procurement - Competitive Bidding</option>
+                <option value="PRA">PRA - Purchase Request - Alternative</option>
+                <option value="ITT">ITT - Issuance of Trip Ticket (Property)</option>
+                <option value="IPA">IPA - Property Acknowledgment (Property)</option>
+                <option value="RLP">RLP - Legal - Complex</option>
+                <option value="RLT">RLT - Legal - Highly Technical</option>
+            </select>
+        </div>
+
+        <div class="current-selection" id="currentSelection">
+            <i class="fas fa-chart-line"></i>
+            <span id="selectedServiceDisplay">Overall View</span>
+        </div>
+    </div>
+
+    <!-- Service Type Toggle (OVERALL/EXTERNAL/INTERNAL) -->
     <div class="toggle-lead">
         <div class="service-switch" id="serviceToggle">
             <button class="switch-btn active" data-type="overall">
@@ -428,12 +626,8 @@
         <i class="fas fa-star"></i> Service Quality Dimensions (SQD 0-8)
     </div>
 
-    <!-- SQD Charts Container (3 columns) -->
-    <div class="sqd-charts-container" id="sqdChartsContainer">
-        <!-- SQD 0 will go here -->
-        <!-- SQD 1-8 chart will go here -->
-        <!-- Overall SQD will go here -->
-    </div>
+    <!-- SQD Charts Container -->
+    <div class="sqd-charts-container" id="sqdChartsContainer"></div>
 
     <!-- Footer -->
     <div class="status-footer">
@@ -458,88 +652,136 @@
         // Global State
         // ============================================================
         let currentService = 'overall';
+        let currentServiceCode = '';
         let chartInstances = {};
         let currentValues = null;
         
         const mainGridEl = document.getElementById('mainChartGrid');
         const sqdChartsContainer = document.getElementById('sqdChartsContainer');
-        const sqdSectionHeader = document.getElementById('sqdSectionHeader');
         const liveStatus = document.getElementById('liveStatus');
+        const externalSelect = document.getElementById('externalServiceSelect');
+        const internalSelect = document.getElementById('internalServiceSelect');
+        const selectedServiceDisplay = document.getElementById('selectedServiceDisplay');
+
+        // Service name mapping for display
+        const serviceNames = {
+            'overall': 'Overall Summary',
+            'external': 'External Services Summary',
+            'internal': 'Internal Services Summary',
+            'RID': 'Receiving of Incoming Documents (OCR)',
+            'FRA': 'Filing of Rate Adjustment Application (OCR)',
+            'HPP': 'Hiring of Plantilla Personnel (ALA)',
+            'HIC': 'Hiring of Individual Contract (ALA)',
+            'PPC': 'Processing of Payment of Claims (ALA)',
+            'FCC': 'Filing of Customer Complaints',
+            'RWS': 'Request of Water Sampling (TRA)',
+            'ROD': 'Retrieval of Official Documents (OCR)',
+            'RIC': 'ICT Infrastructure Maintenance (MIS)',
+            'RWD': 'Website Development (MIS)',
+            'AGN': 'GovMail - New Account (MIS)',
+            'AGP': 'GovMail - Password Reset (MIS)',
+            'AGS': 'GovMail - Storage Increase (MIS)',
+            'REP': 'Reimbursement from Petty Cash (Finance)',
+            'RLC': 'Request & Liquidation Cash Advance (Finance)',
+            'LCA': 'Liquidation of Cash Advance (Finance)',
+            'PPF': 'Processing of Payments (Finance)',
+            'PER': 'Employment Records (HR)',
+            'PCB': 'Procurement - Competitive Bidding',
+            'PRA': 'Purchase Request - Alternative',
+            'ITT': 'Issuance of Trip Ticket (Property)',
+            'IPA': 'Property Acknowledgment (Property)',
+            'RLP': 'Legal - Complex',
+            'RLT': 'Legal - Highly Technical'
+        };
 
         // ============================================================
-        // EXACT CELL MAPPING - INCLUDING SQD CELLS
+        // EXACT CELL MAPPING (unchanged from working version)
         // ============================================================
         const CELL_MAPPINGS = {
-            // Original mappings (kept exactly as before)
             sex: {
-                male: { colIndex: 1, rowIndex: 42 }, // B42
-                female: { colIndex: 2, rowIndex: 42 } // C42
+                male: { colIndex: 1, rowIndex: 42 },
+                female: { colIndex: 2, rowIndex: 42 }
             },
             age: {
-                ns: { colIndex: 5, rowIndex: 34 }, // F34
-                age19b: { colIndex: 5, rowIndex: 35 }, // F35
-                age2029: { colIndex: 5, rowIndex: 36 }, // F36
-                age3039: { colIndex: 5, rowIndex: 37 }, // F37
-                age4049: { colIndex: 5, rowIndex: 38 }, // F38
-                age5059: { colIndex: 5, rowIndex: 39 }, // F39
-                age6069: { colIndex: 5, rowIndex: 40 }, // F40
-                age70: { colIndex: 5, rowIndex: 41 } // F41
+                ns: { colIndex: 5, rowIndex: 34 },
+                age19b: { colIndex: 5, rowIndex: 35 },
+                age2029: { colIndex: 5, rowIndex: 36 },
+                age3039: { colIndex: 5, rowIndex: 37 },
+                age4049: { colIndex: 5, rowIndex: 38 },
+                age5059: { colIndex: 5, rowIndex: 39 },
+                age6069: { colIndex: 5, rowIndex: 40 },
+                age70: { colIndex: 5, rowIndex: 41 }
             },
             client: {
-                ns: { colIndex: 5, rowIndex: 18 }, // F18
-                citizen: { colIndex: 5, rowIndex: 19 }, // F19
-                business: { colIndex: 5, rowIndex: 20 }, // F20
-                government: { colIndex: 5, rowIndex: 21 } // F21
+                ns: { colIndex: 5, rowIndex: 18 },
+                citizen: { colIndex: 5, rowIndex: 19 },
+                business: { colIndex: 5, rowIndex: 20 },
+                government: { colIndex: 5, rowIndex: 21 }
             },
             region: {
-                ns: { colIndex: 7, rowIndex: 26 }, // H26
-                region3: { colIndex: 7, rowIndex: 27 }, // H27
-                region4a: { colIndex: 7, rowIndex: 28 }, // H28
-                ncr: { colIndex: 7, rowIndex: 29 } // H29
+                ns: { colIndex: 7, rowIndex: 26 },
+                region3: { colIndex: 7, rowIndex: 27 },
+                region4a: { colIndex: 7, rowIndex: 28 },
+                ncr: { colIndex: 7, rowIndex: 29 }
             },
             cc1: {
-                ns: { colIndex: 5, rowIndex: 47 }, // F47
-                knowSaw: { colIndex: 5, rowIndex: 48 }, // F48
-                knowNotSaw: { colIndex: 5, rowIndex: 49 }, // F49
-                learned: { colIndex: 5, rowIndex: 50 }, // F50
-                dontKnow: { colIndex: 5, rowIndex: 51 } // F51
+                ns: { colIndex: 5, rowIndex: 47 },
+                knowSaw: { colIndex: 5, rowIndex: 48 },
+                knowNotSaw: { colIndex: 5, rowIndex: 49 },
+                learned: { colIndex: 5, rowIndex: 50 },
+                dontKnow: { colIndex: 5, rowIndex: 51 }
             },
             cc2: {
-                ns: { colIndex: 5, rowIndex: 57 }, // F57
-                easy: { colIndex: 5, rowIndex: 58 }, // F58
-                somewhatEasy: { colIndex: 5, rowIndex: 59 }, // F59
-                difficult: { colIndex: 5, rowIndex: 60 }, // F60
-                notVisible: { colIndex: 5, rowIndex: 61 }, // F61
-                na: { colIndex: 5, rowIndex: 62 } // F62
+                ns: { colIndex: 5, rowIndex: 57 },
+                easy: { colIndex: 5, rowIndex: 58 },
+                somewhatEasy: { colIndex: 5, rowIndex: 59 },
+                difficult: { colIndex: 5, rowIndex: 60 },
+                notVisible: { colIndex: 5, rowIndex: 61 },
+                na: { colIndex: 5, rowIndex: 62 }
             },
             cc3: {
-                ns: { colIndex: 5, rowIndex: 68 }, // F68
-                helpedMuch: { colIndex: 5, rowIndex: 69 }, // F69
-                somewhatHelped: { colIndex: 5, rowIndex: 70 }, // F70
-                didNotHelp: { colIndex: 5, rowIndex: 71 }, // F71
-                na: { colIndex: 5, rowIndex: 72 } // F72
+                ns: { colIndex: 5, rowIndex: 68 },
+                helpedMuch: { colIndex: 5, rowIndex: 69 },
+                somewhatHelped: { colIndex: 5, rowIndex: 70 },
+                didNotHelp: { colIndex: 5, rowIndex: 71 },
+                na: { colIndex: 5, rowIndex: 72 }
             },
-            
-            // SQD CELL MAPPINGS
             sqd: {
-                sqd0: { colIndex: 8, rowIndex: 109 }, // I109
-                sqd1: { colIndex: 8, rowIndex: 111 }, // I111
-                sqd2: { colIndex: 8, rowIndex: 112 }, // I112
-                sqd3: { colIndex: 8, rowIndex: 113 }, // I113
-                sqd4: { colIndex: 8, rowIndex: 114 }, // I114
-                sqd5: { colIndex: 8, rowIndex: 115 }, // I115
-                sqd6: { colIndex: 8, rowIndex: 116 }, // I116
-                sqd7: { colIndex: 8, rowIndex: 117 }, // I117
-                sqd8: { colIndex: 8, rowIndex: 118 }, // I118
-                sqdOverall: { colIndex: 8, rowIndex: 119 } // I119
+                sqd0: { colIndex: 8, rowIndex: 109 },
+                sqd1: { colIndex: 8, rowIndex: 111 },
+                sqd2: { colIndex: 8, rowIndex: 112 },
+                sqd3: { colIndex: 8, rowIndex: 113 },
+                sqd4: { colIndex: 8, rowIndex: 114 },
+                sqd5: { colIndex: 8, rowIndex: 115 },
+                sqd6: { colIndex: 8, rowIndex: 116 },
+                sqd7: { colIndex: 8, rowIndex: 117 },
+                sqd8: { colIndex: 8, rowIndex: 118 },
+                sqdOverall: { colIndex: 8, rowIndex: 119 }
             }
         };
+
+        // ----- Reset dropdowns -----
+        function resetDropdowns() {
+            externalSelect.value = '';
+            internalSelect.value = '';
+        }
+
+        // ----- Update service display -----
+        function updateServiceDisplay() {
+            if (currentServiceCode && serviceNames[currentServiceCode]) {
+                selectedServiceDisplay.innerHTML = `${currentServiceCode} - ${serviceNames[currentServiceCode]}`;
+            } else if (serviceNames[currentService]) {
+                selectedServiceDisplay.innerHTML = serviceNames[currentService];
+            } else {
+                selectedServiceDisplay.innerHTML = 'Overall View';
+            }
+        }
 
         // ----- Fetch Sheet Data via JSONP -----
         async function fetchSheetData(sheetType) {
             return new Promise((resolve) => {
                 try {
-                    liveStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Loading ${sheetType.toLowerCase()} data...`;
+                    liveStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Loading ${serviceNames[sheetType] || sheetType}...`;
                     
                     const callbackName = `jsonp_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
                     const url = `${APPS_SCRIPT_URL}?sheet=${sheetType}&callback=${callbackName}&t=${Date.now()}`;
@@ -618,7 +860,6 @@
             try {
                 if (matrix[rowIndex]?.[colIndex] !== undefined) {
                     const val = matrix[rowIndex][colIndex];
-                    // Remove % sign if present and convert to number
                     const num = parseFloat(val.replace(/[^\d.-]/g, ''));
                     return isNaN(num) ? 0 : num;
                 }
@@ -626,14 +867,15 @@
             return 0;
         }
 
-        // ----- Read All Cell Values (including SQD) -----
+        // ----- Read All Cell Values -----
         function readAllCells(matrix) {
             const values = {};
             
-            // Original values (kept exactly as before)
+            // Sex
             values.male = getCellValue(matrix, CELL_MAPPINGS.sex.male.rowIndex, CELL_MAPPINGS.sex.male.colIndex);
             values.female = getCellValue(matrix, CELL_MAPPINGS.sex.female.rowIndex, CELL_MAPPINGS.sex.female.colIndex);
             
+            // Age
             values.ageNS = getCellValue(matrix, CELL_MAPPINGS.age.ns.rowIndex, CELL_MAPPINGS.age.ns.colIndex);
             values.age19b = getCellValue(matrix, CELL_MAPPINGS.age.age19b.rowIndex, CELL_MAPPINGS.age.age19b.colIndex);
             values.age2029 = getCellValue(matrix, CELL_MAPPINGS.age.age2029.rowIndex, CELL_MAPPINGS.age.age2029.colIndex);
@@ -643,22 +885,26 @@
             values.age6069 = getCellValue(matrix, CELL_MAPPINGS.age.age6069.rowIndex, CELL_MAPPINGS.age.age6069.colIndex);
             values.age70 = getCellValue(matrix, CELL_MAPPINGS.age.age70.rowIndex, CELL_MAPPINGS.age.age70.colIndex);
             
+            // Client
             values.clientNS = getCellValue(matrix, CELL_MAPPINGS.client.ns.rowIndex, CELL_MAPPINGS.client.ns.colIndex);
             values.citizen = getCellValue(matrix, CELL_MAPPINGS.client.citizen.rowIndex, CELL_MAPPINGS.client.citizen.colIndex);
             values.business = getCellValue(matrix, CELL_MAPPINGS.client.business.rowIndex, CELL_MAPPINGS.client.business.colIndex);
             values.government = getCellValue(matrix, CELL_MAPPINGS.client.government.rowIndex, CELL_MAPPINGS.client.government.colIndex);
             
+            // Region
             values.regionNS = getCellValue(matrix, CELL_MAPPINGS.region.ns.rowIndex, CELL_MAPPINGS.region.ns.colIndex);
             values.region3 = getCellValue(matrix, CELL_MAPPINGS.region.region3.rowIndex, CELL_MAPPINGS.region.region3.colIndex);
             values.region4a = getCellValue(matrix, CELL_MAPPINGS.region.region4a.rowIndex, CELL_MAPPINGS.region.region4a.colIndex);
             values.ncr = getCellValue(matrix, CELL_MAPPINGS.region.ncr.rowIndex, CELL_MAPPINGS.region.ncr.colIndex);
             
+            // CC1
             values.cc1NS = getCellValue(matrix, CELL_MAPPINGS.cc1.ns.rowIndex, CELL_MAPPINGS.cc1.ns.colIndex);
             values.knowSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowSaw.rowIndex, CELL_MAPPINGS.cc1.knowSaw.colIndex);
             values.knowNotSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowNotSaw.rowIndex, CELL_MAPPINGS.cc1.knowNotSaw.colIndex);
             values.learned = getCellValue(matrix, CELL_MAPPINGS.cc1.learned.rowIndex, CELL_MAPPINGS.cc1.learned.colIndex);
             values.dontKnow = getCellValue(matrix, CELL_MAPPINGS.cc1.dontKnow.rowIndex, CELL_MAPPINGS.cc1.dontKnow.colIndex);
             
+            // CC2
             values.cc2NS = getCellValue(matrix, CELL_MAPPINGS.cc2.ns.rowIndex, CELL_MAPPINGS.cc2.ns.colIndex);
             values.easy = getCellValue(matrix, CELL_MAPPINGS.cc2.easy.rowIndex, CELL_MAPPINGS.cc2.easy.colIndex);
             values.somewhatEasy = getCellValue(matrix, CELL_MAPPINGS.cc2.somewhatEasy.rowIndex, CELL_MAPPINGS.cc2.somewhatEasy.colIndex);
@@ -666,13 +912,14 @@
             values.notVisible = getCellValue(matrix, CELL_MAPPINGS.cc2.notVisible.rowIndex, CELL_MAPPINGS.cc2.notVisible.colIndex);
             values.cc2na = getCellValue(matrix, CELL_MAPPINGS.cc2.na.rowIndex, CELL_MAPPINGS.cc2.na.colIndex);
             
+            // CC3
             values.cc3NS = getCellValue(matrix, CELL_MAPPINGS.cc3.ns.rowIndex, CELL_MAPPINGS.cc3.ns.colIndex);
             values.helpedMuch = getCellValue(matrix, CELL_MAPPINGS.cc3.helpedMuch.rowIndex, CELL_MAPPINGS.cc3.helpedMuch.colIndex);
             values.somewhatHelped = getCellValue(matrix, CELL_MAPPINGS.cc3.somewhatHelped.rowIndex, CELL_MAPPINGS.cc3.somewhatHelped.colIndex);
             values.didNotHelp = getCellValue(matrix, CELL_MAPPINGS.cc3.didNotHelp.rowIndex, CELL_MAPPINGS.cc3.didNotHelp.colIndex);
             values.cc3na = getCellValue(matrix, CELL_MAPPINGS.cc3.na.rowIndex, CELL_MAPPINGS.cc3.na.colIndex);
             
-            // SQD VALUES
+            // SQD
             values.sqd0 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd0.rowIndex, CELL_MAPPINGS.sqd.sqd0.colIndex);
             values.sqd1 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd1.rowIndex, CELL_MAPPINGS.sqd.sqd1.colIndex);
             values.sqd2 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd2.rowIndex, CELL_MAPPINGS.sqd.sqd2.colIndex);
@@ -687,16 +934,17 @@
             return values;
         }
 
-        // ----- Sample Data Generator (updated with SQD values) -----
+        // ----- Sample Data Generator -----
         function generateSampleMatrix(type) {
             const m = [];
             for (let i = 0; i < 150; i++) m[i] = [];
             
-            // Original sample data (kept exactly as before)
+            // Sex
             m[42] = m[42] || []; 
-            m[42][1] = type === 'external' ? 124 : type === 'internal' ? 98 : 222;
-            m[42][2] = type === 'external' ? 146 : type === 'internal' ? 72 : 218;
+            m[42][1] = 222;
+            m[42][2] = 218;
             
+            // Age
             m[34] = m[34] || []; m[34][5] = 20;
             m[35] = m[35] || []; m[35][5] = 0;
             m[36] = m[36] || []; m[36][5] = 32;
@@ -706,22 +954,26 @@
             m[40] = m[40] || []; m[40][5] = 6;
             m[41] = m[41] || []; m[41][5] = 0;
             
+            // Client
             m[18] = m[18] || []; m[18][5] = 5;
-            m[19] = m[19] || []; m[19][5] = type === 'external' ? 187 : type === 'internal' ? 64 : 251;
-            m[20] = m[20] || []; m[20][5] = type === 'external' ? 62 : type === 'internal' ? 43 : 105;
-            m[21] = m[21] || []; m[21][5] = type === 'external' ? 21 : type === 'internal' ? 63 : 84;
+            m[19] = m[19] || []; m[19][5] = 251;
+            m[20] = m[20] || []; m[20][5] = 105;
+            m[21] = m[21] || []; m[21][5] = 84;
             
+            // Region
             m[26] = m[26] || []; m[26][7] = 4;
             m[27] = m[27] || []; m[27][7] = 78;
             m[28] = m[28] || []; m[28][7] = 94;
             m[29] = m[29] || []; m[29][7] = 112;
             
+            // CC1
             m[47] = m[47] || []; m[47][5] = 6;
             m[48] = m[48] || []; m[48][5] = 103;
             m[49] = m[49] || []; m[49][5] = 47;
             m[50] = m[50] || []; m[50][5] = 58;
             m[51] = m[51] || []; m[51][5] = 32;
             
+            // CC2
             m[57] = m[57] || []; m[57][5] = 7;
             m[58] = m[58] || []; m[58][5] = 89;
             m[59] = m[59] || []; m[59][5] = 52;
@@ -729,30 +981,29 @@
             m[61] = m[61] || []; m[61][5] = 14;
             m[62] = m[62] || []; m[62][5] = 41;
             
+            // CC3
             m[68] = m[68] || []; m[68][5] = 5;
             m[69] = m[69] || []; m[69][5] = 112;
             m[70] = m[70] || []; m[70][5] = 58;
             m[71] = m[71] || []; m[71][5] = 16;
             m[72] = m[72] || []; m[72][5] = 27;
             
-            // SQD SAMPLE VALUES (I109, I111-I119) - WITH 2 DECIMAL PLACES
-            // Column I = index 8
-            const baseSQD = type === 'external' ? 92.45 : type === 'internal' ? 88.75 : 90.25;
-            m[109] = m[109] || []; m[109][8] = baseSQD; // SQD 0
-            m[111] = m[111] || []; m[111][8] = 89.25; // SQD 1
-            m[112] = m[112] || []; m[112][8] = 91.50; // SQD 2
-            m[113] = m[113] || []; m[113][8] = 87.75; // SQD 3
-            m[114] = m[114] || []; m[114][8] = 93.25; // SQD 4
-            m[115] = m[115] || []; m[115][8] = 90.50; // SQD 5
-            m[116] = m[116] || []; m[116][8] = 88.25; // SQD 6
-            m[117] = m[117] || []; m[117][8] = 92.75; // SQD 7
-            m[118] = m[118] || []; m[118][8] = 89.50; // SQD 8
-            m[119] = m[119] || []; m[119][8] = 90.35; // Overall SQD
+            // SQD
+            m[109] = m[109] || []; m[109][8] = 90.25;
+            m[111] = m[111] || []; m[111][8] = 89.25;
+            m[112] = m[112] || []; m[112][8] = 91.50;
+            m[113] = m[113] || []; m[113][8] = 87.75;
+            m[114] = m[114] || []; m[114][8] = 93.25;
+            m[115] = m[115] || []; m[115][8] = 90.50;
+            m[116] = m[116] || []; m[116][8] = 88.25;
+            m[117] = m[117] || []; m[117][8] = 92.75;
+            m[118] = m[118] || []; m[118][8] = 89.50;
+            m[119] = m[119] || []; m[119][8] = 90.35;
             
             return m;
         }
 
-        // ----- Render Main Charts (original 7) -----
+        // ----- Render Main Charts -----
         function renderMainCharts(values) {
             const totalSex = values.male + values.female;
             const totalAge = values.ageNS + values.age19b + values.age2029 + values.age3039 + values.age4049 + values.age5059 + values.age6069 + values.age70;
@@ -763,7 +1014,7 @@
 
             let html = '';
 
-            // Card 1: Sex Disaggregated Data
+            // Card 1: Sex
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD) by Service Type</h2>
@@ -776,7 +1027,7 @@
                 </div>
             </div>`;
 
-            // Card 2: Age Distribution
+            // Card 2: Age
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-calendar-alt"></i> Age Distribution by Service Type</h2>
@@ -812,7 +1063,7 @@
                 </div>
             </div>`;
 
-            // Card 4: Client by Region
+            // Card 4: Region
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
@@ -827,7 +1078,7 @@
                 </div>
             </div>`;
 
-            // Card 5: CC1 Awareness
+            // Card 5: CC1
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-eye"></i> Citizen's Charter Awareness</h2>
@@ -843,7 +1094,7 @@
                 </div>
             </div>`;
 
-            // Card 6: CC2 Visibility
+            // Card 6: CC2
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-low-vision"></i> Citizen's Charter Visibility</h2>
@@ -860,7 +1111,7 @@
                 </div>
             </div>`;
 
-            // Card 7: CC3 Effectivity
+            // Card 7: CC3
             html += `<div class="chart-panel">
                 <div class="chart-header">
                     <h2><i class="fas fa-check-circle"></i> Citizen's Charter Effectivity</h2>
@@ -882,12 +1133,11 @@
             Object.values(chartInstances).forEach(chart => chart?.destroy());
             chartInstances = {};
 
-            // Blue & Gold Color Palette
+            // Color palettes
             const bluePalette = ['#1a7f9e', '#2f98b3', '#45b0c9', '#7fc5d9', '#a8dae8'];
             const goldPalette = ['#c9a227', '#d9b44a', '#e5c36b', '#f0d59a', '#f8e7c4'];
             const lightBluePalette = ['#7fc5d9', '#a8dae8', '#c4e6f0', '#dff1f7', '#eef8fc'];
 
-            // Create charts
             const chartConfigs = [
                 { id: 'chartSex', type: 'doughnut', labels: ['Male', 'Female'], data: [values.male, values.female], colors: [bluePalette[0], goldPalette[0]] },
                 { id: 'chartAge', type: 'bar', labels: ['N/S', '19↓', '20-29', '30-39', '40-49', '50-59', '60-69', '70↑'], data: [values.ageNS, values.age19b, values.age2029, values.age3039, values.age4049, values.age5059, values.age6069, values.age70], colors: bluePalette[1] },
@@ -926,41 +1176,25 @@
             });
         }
 
-        // ----- Render SQD Section (with 2 decimal places and cohesive chart) -----
+        // ----- Render SQD Section -----
         function renderSQDSection(values) {
-            // Prepare SQD 1-8 data for the cohesive chart
             const sqdLabels = ['SQD 1', 'SQD 2', 'SQD 3', 'SQD 4', 'SQD 5', 'SQD 6', 'SQD 7', 'SQD 8'];
             const sqdFullLabels = [
-                'Responsiveness',
-                'Reliability',
-                'Access & Facilities',
-                'Communication',
-                'Costs',
-                'Integrity',
-                'Assurance',
-                'Outcome'
+                'Responsiveness', 'Reliability', 'Access & Facilities', 'Communication',
+                'Costs', 'Integrity', 'Assurance', 'Outcome'
             ];
             const sqdData = [
-                values.sqd1,
-                values.sqd2,
-                values.sqd3,
-                values.sqd4,
-                values.sqd5,
-                values.sqd6,
-                values.sqd7,
-                values.sqd8
+                values.sqd1, values.sqd2, values.sqd3, values.sqd4,
+                values.sqd5, values.sqd6, values.sqd7, values.sqd8
             ];
 
-            // Build the 3-column layout
             let html = `
-                <!-- SQD 0 - Overall Satisfaction -->
                 <div class="percentage-card">
-                    <h3><i class="fas fa-star" style="color: #c9a227; margin-right: 5px;"></i> SQD 0 - Overall Satisfaction</h3>
+                    <h3><i class="fas fa-star" style="color: #c9a227;"></i> SQD 0 - Overall Satisfaction</h3>
                     <div class="percentage-value">${values.sqd0.toFixed(2)}%</div>
                     <div class="percentage-label">Satisfaction Rating</div>
                 </div>
                 
-                <!-- SQD 1-8 Cohesive Chart -->
                 <div class="sqd-chart-panel">
                     <div class="sqd-chart-header">
                         <h2><i class="fas fa-chart-bar"></i> SQD 1-8: Service Quality Dimensions</h2>
@@ -972,9 +1206,8 @@
                     </div>
                 </div>
                 
-                <!-- Overall SQD (1-8) -->
                 <div class="percentage-card">
-                    <h3><i class="fas fa-chart-pie" style="color: #c9a227; margin-right: 5px;"></i> Overall SQD (1-8)</h3>
+                    <h3><i class="fas fa-chart-pie" style="color: #c9a227;"></i> Overall SQD (1-8)</h3>
                     <div class="percentage-value">${values.sqdOverall.toFixed(2)}%</div>
                     <div class="percentage-label">Average Satisfaction</div>
                 </div>
@@ -982,12 +1215,8 @@
 
             sqdChartsContainer.innerHTML = html;
 
-            // Create the SQD 1-8 bar chart
             const ctx = document.getElementById('chartSQD1to8');
             if (ctx) {
-                // Blue gradient for bars
-                const bluePalette = ['#1a7f9e', '#2f98b3', '#45b0c9', '#7fc5d9', '#a8dae8'];
-                
                 chartInstances.sqdChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
@@ -995,7 +1224,7 @@
                         datasets: [{
                             label: 'Satisfaction Percentage',
                             data: sqdData,
-                            backgroundColor: bluePalette[0],
+                            backgroundColor: '#1a7f9e',
                             borderRadius: 6,
                             barPercentage: 0.7
                         }]
@@ -1007,8 +1236,6 @@
                             legend: { display: false },
                             tooltip: {
                                 backgroundColor: '#0f859e',
-                                titleColor: 'white',
-                                bodyColor: 'white',
                                 callbacks: {
                                     label: function(context) {
                                         return `${sqdFullLabels[context.dataIndex]}: ${context.raw.toFixed(2)}%`;
@@ -1021,15 +1248,7 @@
                                 beginAtZero: true,
                                 max: 100,
                                 grid: { color: '#e9ecef' },
-                                ticks: { 
-                                    color: '#2a5e6e',
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                }
-                            },
-                            x: {
-                                ticks: { color: '#2a5e6e' }
+                                ticks: { callback: value => value + '%' }
                             }
                         }
                     }
@@ -1039,33 +1258,61 @@
 
         // ----- Render Dashboard -----
         async function renderDashboard() {
-            // Show loading state
             const loadingHTML = `
                 <div class="loading-state">
-                    <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #c9a227; margin-bottom: 1rem;"></i>
-                    <p style="color: #0f859e; font-weight: 500;">Loading ${currentService.toLowerCase()} client satisfaction data...</p>
+                    <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #c9a227;"></i>
+                    <p style="color: #0f859e;">Loading ${serviceNames[currentServiceCode] || serviceNames[currentService] || currentService}...</p>
                 </div>
             `;
             mainGridEl.innerHTML = loadingHTML;
             sqdChartsContainer.innerHTML = '';
 
-            const matrix = await fetchSheetData(currentService);
+            const matrix = await fetchSheetData(currentServiceCode || currentService);
             const values = readAllCells(matrix);
             
-            // Render all sections
             renderMainCharts(values);
             renderSQDSection(values);
+            updateServiceDisplay();
         }
 
         // ----- Event Listeners -----
         function initEvents() {
+            // Toggle buttons
             document.querySelectorAll('.switch-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
+                    
                     currentService = this.dataset.type;
+                    currentServiceCode = '';
+                    resetDropdowns();
                     renderDashboard();
                 });
+            });
+
+            // External service select
+            externalSelect.addEventListener('change', function() {
+                if (this.value) {
+                    currentServiceCode = this.value;
+                    currentService = '';
+                    internalSelect.value = '';
+                    
+                    // Deactivate toggle buttons
+                    document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
+                    renderDashboard();
+                }
+            });
+
+            // Internal service select
+            internalSelect.addEventListener('change', function() {
+                if (this.value) {
+                    currentServiceCode = this.value;
+                    currentService = '';
+                    externalSelect.value = '';
+                    
+                    document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
+                    renderDashboard();
+                }
             });
         }
 
