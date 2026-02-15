@@ -36,7 +36,6 @@
             overflow: hidden;
         }
 
-        /* Animated Water Background */
         .water-bg {
             position: absolute;
             width: 100%;
@@ -175,7 +174,7 @@
             display: none;
         }
 
-        /* ========== DASHBOARD (Initially Hidden) ========== */
+        /* ========== DASHBOARD ========== */
         .dashboard {
             max-width: 1800px;
             margin: 0 auto;
@@ -408,6 +407,15 @@
             border-radius: 60px;
         }
 
+        .date-hierarchy-note {
+            font-size: 0.75rem;
+            color: #a17f28;
+            background: rgba(212, 175, 55, 0.05);
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            margin-left: 1rem;
+        }
+
         /* ========== SERVICE FILTER SECTION ========== */
         .filter-section {
             background: white;
@@ -598,9 +606,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
         .comparison-header h2 {
@@ -610,7 +620,17 @@
 
         .comparison-selectors {
             display: flex;
-            gap: 2rem;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .service-selector-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             flex-wrap: wrap;
         }
 
@@ -621,13 +641,69 @@
             font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
             color: #1a4a5f;
-            min-width: 250px;
+            min-width: 300px;
+            background: white;
+            flex: 1;
+        }
+
+        .remove-service-btn {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.2);
+            border-radius: 60px;
+            padding: 0.6rem 1rem;
+            color: #dc3545;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .remove-service-btn:hover {
+            background: rgba(220, 53, 69, 0.2);
+        }
+
+        .add-service-btn {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.2);
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            color: #28a745;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .add-service-btn:hover {
+            background: rgba(40, 167, 69, 0.2);
+        }
+
+        .execute-compare-btn {
+            background: #0f859e;
+            border: none;
+            border-radius: 60px;
+            padding: 0.8rem 2rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .execute-compare-btn:hover {
+            background: #0a6a7f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(10,106,127,0.3);
         }
 
         .comparison-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
+            margin-top: 2rem;
         }
 
         .compare-card {
@@ -635,6 +711,7 @@
             border-radius: 28px;
             padding: 1.5rem;
             border: 1px solid rgba(147,197,214,0.15);
+            position: relative;
         }
 
         .compare-card h3 {
@@ -643,6 +720,12 @@
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .compare-chart-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
         }
 
         /* Section Headers */
@@ -683,7 +766,7 @@
             animation: fadeIn 0.8s ease-out 0.2s both;
         }
 
-        /* Chart Cards with Download Button */
+        /* Chart Cards */
         .chart-card {
             background: white;
             border-radius: 28px;
@@ -966,7 +1049,6 @@
             background: rgba(212, 175, 55, 0.2);
         }
 
-        /* Table Container */
         .table-container {
             flex: 1;
             overflow: auto;
@@ -1040,10 +1122,6 @@
             font-weight: 600;
         }
 
-        .status-footer {
-            display: none;
-        }
-
         .loading-state {
             grid-column: 1/-1;
             text-align: center;
@@ -1053,11 +1131,18 @@
             color: #0f859e;
         }
 
+        .loading-spinner {
+            text-align: center;
+            padding: 2rem;
+            color: #0f859e;
+        }
+
         @media (max-width: 1200px) {
             .sqd-charts-container { grid-template-columns: 1fr; }
             .filter-section { flex-direction: column; padding: 1.2rem; }
             .service-select { min-width: 250px; }
             .date-filter-section { flex-direction: column; }
+            .comparison-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 1000px) {
@@ -1104,7 +1189,7 @@
 
     <!-- DASHBOARD -->
     <div id="dashboard" class="dashboard">
-        <!-- ANIMATED HEADER with Logo -->
+        <!-- ANIMATED HEADER -->
         <div class="hero">
             <div class="header-content">
                 <div class="logo-container">
@@ -1142,6 +1227,9 @@
                 <button class="update-date-btn" id="updateDateBtn">
                     <i class="fas fa-sync-alt"></i> Update Range
                 </button>
+                <span class="date-hierarchy-note" id="hierarchyNote">
+                    <i class="fas fa-sitemap"></i> Affects: <span id="affectedSheets">ALL sheets</span>
+                </span>
             </div>
             <div class="current-date-range" id="currentDateRange">
                 Current: Jan 1, 2026 - Dec 31, 2026
@@ -1219,65 +1307,17 @@
         <!-- Comparison Panel (Initially Hidden) -->
         <div id="comparisonPanel" class="comparison-panel" style="display: none;">
             <div class="comparison-header">
-                <h2><i class="fas fa-balance-scale" style="color: #c9a227;"></i> Service Comparison</h2>
-                <div class="comparison-selectors">
-                    <select id="compareService1" class="compare-select">
-                        <option value="external">External Services Summary</option>
-                        <option value="internal">Internal Services Summary</option>
-                        <option value="RID">Receiving of Incoming Documents</option>
-                        <option value="FRA">Filing of Rate Adjustment Application</option>
-                        <option value="HPP">Hiring of Plantilla Personnel</option>
-                        <option value="HIC">Hiring of Individual Contract</option>
-                        <option value="PPC">Processing of Payment of Claims</option>
-                        <option value="FCC">Filing of Customer Complaints</option>
-                        <option value="RWS">Request of Water Sampling</option>
-                        <option value="ROD">Retrieval of Official Documents</option>
-                        <option value="RIC">ICT Infrastructure Maintenance</option>
-                        <option value="RWD">Website Development</option>
-                        <option value="AGN">GovMail - New Account</option>
-                        <option value="AGP">GovMail - Password Reset</option>
-                        <option value="AGS">GovMail - Storage Increase</option>
-                        <option value="REP">Reimbursement from Petty Cash</option>
-                        <option value="RLC">Request & Liquidation Cash Advance</option>
-                        <option value="LCA">Liquidation of Cash Advance</option>
-                        <option value="PPF">Processing of Payments</option>
-                        <option value="PER">Employment Records</option>
-                        <option value="PCB">Procurement - Competitive Bidding</option>
-                        <option value="PRA">Purchase Request - Alternative</option>
-                        <option value="ITT">Issuance of Trip Ticket</option>
-                        <option value="IPA">Property Acknowledgment</option>
-                        <option value="RLP">Legal - Complex</option>
-                        <option value="RLT">Legal - Highly Technical</option>
-                    </select>
-                    <span style="color: #c9a227; font-weight: 600;">VS</span>
-                    <select id="compareService2" class="compare-select">
-                        <option value="internal">Internal Services Summary</option>
-                        <option value="external">External Services Summary</option>
-                        <option value="RID">Receiving of Incoming Documents</option>
-                        <option value="FRA">Filing of Rate Adjustment Application</option>
-                        <option value="HPP">Hiring of Plantilla Personnel</option>
-                        <option value="HIC">Hiring of Individual Contract</option>
-                        <option value="PPC">Processing of Payment of Claims</option>
-                        <option value="FCC">Filing of Customer Complaints</option>
-                        <option value="RWS">Request of Water Sampling</option>
-                        <option value="ROD">Retrieval of Official Documents</option>
-                        <option value="RIC">ICT Infrastructure Maintenance</option>
-                        <option value="RWD">Website Development</option>
-                        <option value="AGN">GovMail - New Account</option>
-                        <option value="AGP">GovMail - Password Reset</option>
-                        <option value="AGS">GovMail - Storage Increase</option>
-                        <option value="REP">Reimbursement from Petty Cash</option>
-                        <option value="RLC">Request & Liquidation Cash Advance</option>
-                        <option value="LCA">Liquidation of Cash Advance</option>
-                        <option value="PPF">Processing of Payments</option>
-                        <option value="PER">Employment Records</option>
-                        <option value="PCB">Procurement - Competitive Bidding</option>
-                        <option value="PRA">Purchase Request - Alternative</option>
-                        <option value="ITT">Issuance of Trip Ticket</option>
-                        <option value="IPA">Property Acknowledgment</option>
-                        <option value="RLP">Legal - Complex</option>
-                        <option value="RLT">Legal - Highly Technical</option>
-                    </select>
+                <h2><i class="fas fa-balance-scale"></i> Multi-Service Comparison</h2>
+                <div class="comparison-selectors" id="comparisonSelectors">
+                    <!-- Service selectors will be dynamically added here -->
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="add-service-btn" id="addServiceBtn">
+                        <i class="fas fa-plus"></i> Add Service
+                    </button>
+                    <button class="execute-compare-btn" id="executeCompareBtn">
+                        <i class="fas fa-play"></i> COMPARE
+                    </button>
                 </div>
             </div>
             <div id="comparisonGrid" class="comparison-grid">
@@ -1296,7 +1336,7 @@
         <!-- SQD Charts Container -->
         <div class="sqd-charts-container" id="sqdChartsContainer"></div>
 
-        <!-- FOOTER - Updated with Copyright -->
+        <!-- FOOTER -->
         <div class="dashboard-footer">
             <div class="footer-copyright">
                 Copyright © 2026 Metropolitan Waterworks and Sewerage System Regulatory Office. ro.mwss.gov.ph. All rights reserved.
@@ -1325,9 +1365,7 @@
                     <i class="fas fa-sync-alt"></i> Refresh Data
                 </button>
             </div>
-            <div class="table-container" id="modalTableContainer">
-                <!-- Table will be inserted here -->
-            </div>
+            <div class="table-container" id="modalTableContainer"></div>
         </div>
     </div>
 
@@ -1349,10 +1387,7 @@
             const VALID_PASSWORD = "mwssro-0897Hc$m";
 
             loginBtn.addEventListener('click', function() {
-                const username = usernameInput.value;
-                const password = passwordInput.value;
-
-                if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                if (usernameInput.value === VALID_USERNAME && passwordInput.value === VALID_PASSWORD) {
                     loginPage.style.display = 'none';
                     dashboard.classList.add('visible');
                 } else {
@@ -1360,17 +1395,14 @@
                 }
             });
 
-            // Allow Enter key to login
             passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    loginBtn.click();
-                }
+                if (e.key === 'Enter') loginBtn.click();
             });
 
             // ============================================================
-            // Google Apps Script Web App URL
+            // UPDATED APPS SCRIPT URL (YOUR NEW DEPLOYMENT)
             // ============================================================
-            const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLZXAv_X7rm3OpJisAuQPKrgiF7rUXav0wdsHoxwP2t5H_4mYuxp8CUCpV8NUnMQrq/exec";
+            const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpf6VJlzshJWhTpvLj6XODAqmwh6ixqL0jZv7ghGq3oqhFyPH17UKhdh7e7BpMHi4p/exec";
             
             // ============================================================
             // Global State
@@ -1382,10 +1414,11 @@
             let currentMatrix = null;
             let currentServiceDisplayName = 'Overall Summary';
             let isCompareMode = false;
-            let compareService1 = 'external';
-            let compareService2 = 'internal';
-            let compareValues1 = null;
-            let compareValues2 = null;
+            let compareServices = ['external', 'internal'];
+            let compareValues = [];
+            
+            const externalServices = ['RID', 'FRA', 'HPP', 'HIC', 'PPC', 'FCC', 'RWS'];
+            const internalServices = ['ROD', 'RIC', 'RWD', 'AGN', 'AGP', 'AGS', 'REP', 'RLC', 'LCA', 'PPF', 'PER', 'PCB', 'PRA', 'ITT', 'IPA', 'RLP', 'RLT'];
             
             const mainGridEl = document.getElementById('mainChartGrid');
             const sqdChartsContainer = document.getElementById('sqdChartsContainer');
@@ -1395,15 +1428,26 @@
             const viewDataBtn = document.getElementById('viewFullDataBtn');
             const compareToggle = document.getElementById('compareToggle');
             const comparisonPanel = document.getElementById('comparisonPanel');
-            const compareService1Select = document.getElementById('compareService1');
-            const compareService2Select = document.getElementById('compareService2');
+            const comparisonSelectors = document.getElementById('comparisonSelectors');
             const comparisonGrid = document.getElementById('comparisonGrid');
+            const addServiceBtn = document.getElementById('addServiceBtn');
+            const executeCompareBtn = document.getElementById('executeCompareBtn');
             const dateFromInput = document.getElementById('dateFrom');
             const dateToInput = document.getElementById('dateTo');
             const updateDateBtn = document.getElementById('updateDateBtn');
             const currentDateRange = document.getElementById('currentDateRange');
+            const hierarchyNote = document.getElementById('affectedSheets');
 
-            // Service name mapping for display
+            // Color palette for multiple services
+            const compareColors = [
+                '#1a7f9e', // Blue
+                '#c9a227', // Gold
+                '#2e8b57', // Green
+                '#9b59b6', // Purple
+                '#e67e22'  // Orange
+            ];
+
+            // Service name mapping
             const serviceNames = {
                 'overall': 'Overall Summary',
                 'external': 'External Services Summary',
@@ -1435,11 +1479,11 @@
             };
 
             // ============================================================
-            // EXACT CELL MAPPING
+            // CELL MAPPINGS
             // ============================================================
             const CELL_MAPPINGS = {
-                dateFrom: { colIndex: 2, rowIndex: 5 }, // C6
-                dateTo: { colIndex: 2, rowIndex: 6 },   // C7
+                dateFrom: { colIndex: 2, rowIndex: 5 },
+                dateTo: { colIndex: 2, rowIndex: 6 },
                 sex: {
                     male: { colIndex: 1, rowIndex: 42 },
                     female: { colIndex: 2, rowIndex: 42 }
@@ -1502,34 +1546,19 @@
                 }
             };
 
-            // ----- PNG Download Function -----
-            async function downloadAsPNG(elementId, filename) {
-                const element = document.getElementById(elementId)?.parentElement;
-                if (!element) return;
-                
-                try {
-                    const canvas = await html2canvas(element, {
-                        scale: 2,
-                        backgroundColor: '#ffffff',
-                        borderRadius: '28px'
-                    });
-                    
-                    const link = document.createElement('a');
-                    link.download = `MWSS_${filename}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                } catch (error) {
-                    console.error('PNG download failed:', error);
+            // ----- Helper Functions -----
+            function updateHierarchyNote() {
+                if (currentServiceCode) {
+                    hierarchyNote.innerHTML = `${serviceNames[currentServiceCode]}`;
+                } else if (currentService === 'external') {
+                    hierarchyNote.innerHTML = 'All 7 External services';
+                } else if (currentService === 'internal') {
+                    hierarchyNote.innerHTML = 'All 18 Internal services';
+                } else {
+                    hierarchyNote.innerHTML = 'ALL sheets (25+ services)';
                 }
             }
 
-            // ----- Reset dropdowns -----
-            function resetDropdowns() {
-                externalSelect.value = '';
-                internalSelect.value = '';
-            }
-
-            // ----- Update service display -----
             function updateServiceDisplay() {
                 if (currentServiceCode && serviceNames[currentServiceCode]) {
                     currentServiceDisplayName = serviceNames[currentServiceCode];
@@ -1541,38 +1570,55 @@
                     currentServiceDisplayName = 'Overall View';
                     selectedServiceDisplay.innerHTML = 'Overall View';
                 }
+                updateHierarchyNote();
             }
 
-            // ----- Format date for display -----
             function formatDate(dateString) {
                 const date = new Date(dateString);
                 return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
             }
 
-            // ----- Update date range display -----
             function updateDateRangeDisplay(from, to) {
-                const fromDate = formatDate(from);
-                const toDate = formatDate(to);
-                currentDateRange.innerHTML = `Current: ${fromDate} - ${toDate}`;
+                currentDateRange.innerHTML = `Current: ${formatDate(from)} - ${formatDate(to)}`;
             }
 
-            // ----- Fetch Sheet Data via JSONP -----
+            function resetDropdowns() {
+                externalSelect.value = '';
+                internalSelect.value = '';
+            }
+
+            // ----- Build URL with date parameters -----
+            function buildUrlWithDateParams(baseUrl, sheetType) {
+                const dateFrom = dateFromInput.value;
+                const dateTo = dateToInput.value;
+                
+                let sheets = [];
+                if (sheetType === 'overall') {
+                    sheets = ['overall', 'external', 'internal', ...externalServices, ...internalServices];
+                } else if (sheetType === 'external') {
+                    sheets = ['external', ...externalServices];
+                } else if (sheetType === 'internal') {
+                    sheets = ['internal', ...internalServices];
+                } else {
+                    sheets = [sheetType];
+                }
+                
+                const sheetsParam = sheets.join(',');
+                return `${baseUrl}?sheet=${sheetType}&sheets=${sheetsParam}&from=${dateFrom}&to=${dateTo}&callback=`;
+            }
+
+            // ----- Fetch Sheet Data -----
             async function fetchSheetData(sheetType) {
                 return new Promise((resolve) => {
                     try {
                         const callbackName = `jsonp_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-                        
-                        // Add date parameters to URL
-                        const dateFrom = dateFromInput.value;
-                        const dateTo = dateToInput.value;
-                        const url = `${APPS_SCRIPT_URL}?sheet=${sheetType}&callback=${callbackName}&from=${dateFrom}&to=${dateTo}&t=${Date.now()}`;
+                        const baseUrl = buildUrlWithDateParams(APPS_SCRIPT_URL, sheetType);
+                        const url = `${baseUrl}${callbackName}&t=${Date.now()}`;
                         
                         const timeout = setTimeout(() => {
                             cleanup();
-                            const sample = generateSampleMatrix(sheetType);
-                            currentMatrix = sample;
-                            resolve(sample);
-                        }, 10000);
+                            resolve(generateSampleMatrix(sheetType));
+                        }, 15000);
                         
                         function cleanup() {
                             clearTimeout(timeout);
@@ -1586,52 +1632,28 @@
                             if (response?.success && response.data) {
                                 const matrix = parseCSVtoMatrix(response.data);
                                 currentMatrix = matrix;
-                                
-                                // Read and set date range from sheet
-                                const sheetDateFrom = getCellValue(matrix, CELL_MAPPINGS.dateFrom.rowIndex, CELL_MAPPINGS.dateFrom.colIndex);
-                                const sheetDateTo = getCellValue(matrix, CELL_MAPPINGS.dateTo.rowIndex, CELL_MAPPINGS.dateTo.colIndex);
-                                
-                                if (sheetDateFrom && sheetDateTo) {
-                                    // Update date inputs if values exist
-                                    const fromParts = sheetDateFrom.split('/');
-                                    const toParts = sheetDateTo.split('/');
-                                    if (fromParts.length === 3) {
-                                        dateFromInput.value = `${fromParts[2]}-${fromParts[0].padStart(2,'0')}-${fromParts[1].padStart(2,'0')}`;
-                                    }
-                                    if (toParts.length === 3) {
-                                        dateToInput.value = `${toParts[2]}-${toParts[0].padStart(2,'0')}-${toParts[1].padStart(2,'0')}`;
-                                    }
-                                    updateDateRangeDisplay(sheetDateFrom, sheetDateTo);
-                                }
-                                
                                 resolve(matrix);
                             } else {
-                                const sample = generateSampleMatrix(sheetType);
-                                currentMatrix = sample;
-                                resolve(sample);
+                                resolve(generateSampleMatrix(sheetType));
                             }
                         };
                         
                         const script = document.createElement('script');
                         script.src = url;
-                        script.onerror = function() {
+                        script.onerror = () => {
                             cleanup();
-                            const sample = generateSampleMatrix(sheetType);
-                            currentMatrix = sample;
-                            resolve(sample);
+                            resolve(generateSampleMatrix(sheetType));
                         };
                         
                         document.head.appendChild(script);
                         
                     } catch (e) {
-                        const sample = generateSampleMatrix(sheetType);
-                        currentMatrix = sample;
-                        resolve(sample);
+                        resolve(generateSampleMatrix(sheetType));
                     }
                 });
             }
 
-            // ----- Parse CSV to Matrix -----
+            // ----- Parse CSV -----
             function parseCSVtoMatrix(csvText) {
                 const lines = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
                 const matrix = [];
@@ -1658,7 +1680,7 @@
                 return matrix;
             }
 
-            // ----- Get Cell Value by Index -----
+            // ----- Get Cell Value -----
             function getCellValue(matrix, rowIndex, colIndex) {
                 if (!matrix?.length) return 0;
                 try {
@@ -1735,12 +1757,10 @@
                 const m = [];
                 for (let i = 0; i < 150; i++) m[i] = [];
                 
-                // Sex
                 m[42] = m[42] || []; 
                 m[42][1] = 222;
                 m[42][2] = 218;
                 
-                // Age
                 m[34] = m[34] || []; m[34][5] = 20;
                 m[35] = m[35] || []; m[35][5] = 0;
                 m[36] = m[36] || []; m[36][5] = 32;
@@ -1750,26 +1770,22 @@
                 m[40] = m[40] || []; m[40][5] = 6;
                 m[41] = m[41] || []; m[41][5] = 0;
                 
-                // Client
                 m[18] = m[18] || []; m[18][5] = 5;
                 m[19] = m[19] || []; m[19][5] = 251;
                 m[20] = m[20] || []; m[20][5] = 105;
                 m[21] = m[21] || []; m[21][5] = 84;
                 
-                // Region
                 m[26] = m[26] || []; m[26][7] = 4;
                 m[27] = m[27] || []; m[27][7] = 78;
                 m[28] = m[28] || []; m[28][7] = 94;
                 m[29] = m[29] || []; m[29][7] = 112;
                 
-                // CC1
                 m[47] = m[47] || []; m[47][5] = 6;
                 m[48] = m[48] || []; m[48][5] = 103;
                 m[49] = m[49] || []; m[49][5] = 47;
                 m[50] = m[50] || []; m[50][5] = 58;
                 m[51] = m[51] || []; m[51][5] = 32;
                 
-                // CC2
                 m[57] = m[57] || []; m[57][5] = 7;
                 m[58] = m[58] || []; m[58][5] = 89;
                 m[59] = m[59] || []; m[59][5] = 52;
@@ -1777,14 +1793,12 @@
                 m[61] = m[61] || []; m[61][5] = 14;
                 m[62] = m[62] || []; m[62][5] = 41;
                 
-                // CC3
                 m[68] = m[68] || []; m[68][5] = 5;
                 m[69] = m[69] || []; m[69][5] = 112;
                 m[70] = m[70] || []; m[70][5] = 58;
                 m[71] = m[71] || []; m[71][5] = 16;
                 m[72] = m[72] || []; m[72][5] = 27;
                 
-                // SQD
                 m[109] = m[109] || []; m[109][8] = 90.25;
                 m[111] = m[111] || []; m[111][8] = 89.25;
                 m[112] = m[112] || []; m[112][8] = 91.50;
@@ -1799,814 +1813,9 @@
                 return m;
             }
 
-            // ----- Plugin to display values on charts -----
-            const valueLabelPlugin = {
-                id: 'valueLabel',
-                afterDatasetsDraw(chart) {
-                    const { ctx, data, scales } = chart;
-                    
-                    if (chart.config.type === 'bar') {
-                        const dataset = data.datasets[0];
-                        ctx.save();
-                        ctx.font = 'bold 10px Inter';
-                        ctx.fillStyle = '#0a4e5e';
-                        ctx.textAlign = 'center';
-                        
-                        dataset.data.forEach((value, index) => {
-                            const x = scales.x.getPixelForValue(index);
-                            const y = scales.y.getPixelForValue(value) - 5;
-                            
-                            if (value !== 0) {
-                                ctx.fillText(value.toFixed(1), x, y);
-                            }
-                        });
-                        ctx.restore();
-                    }
-                }
-            };
-
-            // ----- Render Main Charts with data labels -----
-            function renderMainCharts(values) {
-                const totalSex = values.male + values.female;
-                const totalAge = values.ageNS + values.age19b + values.age2029 + values.age3039 + values.age4049 + values.age5059 + values.age6069 + values.age70;
-                const totalClient = values.clientNS + values.citizen + values.business + values.government;
-                const totalRegion = values.regionNS + values.region3 + values.region4a + values.ncr;
-                const totalCC1 = values.cc1NS + values.knowSaw + values.knowNotSaw + values.learned + values.dontKnow;
-                const awareDenom = totalCC1 - values.dontKnow - values.cc1NS || 1;
-
-                let html = '';
-
-                // Card 1: Sex
-                html += `<div class="chart-card" id="chartSexContainer">
-                    <div class="chart-header">
-                        <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD) by Service Type</h2>
-                        <div class="chart-actions">
-                            <span class="total-indicator">Total: ${totalSex}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartSex', 'Sex_Chart')">
-                                <i class="fas fa-download"></i> PNG
-                            </button>
-                        </div>
-                    </div>
-                    <canvas id="chartSex"></canvas>
-                    <div class="data-legend">
-                        <span>Male:</span> ${values.male} (${totalSex ? ((values.male/totalSex)*100).toFixed(2) : 0}%) 
-                        <span>Female:</span> ${values.female} (${totalSex ? ((values.female/totalSex)*100).toFixed(2) : 0}%)
-                    </div>
-                </div>`;
-
-                // Card 2: Age
-                html += `<div class="chart-card" id="chartAgeContainer">
-                    <div class="chart-header">
-                        <h2><i class="fas fa-calendar-alt"></i> Age Distribution by Service Type</h2>
-                        <div class="chart-actions">
-                            <span class="total-indicator">Total: ${totalAge}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartAge', 'Age_Chart')">
-                                <i class="fas fa-download"></i> PNG
-                            </button>
-                        </div>
-                    </div>
-                    <canvas id="chartAge"></canvas>
-                    <div class="data-legend">
-                        <div style="width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
-                            <div><span>N/S:</span> ${values.ageNS}</div>
-                            <div><span>19↓:</span> ${values.age19b}</div>
-                            <div><span>20-29:</span> ${values.age2029}</div>
-                            <div><span>30-39:</span> ${values.age3039}</div>
-                            <div><span>40-49:</span> ${values.age4049}</div>
-                            <div><span>50-59:</span> ${values.age5059}</div>
-                            <div><span>60-69:</span> ${values.age6069}</div>
-                            <div><span>70↑:</span> ${values.age70}</div>
-                        </div>
-                    </div>
-                </div>`;
-
-                // Card 3: Client Type
-                html += `<div class="chart-card" id="chartClientContainer">
-                    <div class="chart-header">
-                        <h2><i class="fas fa-users"></i> Client Type by Service</h2>
-                        <div class="chart-actions">
-                            <span class="total-indicator">Total: ${totalClient}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartClient', 'Client_Chart')">
-                                <i class="fas fa-download"></i> PNG
-                            </button>
-                        </div>
-                    </div>
-                    <canvas id="chartClient"></canvas>
-                    <div class="data-legend">
-                        <div><span>N/S:</span> ${values.clientNS}</div>
-                        <div><span>Citizen:</span> ${values.citizen}</div>
-                        <div><span>Business:</span> ${values.business}</div>
-                        <div><span>Government:</span> ${values.government}</div>
-                    </div>
-                </div>`;
-
-                // Card 4: Region
-                html += `<div class="chart-card" id="chartRegionContainer">
-                    <div class="chart-header">
-                        <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
-                        <div class="chart-actions">
-                            <span class="total-indicator">Total: ${totalRegion}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartRegion', 'Region_Chart')">
-                                <i class="fas fa-download"></i> PNG
-                            </button>
-                        </div>
-                    </div>
-                    <canvas id="chartRegion"></canvas>
-                    <div class="data-legend">
-                        <div><span>N/S:</span> ${values.regionNS}</div>
-                        <div><span>Region III:</span> ${values.region3}</div>
-                        <div><span>Region IV-A:</span> ${values.region4a}</div>
-                        <div><span>NCR:</span> ${values.ncr}</div>
-                    </div>
-                </div>`;
-
-                // Card 5: CC1
-                html += `<div class="chart-card" id="chartCC1Container">
-                    <div class="chart-header">
-                        <h2><i class="fas fa-eye"></i> Citizen's Charter Awareness</h2>
-                        <div class="chart-actions">
-                            <span class="total-indicator">Total: ${totalCC1}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartCC1', 'CC1_Chart')">
-                                <i class="fas fa-download"></i> PNG
-                            </button>
-                        </div>
-                    </div>
-                    <canvas id="chartCC1"></canvas>
-                    <div class="data-legend">
-                        <div><span>N/S:</span> ${values.cc1NS}</div>
-                        <div><span>Know & Saw:</span> ${values.knowSaw}</div>
-                        <div><span>Know/Not Saw:</span> ${values.knowNotSaw}</div>
-                        <div><span>Learned:</span> ${values.learned}</div>
-                        <div><span>Don't know:</span> ${values.dontKnow}</div>
-                    </div>
-                </div>`;
-
-                // Card 6: CC2
-                html += `<div class="chart-card" id="chartCC2Container">
-                    <div class="chart-header">
-                        <h2><i class="fas fa-low-vision"></i> Citizen's Charter Visibility</h2>
-                        <div class="chart-actions">
-                            <span class="total-indicator">Aware: ${awareDenom}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartCC2', 'CC2_Chart')">
-                                <i class="fas fa-download"></i> PNG
-                            </button>
-                        </div>
-                    </div>
-                    <canvas id="chartCC2"></canvas>
-                    <div class="data-legend">
-                        <div><span>N/S:</span> ${values.cc2NS}</div>
-                        <div><span>Easy:</span> ${values.easy}</div>
-                        <div><span>Somewhat:</span> ${values.somewhatEasy}</div>
-                        <div><span>Difficult:</span> ${values.difficult}</div>
-                        <div><span>Not visible:</span> ${values.notVisible}</div>
-                        <div><span>N/A:</span> ${values.cc2na}</div>
-                    </div>
-                </div>`;
-
-                // Card 7: CC3
-                html += `<div class="chart-card" id="chartCC3Container">
-                    <div class="chart-header">
-                        <h2><i class="fas fa-check-circle"></i> Citizen's Charter Effectivity</h2>
-                        <div class="chart-actions">
-                            <span class="total-indicator">Aware: ${awareDenom}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartCC3', 'CC3_Chart')">
-                                <i class="fas fa-download"></i> PNG
-                            </button>
-                        </div>
-                    </div>
-                    <canvas id="chartCC3"></canvas>
-                    <div class="data-legend">
-                        <div><span>N/S:</span> ${values.cc3NS}</div>
-                        <div><span>Helped much:</span> ${values.helpedMuch}</div>
-                        <div><span>Somewhat:</span> ${values.somewhatHelped}</div>
-                        <div><span>Did not:</span> ${values.didNotHelp}</div>
-                        <div><span>N/A:</span> ${values.cc3na}</div>
-                    </div>
-                </div>`;
-
-                mainGridEl.innerHTML = html;
-
-                // Destroy old charts
-                Object.values(chartInstances).forEach(chart => chart?.destroy());
-                chartInstances = {};
-
-                // Color palettes
-                const bluePalette = ['#1a7f9e', '#2f98b3', '#45b0c9', '#7fc5d9', '#a8dae8'];
-                const goldPalette = ['#c9a227', '#d9b44a', '#e5c36b', '#f0d59a', '#f8e7c4'];
-                const lightBluePalette = ['#7fc5d9', '#a8dae8', '#c4e6f0', '#dff1f7', '#eef8fc'];
-
-                // Create enhanced charts with value labels
-                const chartConfigs = [
-                    { 
-                        id: 'chartSex', type: 'doughnut', 
-                        labels: ['Male', 'Female'], 
-                        data: [values.male, values.female], 
-                        colors: [bluePalette[0], goldPalette[0]],
-                        options: { 
-                            cutout: '70%', 
-                            plugins: { 
-                                legend: { display: false },
-                                datalabels: {
-                                    display: true,
-                                    color: 'white',
-                                    formatter: (value, context) => {
-                                        return value + ' (' + ((value/totalSex)*100).toFixed(1) + '%)';
-                                    }
-                                }
-                            } 
-                        }
-                    },
-                    { 
-                        id: 'chartAge', type: 'bar', 
-                        labels: ['N/S', '19↓', '20-29', '30-39', '40-49', '50-59', '60-69', '70↑'], 
-                        data: [values.ageNS, values.age19b, values.age2029, values.age3039, values.age4049, values.age5059, values.age6069, values.age70], 
-                        colors: bluePalette[1],
-                        options: { 
-                            indexAxis: 'x',
-                            scales: { y: { beginAtZero: true, grid: { color: '#e9ecef' } } }
-                        }
-                    },
-                    { 
-                        id: 'chartClient', type: 'doughnut', 
-                        labels: ['Citizen', 'Business', 'Government', 'N/S'], 
-                        data: [values.citizen, values.business, values.government, values.clientNS], 
-                        colors: [bluePalette[0], bluePalette[2], goldPalette[0], lightBluePalette[2]],
-                        options: { 
-                            cutout: '70%',
-                            plugins: { 
-                                legend: { display: false },
-                                datalabels: {
-                                    display: true,
-                                    color: 'white',
-                                    formatter: (value, context) => {
-                                        return value;
-                                    }
-                                }
-                            } 
-                        }
-                    },
-                    { 
-                        id: 'chartRegion', type: 'pie', 
-                        labels: ['Region III', 'Region IV-A', 'NCR', 'N/S'], 
-                        data: [values.region3, values.region4a, values.ncr, values.regionNS], 
-                        colors: [bluePalette[1], bluePalette[2], goldPalette[0], lightBluePalette[3]] 
-                    },
-                    { 
-                        id: 'chartCC1', type: 'bar', 
-                        labels: ['Know & Saw', 'Know/Not', 'Learned', 'Don\'t know', 'N/S'], 
-                        data: [values.knowSaw, values.knowNotSaw, values.learned, values.dontKnow, values.cc1NS], 
-                        colors: bluePalette[0],
-                        options: { indexAxis: 'y' }
-                    },
-                    { 
-                        id: 'chartCC2', type: 'bar', 
-                        labels: ['Easy', 'Somewhat', 'Difficult', 'Not visible', 'N/A', 'N/S'], 
-                        data: [values.easy, values.somewhatEasy, values.difficult, values.notVisible, values.cc2na, values.cc2NS], 
-                        colors: goldPalette[0],
-                        options: { indexAxis: 'y' }
-                    },
-                    { 
-                        id: 'chartCC3', type: 'bar', 
-                        labels: ['Helped much', 'Somewhat', 'Did not', 'N/A', 'N/S'], 
-                        data: [values.helpedMuch, values.somewhatHelped, values.didNotHelp, values.cc3na, values.cc3NS], 
-                        colors: lightBluePalette[1],
-                        options: { indexAxis: 'y' }
-                    }
-                ];
-
-                chartConfigs.forEach(cfg => {
-                    const ctx = document.getElementById(cfg.id);
-                    if (!ctx) return;
-                    
-                    // Register the value label plugin for this chart
-                    Chart.register(valueLabelPlugin);
-                    
-                    chartInstances[cfg.id] = new Chart(ctx, {
-                        type: cfg.type,
-                        data: {
-                            labels: cfg.labels,
-                            datasets: [{
-                                data: cfg.data,
-                                backgroundColor: cfg.colors,
-                                borderWidth: 0,
-                                borderRadius: 6
-                            }]
-                        },
-                        options: {
-                            cutout: cfg.options?.cutout || (cfg.type === 'doughnut' ? '65%' : undefined),
-                            indexAxis: cfg.options?.indexAxis,
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            plugins: { 
-                                legend: { display: false }, 
-                                tooltip: { backgroundColor: '#0f859e' },
-                                valueLabel: {
-                                    display: true
-                                }
-                            },
-                            scales: cfg.type === 'bar' ? { 
-                                y: cfg.options?.indexAxis === 'y' ? { 
-                                    beginAtZero: true, 
-                                    grid: { color: '#e9ecef' },
-                                    ticks: { color: '#2a5e6e' }
-                                } : { 
-                                    beginAtZero: true, 
-                                    grid: { color: '#e9ecef' },
-                                    ticks: { color: '#2a5e6e' }
-                                },
-                                x: { ticks: { color: '#2a5e6e' } }
-                            } : undefined
-                        },
-                        plugins: [valueLabelPlugin]
-                    });
-                });
-            }
-
-            // ----- Render SQD Section -----
-            function renderSQDSection(values) {
-                const sqdLabels = ['SQD 1', 'SQD 2', 'SQD 3', 'SQD 4', 'SQD 5', 'SQD 6', 'SQD 7', 'SQD 8'];
-                const sqdFullLabels = [
-                    'Responsiveness', 'Reliability', 'Access & Facilities', 'Communication',
-                    'Costs', 'Integrity', 'Assurance', 'Outcome'
-                ];
-                const sqdData = [
-                    values.sqd1, values.sqd2, values.sqd3, values.sqd4,
-                    values.sqd5, values.sqd6, values.sqd7, values.sqd8
-                ];
-
-                let html = `
-                    <div class="percentage-card" id="sqd0Card">
-                        <div class="chart-actions" style="position: absolute; top: 1rem; right: 1rem;">
-                            <button class="download-btn" onclick="downloadCardAsPNG('sqd0Card', 'SQD0')">
-                                <i class="fas fa-download"></i> PNG
-                            </button>
-                        </div>
-                        <h3><i class="fas fa-star" style="color: #c9a227;"></i> SQD 0 - Overall Satisfaction</h3>
-                        <div class="percentage-value">${values.sqd0.toFixed(2)}%</div>
-                        <div class="percentage-label">Satisfaction Rating</div>
-                    </div>
-                    
-                    <div class="sqd-chart-panel" id="sqdChartPanel">
-                        <div class="sqd-chart-header">
-                            <h2><i class="fas fa-chart-bar"></i> SQD 1-8: Service Quality Dimensions</h2>
-                            <div class="chart-actions">
-                                <span class="total-indicator">8 Dimensions</span>
-                                <button class="download-btn" onclick="downloadAsPNG('chartSQD1to8', 'SQD_Chart')">
-                                    <i class="fas fa-download"></i> PNG
-                                </button>
-                            </div>
-                        </div>
-                        <canvas id="chartSQD1to8"></canvas>
-                        <div class="data-legend" style="margin-top: 0.8rem; padding: 0.8rem; font-size: 0.7rem;">
-                            ${sqdFullLabels.map((label, index) => `<span>${label}:</span> ${sqdData[index].toFixed(2)}%`).join(' · ')}
-                        </div>
-                    </div>
-                    
-                    <div class="percentage-card" id="sqdOverallCard">
-                        <div class="chart-actions" style="position: absolute; top: 1rem; right: 1rem;">
-                            <button class="download-btn" onclick="downloadCardAsPNG('sqdOverallCard', 'SQD_Overall')">
-                                <i class="fas fa-download"></i> PNG
-                            </button>
-                        </div>
-                        <h3><i class="fas fa-chart-pie" style="color: #c9a227;"></i> Overall SQD (1-8)</h3>
-                        <div class="percentage-value">${values.sqdOverall.toFixed(2)}%</div>
-                        <div class="percentage-label">Average Satisfaction</div>
-                    </div>
-                `;
-
-                sqdChartsContainer.innerHTML = html;
-
-                const ctx = document.getElementById('chartSQD1to8');
-                if (ctx) {
-                    Chart.register(valueLabelPlugin);
-                    chartInstances.sqdChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: sqdLabels,
-                            datasets: [{
-                                label: 'Satisfaction Percentage',
-                                data: sqdData,
-                                backgroundColor: '#1a7f9e',
-                                borderRadius: 6,
-                                barPercentage: 0.7
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: true,
-                            plugins: {
-                                legend: { display: false },
-                                tooltip: {
-                                    backgroundColor: '#0f859e',
-                                    callbacks: {
-                                        label: function(context) {
-                                            return `${sqdFullLabels[context.dataIndex]}: ${context.raw.toFixed(2)}%`;
-                                        }
-                                    }
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    max: 100,
-                                    grid: { color: '#e9ecef' },
-                                    ticks: { callback: value => value + '%' }
-                                }
-                            }
-                        },
-                        plugins: [valueLabelPlugin]
-                    });
-                }
-            }
-
-            // ----- Render Comparison View -----
-            async function renderComparison() {
-                if (!compareValues1 || !compareValues2) return;
-
-                const name1 = serviceNames[compareService1] || compareService1;
-                const name2 = serviceNames[compareService2] || compareService2;
-
-                let html = '';
-
-                // Sex Comparison
-                html += `<div class="compare-card">
-                    <h3><i class="fas fa-venus-mars"></i> Sex Distribution</h3>
-                    <canvas id="compareSex"></canvas>
-                    <div class="data-legend" style="margin-top: 0.5rem;">
-                        <span style="color: #1a7f9e;">${name1}:</span> M:${compareValues1.male} F:${compareValues1.female}<br>
-                        <span style="color: #c9a227;">${name2}:</span> M:${compareValues2.male} F:${compareValues2.female}
-                    </div>
-                </div>`;
-
-                // Age Comparison
-                html += `<div class="compare-card">
-                    <h3><i class="fas fa-calendar-alt"></i> Age Distribution</h3>
-                    <canvas id="compareAge"></canvas>
-                </div>`;
-
-                // Client Type Comparison
-                html += `<div class="compare-card">
-                    <h3><i class="fas fa-users"></i> Client Type</h3>
-                    <canvas id="compareClient"></canvas>
-                </div>`;
-
-                // Region Comparison
-                html += `<div class="compare-card">
-                    <h3><i class="fas fa-map-marker-alt"></i> Region</h3>
-                    <canvas id="compareRegion"></canvas>
-                </div>`;
-
-                // CC1 Comparison
-                html += `<div class="compare-card">
-                    <h3><i class="fas fa-eye"></i> CC1 Awareness</h3>
-                    <canvas id="compareCC1"></canvas>
-                </div>`;
-
-                // CC2 Comparison
-                html += `<div class="compare-card">
-                    <h3><i class="fas fa-low-vision"></i> CC2 Visibility</h3>
-                    <canvas id="compareCC2"></canvas>
-                </div>`;
-
-                // CC3 Comparison
-                html += `<div class="compare-card">
-                    <h3><i class="fas fa-check-circle"></i> CC3 Effectivity</h3>
-                    <canvas id="compareCC3"></canvas>
-                </div>`;
-
-                comparisonGrid.innerHTML = html;
-
-                // Create comparison charts
-                const ctxSex = document.getElementById('compareSex');
-                if (ctxSex) {
-                    new Chart(ctxSex, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Male', 'Female'],
-                            datasets: [
-                                {
-                                    label: name1,
-                                    data: [compareValues1.male, compareValues1.female],
-                                    backgroundColor: '#1a7f9e',
-                                    borderRadius: 6
-                                },
-                                {
-                                    label: name2,
-                                    data: [compareValues2.male, compareValues2.female],
-                                    backgroundColor: '#c9a227',
-                                    borderRadius: 6
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: { legend: { position: 'top' } },
-                            scales: { y: { beginAtZero: true } }
-                        }
-                    });
-                }
-
-                // Age comparison chart
-                const ctxAge = document.getElementById('compareAge');
-                if (ctxAge) {
-                    new Chart(ctxAge, {
-                        type: 'bar',
-                        data: {
-                            labels: ['N/S', '19↓', '20-29', '30-39', '40-49', '50-59', '60-69', '70↑'],
-                            datasets: [
-                                {
-                                    label: name1,
-                                    data: [
-                                        compareValues1.ageNS, compareValues1.age19b,
-                                        compareValues1.age2029, compareValues1.age3039,
-                                        compareValues1.age4049, compareValues1.age5059,
-                                        compareValues1.age6069, compareValues1.age70
-                                    ],
-                                    backgroundColor: '#1a7f9e',
-                                    borderRadius: 6
-                                },
-                                {
-                                    label: name2,
-                                    data: [
-                                        compareValues2.ageNS, compareValues2.age19b,
-                                        compareValues2.age2029, compareValues2.age3039,
-                                        compareValues2.age4049, compareValues2.age5059,
-                                        compareValues2.age6069, compareValues2.age70
-                                    ],
-                                    backgroundColor: '#c9a227',
-                                    borderRadius: 6
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: { legend: { position: 'top' } },
-                            scales: { y: { beginAtZero: true } }
-                        }
-                    });
-                }
-
-                // Client comparison chart
-                const ctxClient = document.getElementById('compareClient');
-                if (ctxClient) {
-                    new Chart(ctxClient, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Citizen', 'Business', 'Government', 'N/S'],
-                            datasets: [
-                                {
-                                    label: name1,
-                                    data: [compareValues1.citizen, compareValues1.business, compareValues1.government, compareValues1.clientNS],
-                                    backgroundColor: '#1a7f9e',
-                                    borderRadius: 6
-                                },
-                                {
-                                    label: name2,
-                                    data: [compareValues2.citizen, compareValues2.business, compareValues2.government, compareValues2.clientNS],
-                                    backgroundColor: '#c9a227',
-                                    borderRadius: 6
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: { legend: { position: 'top' } },
-                            scales: { y: { beginAtZero: true } }
-                        }
-                    });
-                }
-
-                // Region comparison chart
-                const ctxRegion = document.getElementById('compareRegion');
-                if (ctxRegion) {
-                    new Chart(ctxRegion, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Region III', 'Region IV-A', 'NCR', 'N/S'],
-                            datasets: [
-                                {
-                                    label: name1,
-                                    data: [compareValues1.region3, compareValues1.region4a, compareValues1.ncr, compareValues1.regionNS],
-                                    backgroundColor: '#1a7f9e',
-                                    borderRadius: 6
-                                },
-                                {
-                                    label: name2,
-                                    data: [compareValues2.region3, compareValues2.region4a, compareValues2.ncr, compareValues2.regionNS],
-                                    backgroundColor: '#c9a227',
-                                    borderRadius: 6
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: { legend: { position: 'top' } },
-                            scales: { y: { beginAtZero: true } }
-                        }
-                    });
-                }
-
-                // CC1 comparison chart
-                const ctxCC1 = document.getElementById('compareCC1');
-                if (ctxCC1) {
-                    new Chart(ctxCC1, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Know & Saw', 'Know/Not', 'Learned', 'Don\'t know', 'N/S'],
-                            datasets: [
-                                {
-                                    label: name1,
-                                    data: [compareValues1.knowSaw, compareValues1.knowNotSaw, compareValues1.learned, compareValues1.dontKnow, compareValues1.cc1NS],
-                                    backgroundColor: '#1a7f9e',
-                                    borderRadius: 6
-                                },
-                                {
-                                    label: name2,
-                                    data: [compareValues2.knowSaw, compareValues2.knowNotSaw, compareValues2.learned, compareValues2.dontKnow, compareValues2.cc1NS],
-                                    backgroundColor: '#c9a227',
-                                    borderRadius: 6
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: { legend: { position: 'top' } },
-                            scales: { y: { beginAtZero: true } }
-                        }
-                    });
-                }
-
-                // CC2 comparison chart
-                const ctxCC2 = document.getElementById('compareCC2');
-                if (ctxCC2) {
-                    new Chart(ctxCC2, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Easy', 'Somewhat', 'Difficult', 'Not visible', 'N/A', 'N/S'],
-                            datasets: [
-                                {
-                                    label: name1,
-                                    data: [compareValues1.easy, compareValues1.somewhatEasy, compareValues1.difficult, compareValues1.notVisible, compareValues1.cc2na, compareValues1.cc2NS],
-                                    backgroundColor: '#1a7f9e',
-                                    borderRadius: 6
-                                },
-                                {
-                                    label: name2,
-                                    data: [compareValues2.easy, compareValues2.somewhatEasy, compareValues2.difficult, compareValues2.notVisible, compareValues2.cc2na, compareValues2.cc2NS],
-                                    backgroundColor: '#c9a227',
-                                    borderRadius: 6
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: { legend: { position: 'top' } },
-                            scales: { y: { beginAtZero: true } }
-                        }
-                    });
-                }
-
-                // CC3 comparison chart
-                const ctxCC3 = document.getElementById('compareCC3');
-                if (ctxCC3) {
-                    new Chart(ctxCC3, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Helped much', 'Somewhat', 'Did not', 'N/A', 'N/S'],
-                            datasets: [
-                                {
-                                    label: name1,
-                                    data: [compareValues1.helpedMuch, compareValues1.somewhatHelped, compareValues1.didNotHelp, compareValues1.cc3na, compareValues1.cc3NS],
-                                    backgroundColor: '#1a7f9e',
-                                    borderRadius: 6
-                                },
-                                {
-                                    label: name2,
-                                    data: [compareValues2.helpedMuch, compareValues2.somewhatHelped, compareValues2.didNotHelp, compareValues2.cc3na, compareValues2.cc3NS],
-                                    backgroundColor: '#c9a227',
-                                    borderRadius: 6
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: { legend: { position: 'top' } },
-                            scales: { y: { beginAtZero: true } }
-                        }
-                    });
-                }
-            }
-
-            // ----- Load Comparison Data -----
-            async function loadComparisonData() {
-                const matrix1 = await fetchSheetData(compareService1);
-                const matrix2 = await fetchSheetData(compareService2);
-                compareValues1 = readAllCells(matrix1);
-                compareValues2 = readAllCells(matrix2);
-                await renderComparison();
-            }
-
-            // ----- Toggle Comparison Mode -----
-            compareToggle.addEventListener('click', async function() {
-                isCompareMode = !isCompareMode;
-                if (isCompareMode) {
-                    compareToggle.classList.add('active');
-                    comparisonPanel.style.display = 'block';
-                    mainGridEl.style.display = 'none';
-                    sqdChartsContainer.style.display = 'none';
-                    document.getElementById('sqdSectionHeader').style.display = 'none';
-                    await loadComparisonData();
-                } else {
-                    compareToggle.classList.remove('active');
-                    comparisonPanel.style.display = 'none';
-                    mainGridEl.style.display = 'grid';
-                    sqdChartsContainer.style.display = 'grid';
-                    document.getElementById('sqdSectionHeader').style.display = 'flex';
-                    renderDashboard();
-                }
-            });
-
-            // Comparison select change events
-            compareService1Select.addEventListener('change', async function() {
-                compareService1 = this.value;
-                await loadComparisonData();
-            });
-
-            compareService2Select.addEventListener('change', async function() {
-                compareService2 = this.value;
-                await loadComparisonData();
-            });
-
-            // ----- Show Full Data Modal -----
-            function showFullDataModal() {
-                if (!currentMatrix) {
-                    alert('No data available yet');
-                    return;
-                }
-
-                const title = currentServiceDisplayName;
-                modalTitle.innerHTML = `${title} - Complete Data (${currentMatrix.length} rows)`;
-
-                let tableHTML = '<table class="data-table"><thead><tr>';
-                
-                if (currentMatrix.length > 0) {
-                    for (let i = 0; i < currentMatrix[0].length; i++) {
-                        const colLetter = String.fromCharCode(65 + i);
-                        tableHTML += `<th><span class="col-letter">${colLetter}</span></th>`;
-                    }
-                    tableHTML += '</tr></thead><tbody>';
-                    
-                    for (let i = 0; i < currentMatrix.length; i++) {
-                        tableHTML += '<tr>';
-                        for (let j = 0; j < currentMatrix[i].length; j++) {
-                            const cellValue = currentMatrix[i][j] || '';
-                            const displayValue = cellValue.length > 100 ? cellValue.substring(0, 100) + '...' : cellValue;
-                            tableHTML += `<td title="${cellValue.replace(/"/g, '&quot;')}">${displayValue}</td>`;
-                        }
-                        tableHTML += '</tr>';
-                    }
-                    
-                    tableHTML += '</tbody></table>';
-                } else {
-                    tableHTML = '<p style="text-align: center; padding: 2rem;">No data available</p>';
-                }
-                
-                modalTableContainer.innerHTML = tableHTML;
-                dataModal.style.display = 'block';
-            }
-
-            // ----- Download as CSV -----
-            function downloadCSV() {
-                if (!currentMatrix) {
-                    alert('No data available');
-                    return;
-                }
-
-                let csvContent = '';
-                
-                currentMatrix.forEach(row => {
-                    const escapedRow = row.map(cell => {
-                        if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"'))) {
-                            return `"${cell.replace(/"/g, '""')}"`;
-                        }
-                        return cell;
-                    }).join(',');
-                    csvContent += escapedRow + '\n';
-                });
-
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                const filename = `MWSS_${currentServiceDisplayName.replace(/\s+/g, '_')}_data.csv`;
-                
-                link.href = URL.createObjectURL(blob);
-                link.download = filename;
-                link.click();
-            }
-
-            // ----- PNG download helpers -----
-            window.downloadAsPNG = downloadAsPNG;
-            window.downloadCardAsPNG = async function(cardId, filename) {
-                const element = document.getElementById(cardId);
+            // ----- PNG Download Function -----
+            async function downloadAsPNG(elementId, filename) {
+                const element = document.getElementById(elementId);
                 if (!element) return;
                 
                 try {
@@ -2623,43 +1832,667 @@
                 } catch (error) {
                     console.error('PNG download failed:', error);
                 }
+            }
+
+            window.downloadAsPNG = downloadAsPNG;
+
+            // ----- Plugin for value labels -----
+            const valueLabelPlugin = {
+                id: 'valueLabel',
+                afterDatasetsDraw(chart) {
+                    const { ctx, data, scales } = chart;
+                    
+                    if (chart.config.type === 'bar') {
+                        chart.data.datasets.forEach((dataset, datasetIndex) => {
+                            const meta = chart.getDatasetMeta(datasetIndex);
+                            if (!meta.hidden) {
+                                meta.data.forEach((element, index) => {
+                                    const value = dataset.data[index];
+                                    if (value !== 0) {
+                                        const position = element.tooltipPosition();
+                                        ctx.save();
+                                        ctx.font = 'bold 10px Inter';
+                                        ctx.fillStyle = '#0a4e5e';
+                                        ctx.textAlign = 'center';
+                                        ctx.fillText(value.toFixed(1), position.x, position.y - 10);
+                                        ctx.restore();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
             };
+
+            // ----- Render Main Charts -----
+            function renderMainCharts(values) {
+                const totalSex = values.male + values.female;
+                const totalAge = values.ageNS + values.age19b + values.age2029 + values.age3039 + values.age4049 + values.age5059 + values.age6069 + values.age70;
+                const totalClient = values.clientNS + values.citizen + values.business + values.government;
+                const totalRegion = values.regionNS + values.region3 + values.region4a + values.ncr;
+                const totalCC1 = values.cc1NS + values.knowSaw + values.knowNotSaw + values.learned + values.dontKnow;
+                const awareDenom = totalCC1 - values.dontKnow - values.cc1NS || 1;
+
+                let html = '';
+
+                html += `<div class="chart-card" id="chartSexContainer">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD)</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Total: ${totalSex}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartSex', 'Sex_Chart')"><i class="fas fa-download"></i> PNG</button>
+                        </div>
+                    </div>
+                    <canvas id="chartSex"></canvas>
+                    <div class="data-legend">
+                        <span>Male:</span> ${values.male} (${totalSex ? ((values.male/totalSex)*100).toFixed(2) : 0}%) 
+                        <span>Female:</span> ${values.female} (${totalSex ? ((values.female/totalSex)*100).toFixed(2) : 0}%)
+                    </div>
+                </div>`;
+
+                html += `<div class="chart-card" id="chartAgeContainer">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-calendar-alt"></i> Age Distribution</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Total: ${totalAge}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartAge', 'Age_Chart')"><i class="fas fa-download"></i> PNG</button>
+                        </div>
+                    </div>
+                    <canvas id="chartAge"></canvas>
+                    <div class="data-legend">
+                        <div style="width:100%; display:grid; grid-template-columns:repeat(2,1fr); gap:0.5rem;">
+                            <div><span>N/S:</span> ${values.ageNS}</div>
+                            <div><span>19↓:</span> ${values.age19b}</div>
+                            <div><span>20-29:</span> ${values.age2029}</div>
+                            <div><span>30-39:</span> ${values.age3039}</div>
+                            <div><span>40-49:</span> ${values.age4049}</div>
+                            <div><span>50-59:</span> ${values.age5059}</div>
+                            <div><span>60-69:</span> ${values.age6069}</div>
+                            <div><span>70↑:</span> ${values.age70}</div>
+                        </div>
+                    </div>
+                </div>`;
+
+                html += `<div class="chart-card" id="chartClientContainer">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-users"></i> Client Type</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Total: ${totalClient}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartClient', 'Client_Chart')"><i class="fas fa-download"></i> PNG</button>
+                        </div>
+                    </div>
+                    <canvas id="chartClient"></canvas>
+                    <div class="data-legend">
+                        <div><span>N/S:</span> ${values.clientNS}</div>
+                        <div><span>Citizen:</span> ${values.citizen}</div>
+                        <div><span>Business:</span> ${values.business}</div>
+                        <div><span>Government:</span> ${values.government}</div>
+                    </div>
+                </div>`;
+
+                html += `<div class="chart-card" id="chartRegionContainer">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Total: ${totalRegion}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartRegion', 'Region_Chart')"><i class="fas fa-download"></i> PNG</button>
+                        </div>
+                    </div>
+                    <canvas id="chartRegion"></canvas>
+                    <div class="data-legend">
+                        <div><span>N/S:</span> ${values.regionNS}</div>
+                        <div><span>Region III:</span> ${values.region3}</div>
+                        <div><span>Region IV-A:</span> ${values.region4a}</div>
+                        <div><span>NCR:</span> ${values.ncr}</div>
+                    </div>
+                </div>`;
+
+                html += `<div class="chart-card" id="chartCC1Container">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-eye"></i> CC1 Awareness</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Total: ${totalCC1}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartCC1', 'CC1_Chart')"><i class="fas fa-download"></i> PNG</button>
+                        </div>
+                    </div>
+                    <canvas id="chartCC1"></canvas>
+                    <div class="data-legend">
+                        <div><span>N/S:</span> ${values.cc1NS}</div>
+                        <div><span>Know & Saw:</span> ${values.knowSaw}</div>
+                        <div><span>Know/Not:</span> ${values.knowNotSaw}</div>
+                        <div><span>Learned:</span> ${values.learned}</div>
+                        <div><span>Don't know:</span> ${values.dontKnow}</div>
+                    </div>
+                </div>`;
+
+                html += `<div class="chart-card" id="chartCC2Container">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-low-vision"></i> CC2 Visibility</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Aware: ${awareDenom}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartCC2', 'CC2_Chart')"><i class="fas fa-download"></i> PNG</button>
+                        </div>
+                    </div>
+                    <canvas id="chartCC2"></canvas>
+                    <div class="data-legend">
+                        <div><span>N/S:</span> ${values.cc2NS}</div>
+                        <div><span>Easy:</span> ${values.easy}</div>
+                        <div><span>Somewhat:</span> ${values.somewhatEasy}</div>
+                        <div><span>Difficult:</span> ${values.difficult}</div>
+                        <div><span>Not visible:</span> ${values.notVisible}</div>
+                        <div><span>N/A:</span> ${values.cc2na}</div>
+                    </div>
+                </div>`;
+
+                html += `<div class="chart-card" id="chartCC3Container">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-check-circle"></i> CC3 Effectivity</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Aware: ${awareDenom}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartCC3', 'CC3_Chart')"><i class="fas fa-download"></i> PNG</button>
+                        </div>
+                    </div>
+                    <canvas id="chartCC3"></canvas>
+                    <div class="data-legend">
+                        <div><span>N/S:</span> ${values.cc3NS}</div>
+                        <div><span>Helped much:</span> ${values.helpedMuch}</div>
+                        <div><span>Somewhat:</span> ${values.somewhatHelped}</div>
+                        <div><span>Did not:</span> ${values.didNotHelp}</div>
+                        <div><span>N/A:</span> ${values.cc3na}</div>
+                    </div>
+                </div>`;
+
+                mainGridEl.innerHTML = html;
+
+                Object.values(chartInstances).forEach(chart => chart?.destroy());
+                chartInstances = {};
+
+                const bluePalette = ['#1a7f9e', '#2f98b3', '#45b0c9', '#7fc5d9', '#a8dae8'];
+                const goldPalette = ['#c9a227', '#d9b44a', '#e5c36b', '#f0d59a', '#f8e7c4'];
+                const lightBluePalette = ['#7fc5d9', '#a8dae8', '#c4e6f0', '#dff1f7', '#eef8fc'];
+
+                const chartConfigs = [
+                    { id: 'chartSex', type: 'doughnut', labels: ['Male', 'Female'], data: [values.male, values.female], colors: [bluePalette[0], goldPalette[0]], options: { cutout: '70%' } },
+                    { id: 'chartAge', type: 'bar', labels: ['N/S','19↓','20-29','30-39','40-49','50-59','60-69','70↑'], data: [values.ageNS, values.age19b, values.age2029, values.age3039, values.age4049, values.age5059, values.age6069, values.age70], colors: bluePalette[1] },
+                    { id: 'chartClient', type: 'doughnut', labels: ['Citizen','Business','Government','N/S'], data: [values.citizen, values.business, values.government, values.clientNS], colors: [bluePalette[0], bluePalette[2], goldPalette[0], lightBluePalette[2]], options: { cutout: '70%' } },
+                    { id: 'chartRegion', type: 'pie', labels: ['Region III','Region IV-A','NCR','N/S'], data: [values.region3, values.region4a, values.ncr, values.regionNS], colors: [bluePalette[1], bluePalette[2], goldPalette[0], lightBluePalette[3]] },
+                    { id: 'chartCC1', type: 'bar', labels: ['Know & Saw','Know/Not','Learned',"Don't know",'N/S'], data: [values.knowSaw, values.knowNotSaw, values.learned, values.dontKnow, values.cc1NS], colors: bluePalette[0], options: { indexAxis: 'y' } },
+                    { id: 'chartCC2', type: 'bar', labels: ['Easy','Somewhat','Difficult','Not visible','N/A','N/S'], data: [values.easy, values.somewhatEasy, values.difficult, values.notVisible, values.cc2na, values.cc2NS], colors: goldPalette[0], options: { indexAxis: 'y' } },
+                    { id: 'chartCC3', type: 'bar', labels: ['Helped much','Somewhat','Did not','N/A','N/S'], data: [values.helpedMuch, values.somewhatHelped, values.didNotHelp, values.cc3na, values.cc3NS], colors: lightBluePalette[1], options: { indexAxis: 'y' } }
+                ];
+
+                chartConfigs.forEach(cfg => {
+                    const ctx = document.getElementById(cfg.id);
+                    if (!ctx) return;
+                    
+                    Chart.register(valueLabelPlugin);
+                    
+                    chartInstances[cfg.id] = new Chart(ctx, {
+                        type: cfg.type,
+                        data: { labels: cfg.labels, datasets: [{ data: cfg.data, backgroundColor: cfg.colors, borderWidth: 0, borderRadius: 6 }] },
+                        options: {
+                            cutout: cfg.options?.cutout || (cfg.type === 'doughnut' ? '65%' : undefined),
+                            indexAxis: cfg.options?.indexAxis,
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0f859e' } },
+                            scales: cfg.type === 'bar' ? { 
+                                y: { beginAtZero: true, grid: { color: '#e9ecef' }, ticks: { color: '#2a5e6e' } },
+                                x: { ticks: { color: '#2a5e6e' } }
+                            } : undefined
+                        },
+                        plugins: [valueLabelPlugin]
+                    });
+                });
+            }
+
+            // ----- Render SQD Section -----
+            function renderSQDSection(values) {
+                const sqdLabels = ['SQD 1','SQD 2','SQD 3','SQD 4','SQD 5','SQD 6','SQD 7','SQD 8'];
+                const sqdFullLabels = ['Responsiveness','Reliability','Access','Communication','Costs','Integrity','Assurance','Outcome'];
+                const sqdData = [values.sqd1, values.sqd2, values.sqd3, values.sqd4, values.sqd5, values.sqd6, values.sqd7, values.sqd8];
+
+                let html = `
+                    <div class="percentage-card" id="sqd0Card">
+                        <div class="chart-actions" style="position:absolute; top:1rem; right:1rem;">
+                            <button class="download-btn" onclick="downloadCardAsPNG('sqd0Card', 'SQD0')"><i class="fas fa-download"></i> PNG</button>
+                        </div>
+                        <h3><i class="fas fa-star" style="color:#c9a227;"></i> SQD 0 - Overall Satisfaction</h3>
+                        <div class="percentage-value">${values.sqd0.toFixed(2)}%</div>
+                        <div class="percentage-label">Satisfaction Rating</div>
+                    </div>
+                    
+                    <div class="sqd-chart-panel" id="sqdChartPanel">
+                        <div class="sqd-chart-header">
+                            <h2><i class="fas fa-chart-bar"></i> SQD 1-8: Service Quality</h2>
+                            <div class="chart-actions">
+                                <span class="total-indicator">8 Dimensions</span>
+                                <button class="download-btn" onclick="downloadAsPNG('chartSQD1to8', 'SQD_Chart')"><i class="fas fa-download"></i> PNG</button>
+                            </div>
+                        </div>
+                        <canvas id="chartSQD1to8"></canvas>
+                        <div class="data-legend" style="margin-top:0.8rem; padding:0.8rem; font-size:0.7rem;">
+                            ${sqdFullLabels.map((l,i)=>`<span>${l}:</span> ${sqdData[i].toFixed(2)}%`).join(' · ')}
+                        </div>
+                    </div>
+                    
+                    <div class="percentage-card" id="sqdOverallCard">
+                        <div class="chart-actions" style="position:absolute; top:1rem; right:1rem;">
+                            <button class="download-btn" onclick="downloadCardAsPNG('sqdOverallCard', 'SQD_Overall')"><i class="fas fa-download"></i> PNG</button>
+                        </div>
+                        <h3><i class="fas fa-chart-pie" style="color:#c9a227;"></i> Overall SQD (1-8)</h3>
+                        <div class="percentage-value">${values.sqdOverall.toFixed(2)}%</div>
+                        <div class="percentage-label">Average Satisfaction</div>
+                    </div>
+                `;
+
+                sqdChartsContainer.innerHTML = html;
+
+                const ctx = document.getElementById('chartSQD1to8');
+                if (ctx) {
+                    Chart.register(valueLabelPlugin);
+                    chartInstances.sqdChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: { labels: sqdLabels, datasets: [{ data: sqdData, backgroundColor: '#1a7f9e', borderRadius: 6, barPercentage: 0.7 }] },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: { backgroundColor: '#0f859e', callbacks: { label: (c) => `${sqdFullLabels[c.dataIndex]}: ${c.raw.toFixed(2)}%` } }
+                            },
+                            scales: { y: { beginAtZero: true, max: 100, grid: { color: '#e9ecef' }, ticks: { callback: v => v + '%' } } }
+                        },
+                        plugins: [valueLabelPlugin]
+                    });
+                }
+            }
+
+            window.downloadCardAsPNG = async function(cardId, filename) {
+                const element = document.getElementById(cardId);
+                if (!element) return;
+                try {
+                    const canvas = await html2canvas(element, { scale: 2, backgroundColor: '#ffffff' });
+                    const link = document.createElement('a');
+                    link.download = `MWSS_${filename}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                } catch (e) { console.error('PNG download failed:', e); }
+            };
+
+            // ----- Render Comparison (Multi-Service) -----
+            async function renderComparison() {
+                if (compareValues.length === 0) return;
+
+                let html = '';
+
+                // Sex Comparison
+                html += `<div class="compare-card" id="compareSexCard">
+                    <div class="compare-chart-actions">
+                        <button class="download-btn" onclick="downloadAsPNG('compareSex', 'Compare_Sex')"><i class="fas fa-download"></i> PNG</button>
+                    </div>
+                    <h3><i class="fas fa-venus-mars"></i> Sex Distribution</h3>
+                    <canvas id="compareSex"></canvas>
+                </div>`;
+
+                // Age Comparison
+                html += `<div class="compare-card" id="compareAgeCard">
+                    <div class="compare-chart-actions">
+                        <button class="download-btn" onclick="downloadAsPNG('compareAge', 'Compare_Age')"><i class="fas fa-download"></i> PNG</button>
+                    </div>
+                    <h3><i class="fas fa-calendar-alt"></i> Age Distribution</h3>
+                    <canvas id="compareAge"></canvas>
+                </div>`;
+
+                // Client Comparison
+                html += `<div class="compare-card" id="compareClientCard">
+                    <div class="compare-chart-actions">
+                        <button class="download-btn" onclick="downloadAsPNG('compareClient', 'Compare_Client')"><i class="fas fa-download"></i> PNG</button>
+                    </div>
+                    <h3><i class="fas fa-users"></i> Client Type</h3>
+                    <canvas id="compareClient"></canvas>
+                </div>`;
+
+                // Region Comparison
+                html += `<div class="compare-card" id="compareRegionCard">
+                    <div class="compare-chart-actions">
+                        <button class="download-btn" onclick="downloadAsPNG('compareRegion', 'Compare_Region')"><i class="fas fa-download"></i> PNG</button>
+                    </div>
+                    <h3><i class="fas fa-map-marker-alt"></i> Region</h3>
+                    <canvas id="compareRegion"></canvas>
+                </div>`;
+
+                // CC1 Comparison
+                html += `<div class="compare-card" id="compareCC1Card">
+                    <div class="compare-chart-actions">
+                        <button class="download-btn" onclick="downloadAsPNG('compareCC1', 'Compare_CC1')"><i class="fas fa-download"></i> PNG</button>
+                    </div>
+                    <h3><i class="fas fa-eye"></i> CC1 Awareness</h3>
+                    <canvas id="compareCC1"></canvas>
+                </div>`;
+
+                // CC2 Comparison
+                html += `<div class="compare-card" id="compareCC2Card">
+                    <div class="compare-chart-actions">
+                        <button class="download-btn" onclick="downloadAsPNG('compareCC2', 'Compare_CC2')"><i class="fas fa-download"></i> PNG</button>
+                    </div>
+                    <h3><i class="fas fa-low-vision"></i> CC2 Visibility</h3>
+                    <canvas id="compareCC2"></canvas>
+                </div>`;
+
+                // CC3 Comparison
+                html += `<div class="compare-card" id="compareCC3Card">
+                    <div class="compare-chart-actions">
+                        <button class="download-btn" onclick="downloadAsPNG('compareCC3', 'Compare_CC3')"><i class="fas fa-download"></i> PNG</button>
+                    </div>
+                    <h3><i class="fas fa-check-circle"></i> CC3 Effectivity</h3>
+                    <canvas id="compareCC3"></canvas>
+                </div>`;
+
+                comparisonGrid.innerHTML = html;
+
+                // Create Sex chart
+                const ctxSex = document.getElementById('compareSex');
+                if (ctxSex) {
+                    new Chart(ctxSex, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Male', 'Female'],
+                            datasets: compareValues.map((v, i) => ({
+                                label: serviceNames[compareServices[i]] || compareServices[i],
+                                data: [v.male, v.female],
+                                backgroundColor: compareColors[i % compareColors.length],
+                                borderRadius: 6
+                            }))
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                // Create Age chart
+                const ctxAge = document.getElementById('compareAge');
+                if (ctxAge) {
+                    new Chart(ctxAge, {
+                        type: 'bar',
+                        data: {
+                            labels: ['N/S','19↓','20-29','30-39','40-49','50-59','60-69','70↑'],
+                            datasets: compareValues.map((v, i) => ({
+                                label: serviceNames[compareServices[i]] || compareServices[i],
+                                data: [v.ageNS, v.age19b, v.age2029, v.age3039, v.age4049, v.age5059, v.age6069, v.age70],
+                                backgroundColor: compareColors[i % compareColors.length],
+                                borderRadius: 6
+                            }))
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                // Create Client chart
+                const ctxClient = document.getElementById('compareClient');
+                if (ctxClient) {
+                    new Chart(ctxClient, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Citizen','Business','Government','N/S'],
+                            datasets: compareValues.map((v, i) => ({
+                                label: serviceNames[compareServices[i]] || compareServices[i],
+                                data: [v.citizen, v.business, v.government, v.clientNS],
+                                backgroundColor: compareColors[i % compareColors.length],
+                                borderRadius: 6
+                            }))
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                // Create Region chart
+                const ctxRegion = document.getElementById('compareRegion');
+                if (ctxRegion) {
+                    new Chart(ctxRegion, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Region III','Region IV-A','NCR','N/S'],
+                            datasets: compareValues.map((v, i) => ({
+                                label: serviceNames[compareServices[i]] || compareServices[i],
+                                data: [v.region3, v.region4a, v.ncr, v.regionNS],
+                                backgroundColor: compareColors[i % compareColors.length],
+                                borderRadius: 6
+                            }))
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                // Create CC1 chart
+                const ctxCC1 = document.getElementById('compareCC1');
+                if (ctxCC1) {
+                    new Chart(ctxCC1, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Know & Saw','Know/Not','Learned',"Don't know",'N/S'],
+                            datasets: compareValues.map((v, i) => ({
+                                label: serviceNames[compareServices[i]] || compareServices[i],
+                                data: [v.knowSaw, v.knowNotSaw, v.learned, v.dontKnow, v.cc1NS],
+                                backgroundColor: compareColors[i % compareColors.length],
+                                borderRadius: 6
+                            }))
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                // Create CC2 chart
+                const ctxCC2 = document.getElementById('compareCC2');
+                if (ctxCC2) {
+                    new Chart(ctxCC2, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Easy','Somewhat','Difficult','Not visible','N/A','N/S'],
+                            datasets: compareValues.map((v, i) => ({
+                                label: serviceNames[compareServices[i]] || compareServices[i],
+                                data: [v.easy, v.somewhatEasy, v.difficult, v.notVisible, v.cc2na, v.cc2NS],
+                                backgroundColor: compareColors[i % compareColors.length],
+                                borderRadius: 6
+                            }))
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                // Create CC3 chart
+                const ctxCC3 = document.getElementById('compareCC3');
+                if (ctxCC3) {
+                    new Chart(ctxCC3, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Helped much','Somewhat','Did not','N/A','N/S'],
+                            datasets: compareValues.map((v, i) => ({
+                                label: serviceNames[compareServices[i]] || compareServices[i],
+                                data: [v.helpedMuch, v.somewhatHelped, v.didNotHelp, v.cc3na, v.cc3NS],
+                                backgroundColor: compareColors[i % compareColors.length],
+                                borderRadius: 6
+                            }))
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+            }
+
+            // ----- Load Comparison Data -----
+            async function loadComparisonData() {
+                comparisonGrid.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-pulse fa-2x"></i><p>Loading comparison data...</p></div>';
+                compareValues = [];
+                for (let service of compareServices) {
+                    const matrix = await fetchSheetData(service);
+                    compareValues.push(readAllCells(matrix));
+                }
+                await renderComparison();
+            }
+
+            // ----- Update Comparison Selectors -----
+            function updateComparisonSelectors() {
+                let html = '';
+                compareServices.forEach((service, index) => {
+                    html += `
+                        <div class="service-selector-row">
+                            <select class="compare-select" data-index="${index}">
+                                <option value="overall" ${service === 'overall' ? 'selected' : ''}>Overall Summary</option>
+                                <option value="external" ${service === 'external' ? 'selected' : ''}>External Summary</option>
+                                <option value="internal" ${service === 'internal' ? 'selected' : ''}>Internal Summary</option>
+                                <optgroup label="EXTERNAL SERVICES">
+                                    ${externalServices.map(s => `<option value="${s}" ${service === s ? 'selected' : ''}>${serviceNames[s]}</option>`).join('')}
+                                </optgroup>
+                                <optgroup label="INTERNAL SERVICES">
+                                    ${internalServices.map(s => `<option value="${s}" ${service === s ? 'selected' : ''}>${serviceNames[s]}</option>`).join('')}
+                                </optgroup>
+                            </select>
+                            ${compareServices.length > 2 ? `
+                                <button class="remove-service-btn" data-index="${index}">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                comparisonSelectors.innerHTML = html;
+
+                document.querySelectorAll('.compare-select').forEach(select => {
+                    select.addEventListener('change', function() {
+                        const index = parseInt(this.dataset.index);
+                        compareServices[index] = this.value;
+                    });
+                });
+
+                document.querySelectorAll('.remove-service-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        compareServices.splice(index, 1);
+                        if (compareServices.length < 2) compareServices = ['external', 'internal'];
+                        updateComparisonSelectors();
+                    });
+                });
+            }
+
+            // ----- Toggle Comparison Mode -----
+            compareToggle.addEventListener('click', async function() {
+                isCompareMode = !isCompareMode;
+                if (isCompareMode) {
+                    compareToggle.classList.add('active');
+                    comparisonPanel.style.display = 'block';
+                    mainGridEl.style.display = 'none';
+                    sqdChartsContainer.style.display = 'none';
+                    document.getElementById('sqdSectionHeader').style.display = 'none';
+                    compareServices = ['external', 'internal'];
+                    updateComparisonSelectors();
+                } else {
+                    compareToggle.classList.remove('active');
+                    comparisonPanel.style.display = 'none';
+                    mainGridEl.style.display = 'grid';
+                    sqdChartsContainer.style.display = 'grid';
+                    document.getElementById('sqdSectionHeader').style.display = 'flex';
+                    renderDashboard();
+                }
+            });
+
+            addServiceBtn.addEventListener('click', function() {
+                if (compareServices.length < 5) {
+                    compareServices.push('external');
+                    updateComparisonSelectors();
+                }
+            });
+
+            executeCompareBtn.addEventListener('click', function() {
+                loadComparisonData();
+            });
+
+            // ----- Show Full Data Modal -----
+            function showFullDataModal() {
+                if (!currentMatrix) { alert('No data available'); return; }
+                const modalTitle = document.getElementById('modalTitle');
+                const modalTableContainer = document.getElementById('modalTableContainer');
+                modalTitle.innerHTML = `${currentServiceDisplayName} - Complete Data (${currentMatrix.length} rows)`;
+                let tableHTML = '<table class="data-table"><thead><tr>';
+                if (currentMatrix.length > 0) {
+                    for (let i = 0; i < currentMatrix[0].length; i++) {
+                        tableHTML += `<th><span class="col-letter">${String.fromCharCode(65 + i)}</span></th>`;
+                    }
+                    tableHTML += '</tr></thead><tbody>';
+                    for (let i = 0; i < currentMatrix.length; i++) {
+                        tableHTML += '<tr>';
+                        for (let j = 0; j < currentMatrix[i].length; j++) {
+                            const val = currentMatrix[i][j] || '';
+                            tableHTML += `<td title="${val.replace(/"/g,'&quot;')}">${val.length > 100 ? val.substring(0,100)+'...' : val}</td>`;
+                        }
+                        tableHTML += '</tr>';
+                    }
+                    tableHTML += '</tbody></table>';
+                }
+                modalTableContainer.innerHTML = tableHTML;
+                dataModal.style.display = 'block';
+            }
+
+            function downloadCSV() {
+                if (!currentMatrix) { alert('No data'); return; }
+                let csv = currentMatrix.map(r => r.map(c => {
+                    if (typeof c === 'string' && (c.includes(',') || c.includes('"'))) return `"${c.replace(/"/g,'""')}"`;
+                    return c;
+                }).join(',')).join('\n');
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `MWSS_${currentServiceDisplayName.replace(/\s+/g,'_')}.csv`;
+                link.click();
+            }
 
             // ----- Render Dashboard -----
             async function renderDashboard() {
                 if (isCompareMode) return;
-
-                const loadingHTML = `
-                    <div class="loading-state">
-                        <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #c9a227;"></i>
-                        <p style="color: #0f859e;">Loading ${serviceNames[currentServiceCode] || serviceNames[currentService] || currentService}...</p>
-                    </div>
-                `;
+                const loadingHTML = `<div class="loading-state"><i class="fas fa-spinner fa-pulse" style="font-size:2rem; color:#c9a227;"></i><p style="color:#0f859e;">Loading...</p></div>`;
                 mainGridEl.innerHTML = loadingHTML;
                 sqdChartsContainer.innerHTML = '';
-
                 const matrix = await fetchSheetData(currentServiceCode || currentService);
                 const values = readAllCells(matrix);
                 currentValues = values;
-                
                 renderMainCharts(values);
                 renderSQDSection(values);
                 updateServiceDisplay();
             }
 
-            // ----- Update Date Range -----
-            updateDateBtn.addEventListener('click', function() {
-                renderDashboard();
-            });
+            updateDateBtn.addEventListener('click', renderDashboard);
 
             // ----- Event Listeners -----
             function initEvents() {
-                // Toggle buttons
                 document.querySelectorAll('.switch-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
                         this.classList.add('active');
-                        
                         currentService = this.dataset.type;
                         currentServiceCode = '';
                         resetDropdowns();
@@ -2667,66 +2500,40 @@
                     });
                 });
 
-                // External service select
                 externalSelect.addEventListener('change', function() {
                     if (this.value) {
                         currentServiceCode = this.value;
                         currentService = '';
                         internalSelect.value = '';
-                        
                         document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
                         renderDashboard();
                     }
                 });
 
-                // Internal service select
                 internalSelect.addEventListener('change', function() {
                     if (this.value) {
                         currentServiceCode = this.value;
                         currentService = '';
                         externalSelect.value = '';
-                        
                         document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
                         renderDashboard();
                     }
                 });
 
-                // View full data button
                 viewDataBtn.addEventListener('click', showFullDataModal);
 
-                // Modal elements
-                const dataModal = document.getElementById('dataModal');
                 const closeModal = document.getElementById('closeModal');
-                const downloadCsvBtn = document.getElementById('downloadCsvBtn');
-                const refreshDataBtn = document.getElementById('refreshDataBtn');
+                const dataModal = document.getElementById('dataModal');
+                closeModal.addEventListener('click', () => dataModal.style.display = 'none');
+                window.addEventListener('click', (e) => { if (e.target === dataModal) dataModal.style.display = 'none'; });
 
-                // Close modal
-                closeModal.addEventListener('click', () => {
-                    dataModal.style.display = 'none';
-                });
-
-                // Click outside to close
-                window.addEventListener('click', (e) => {
-                    if (e.target === dataModal) {
-                        dataModal.style.display = 'none';
-                    }
-                });
-
-                // Download CSV button
-                downloadCsvBtn.addEventListener('click', downloadCSV);
-
-                // Refresh data button
-                refreshDataBtn.addEventListener('click', () => {
+                document.getElementById('downloadCsvBtn').addEventListener('click', downloadCSV);
+                document.getElementById('refreshDataBtn').addEventListener('click', () => {
                     renderDashboard();
-                    setTimeout(() => {
-                        if (currentMatrix) {
-                            showFullDataModal();
-                        }
-                    }, 500);
+                    setTimeout(() => { if (currentMatrix) showFullDataModal(); }, 500);
                 });
             }
 
-            // ----- Start -----
             window.addEventListener('DOMContentLoaded', () => {
                 initEvents();
                 renderDashboard();
