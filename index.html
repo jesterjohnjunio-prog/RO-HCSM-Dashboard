@@ -21,15 +21,172 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(165deg, #f0f7fa 0%, #e6f0f5 100%);
-            padding: 2rem;
-            color: #1a4a5f;
-            min-height: 100vh;
+            overflow-x: hidden;
         }
 
+        /* ========== LOGIN PAGE ========== */
+        .login-container {
+            min-height: 100vh;
+            width: 100%;
+            background: linear-gradient(165deg, #0a5a6b 0%, #107a95 50%, #1a9bbf 100%);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Animated Water Background */
+        .water-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: rgba(255,255,255,0.03);
+            border-radius: 40%;
+            animation: wave 20s infinite linear;
+        }
+
+        .wave1 {
+            top: -50%;
+            left: -50%;
+            animation: wave 25s infinite linear;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .wave2 {
+            top: -30%;
+            left: -30%;
+            animation: wave 30s infinite linear reverse;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .wave3 {
+            top: -70%;
+            left: -20%;
+            animation: wave 35s infinite linear;
+            background: rgba(255,255,255,0.01);
+        }
+
+        @keyframes wave {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 48px;
+            padding: 3rem 4rem;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255,255,255,0.5);
+            width: 90%;
+            max-width: 500px;
+            z-index: 10;
+            animation: slideUp 0.8s ease-out;
+            text-align: center;
+        }
+
+        .login-logo {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .login-logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .login-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0e5a6b;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            font-size: 1rem;
+            color: #4a7a86;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0e5a6b;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid rgba(15,133,158,0.2);
+            border-radius: 60px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #c9a227;
+            box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(145deg, #0e5a6b, #107a95);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: linear-gradient(145deg, #107a95, #0e5a6b);
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* ========== DASHBOARD (Initially Hidden) ========== */
         .dashboard {
             max-width: 1800px;
             margin: 0 auto;
+            display: none;
+            padding: 2rem;
+            background: linear-gradient(165deg, #f0f7fa 0%, #e6f0f5 100%);
+            min-height: 100vh;
+        }
+
+        .dashboard.visible {
+            display: block;
         }
 
         /* ========== ANIMATED HEADER ========== */
@@ -163,12 +320,100 @@
             font-size: 0.9rem;
         }
 
-        /* ========== FILTER SECTION ========== */
+        /* ========== DATE FILTER SECTION ========== */
+        .date-filter-section {
+            background: white;
+            border-radius: 100px;
+            padding: 1rem 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,70,90,0.06);
+            border: 1px solid rgba(147,197,214,0.2);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            animation: slideUp 0.6s ease-out 0.5s both;
+        }
+
+        .date-range {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .date-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .date-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #0f6f84;
+            background: rgba(18,128,155,0.05);
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            border: 1px solid rgba(18,128,155,0.1);
+        }
+
+        .date-input {
+            border: 1px solid rgba(147,197,214,0.3);
+            border-radius: 60px;
+            padding: 0.6rem 1.2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #1a4a5f;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .date-input:hover {
+            border-color: #c9a227;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: #0f859e;
+            box-shadow: 0 0 0 3px rgba(15,133,158,0.1);
+        }
+
+        .update-date-btn {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 60px;
+            padding: 0.6rem 1.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #a17f28;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .update-date-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .current-date-range {
+            font-size: 0.85rem;
+            color: #4a7a86;
+            background: rgba(15,133,158,0.05);
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+        }
+
+        /* ========== SERVICE FILTER SECTION ========== */
         .filter-section {
             background: white;
             border-radius: 100px;
             padding: 0.8rem 1.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             box-shadow: 0 8px 20px rgba(0,70,90,0.06);
             border: 1px solid rgba(147,197,214,0.2);
             display: flex;
@@ -267,7 +512,9 @@
         .toggle-lead {
             display: flex;
             justify-content: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .service-switch {
@@ -308,6 +555,94 @@
         .switch-btn.active:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 16px rgba(15,133,158,0.4);
+        }
+
+        .compare-btn {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 60px;
+            padding: 0.9rem 2.8rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #a17f28;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .compare-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .compare-btn.active {
+            background: #c9a227;
+            color: white;
+            box-shadow: 0 4px 12px rgba(201, 162, 39, 0.3);
+        }
+
+        /* Comparison Panel */
+        .comparison-panel {
+            background: white;
+            border-radius: 40px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(0,70,90,0.04);
+            border: 1px solid rgba(147,197,214,0.15);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .comparison-header h2 {
+            font-size: 1.3rem;
+            color: #0e5a6b;
+        }
+
+        .comparison-selectors {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .compare-select {
+            border: 1px solid rgba(147,197,214,0.3);
+            border-radius: 60px;
+            padding: 0.6rem 2rem 0.6rem 1.2rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #1a4a5f;
+            min-width: 250px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .compare-card {
+            background: rgba(255,255,255,0.5);
+            border-radius: 28px;
+            padding: 1.5rem;
+            border: 1px solid rgba(147,197,214,0.15);
+        }
+
+        .compare-card h3 {
+            font-size: 1rem;
+            color: #0e5a6b;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
         }
 
         /* Section Headers */
@@ -536,7 +871,7 @@
             font-size: 1.1rem;
         }
 
-        /* ========== ENHANCED MODAL - FULL DATA VIEW ========== */
+        /* ========== MODAL ========== */
         .modal {
             display: none;
             position: fixed;
@@ -631,7 +966,7 @@
             background: rgba(212, 175, 55, 0.2);
         }
 
-        /* Table Container - Scrollable */
+        /* Table Container */
         .table-container {
             flex: 1;
             overflow: auto;
@@ -674,41 +1009,39 @@
             background: rgba(212, 175, 55, 0.05);
         }
 
-        .data-table td:first-child, .data-table th:first-child {
-            padding-left: 1.5rem;
-        }
-
-        .data-table td:last-child, .data-table th:last-child {
-            padding-right: 1.5rem;
-        }
-
-        /* Column letter indicator */
-        .col-letter {
-            color: #c9a227;
-            font-weight: 600;
-            margin-right: 0.3rem;
-        }
-
-        .status-footer {
-            margin-top: 2.5rem;
+        /* ========== FOOTER ========== */
+        .dashboard-footer {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 8px 24px rgba(0,70,90,0.04);
+            border: 1px solid rgba(147,197,214,0.15);
             text-align: center;
-            font-size: 0.8rem;
-            color: #4a7a86;
-            padding: 1.5rem;
-            border-top: 1px solid rgba(212, 175, 55, 0.15);
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
             animation: fadeIn 1s ease-out;
         }
 
-        .live-badge {
-            background: rgba(212, 175, 55, 0.06);
-            padding: 0.4rem 1.6rem;
-            border-radius: 60px;
+        .footer-copyright {
+            font-size: 0.9rem;
+            color: #4a7a86;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-powered {
+            font-size: 0.85rem;
+            color: #0f6f84;
+            margin-bottom: 0.5rem;
             font-weight: 500;
-            color: #a17f28;
+        }
+
+        .footer-developed {
+            font-size: 0.85rem;
+            color: #c9a227;
+            font-weight: 600;
+        }
+
+        .status-footer {
+            display: none;
         }
 
         .loading-state {
@@ -724,6 +1057,7 @@
             .sqd-charts-container { grid-template-columns: 1fr; }
             .filter-section { flex-direction: column; padding: 1.2rem; }
             .service-select { min-width: 250px; }
+            .date-filter-section { flex-direction: column; }
         }
 
         @media (max-width: 1000px) {
@@ -735,117 +1069,248 @@
     </style>
 </head>
 <body>
-<div class="dashboard">
-
-    <!-- ANIMATED HEADER with Logo -->
-    <div class="hero">
-        <div class="header-content">
-            <div class="logo-container">
-                <img 
-                    src="https://i.ibb.co/KjjLW3nt/mwss-logo-horiz-flat-01.png" 
-                    alt="MWSS Regulatory Office Logo" 
-                    class="mwss-logo"
-                >
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="login-container">
+        <div class="water-bg">
+            <div class="wave wave1"></div>
+            <div class="wave wave2"></div>
+            <div class="wave wave3"></div>
+        </div>
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="https://i.ibb.co/KjjLW3nt/mwss-logo-horiz-flat-01.png" alt="MWSS Regulatory Office Logo">
+            </div>
+            <div class="login-title">Harmonized Client Satisfaction</div>
+            <div class="login-title" style="font-size: 1.2rem; margin-top: -0.5rem;">Measurement Dashboard</div>
+            <div class="login-subtitle">By Management Information System</div>
+            
+            <div class="input-group">
+                <label class="input-label">Username</label>
+                <input type="text" id="username" class="input-field" placeholder="Enter username">
             </div>
             
-            <div class="dashboard-subtitle">
-                Harmonized Client Satisfaction Measurement Dashboard
+            <div class="input-group">
+                <label class="input-label">Password</label>
+                <input type="password" id="password" class="input-field" placeholder="Enter password">
             </div>
             
-            <div class="badge-container">
-                <span class="badge"><i class="fas fa-database"></i> Live Data</span>
-                <span class="badge badge-gold"><i class="fas fa-chart-pie"></i> 7 Key Metrics</span>
-                <span class="badge"><i class="fas fa-star"></i> SQD 0-8</span>
-                <span class="badge"><i class="fas fa-code-branch"></i> 25+ Services</span>
+            <button class="login-btn" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i> Login to Dashboard
+            </button>
+            
+            <div class="error-message" id="loginError">Invalid username or password</div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="dashboard">
+        <!-- ANIMATED HEADER with Logo -->
+        <div class="hero">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img 
+                        src="https://i.ibb.co/KjjLW3nt/mwss-logo-horiz-flat-01.png" 
+                        alt="MWSS Regulatory Office Logo" 
+                        class="mwss-logo"
+                    >
+                </div>
+                
+                <div class="dashboard-subtitle">
+                    Harmonized Client Satisfaction Measurement Dashboard
+                </div>
+                
+                <div class="badge-container">
+                    <span class="badge"><i class="fas fa-database"></i> Live Data</span>
+                    <span class="badge badge-gold"><i class="fas fa-chart-pie"></i> 7 Key Metrics</span>
+                    <span class="badge"><i class="fas fa-star"></i> SQD 0-8</span>
+                    <span class="badge"><i class="fas fa-code-branch"></i> 25+ Services</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- DATE FILTER SECTION -->
+        <div class="date-filter-section">
+            <div class="date-range">
+                <div class="date-item">
+                    <span class="date-label"><i class="fas fa-calendar-alt"></i> FROM</span>
+                    <input type="date" id="dateFrom" class="date-input" value="2026-01-01">
+                </div>
+                <div class="date-item">
+                    <span class="date-label"><i class="fas fa-calendar-alt"></i> TO</span>
+                    <input type="date" id="dateTo" class="date-input" value="2026-12-31">
+                </div>
+                <button class="update-date-btn" id="updateDateBtn">
+                    <i class="fas fa-sync-alt"></i> Update Range
+                </button>
+            </div>
+            <div class="current-date-range" id="currentDateRange">
+                Current: Jan 1, 2026 - Dec 31, 2026
+            </div>
+        </div>
+
+        <!-- SERVICE FILTER SECTION -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <span class="filter-label"><i class="fas fa-globe"></i> EXTERNAL</span>
+                <select class="service-select" id="externalServiceSelect">
+                    <option value="">-- Select External Service --</option>
+                    <option value="RID">Receiving of Incoming Documents</option>
+                    <option value="FRA">Filing of Rate Adjustment Application</option>
+                    <option value="HPP">Hiring of Plantilla Personnel</option>
+                    <option value="HIC">Hiring of Individual Contract</option>
+                    <option value="PPC">Processing of Payment of Claims</option>
+                    <option value="FCC">Filing of Customer Complaints</option>
+                    <option value="RWS">Request of Water Sampling</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label"><i class="fas fa-building"></i> INTERNAL</span>
+                <select class="service-select" id="internalServiceSelect">
+                    <option value="">-- Select Internal Service --</option>
+                    <option value="ROD">Retrieval of Official Documents</option>
+                    <option value="RIC">ICT Infrastructure Maintenance</option>
+                    <option value="RWD">Website Development</option>
+                    <option value="AGN">GovMail - New Account</option>
+                    <option value="AGP">GovMail - Password Reset</option>
+                    <option value="AGS">GovMail - Storage Increase</option>
+                    <option value="REP">Reimbursement from Petty Cash</option>
+                    <option value="RLC">Request & Liquidation Cash Advance</option>
+                    <option value="LCA">Liquidation of Cash Advance</option>
+                    <option value="PPF">Processing of Payments</option>
+                    <option value="PER">Employment Records</option>
+                    <option value="PCB">Procurement - Competitive Bidding</option>
+                    <option value="PRA">Purchase Request - Alternative</option>
+                    <option value="ITT">Issuance of Trip Ticket</option>
+                    <option value="IPA">Property Acknowledgment</option>
+                    <option value="RLP">Legal - Complex</option>
+                    <option value="RLT">Legal - Highly Technical</option>
+                </select>
+            </div>
+
+            <button class="view-data-btn" id="viewFullDataBtn">
+                <i class="fas fa-table"></i> View Full Data
+            </button>
+
+            <div class="current-selection" id="currentSelection">
+                <i class="fas fa-chart-line"></i>
+                <span id="selectedServiceDisplay">Overall View</span>
+            </div>
+        </div>
+
+        <!-- Service Toggle and Comparison -->
+        <div class="toggle-lead">
+            <div class="service-switch" id="serviceToggle">
+                <button class="switch-btn active" data-type="overall">
+                    <i class="fas fa-globe-asia"></i> OVERALL
+                </button>
+                <button class="switch-btn" data-type="external">
+                    <i class="fas fa-external-link-alt"></i> EXTERNAL
+                </button>
+                <button class="switch-btn" data-type="internal">
+                    <i class="fas fa-building"></i> INTERNAL
+                </button>
+            </div>
+            <button class="compare-btn" id="compareToggle">
+                <i class="fas fa-balance-scale"></i> COMPARE MODE
+            </button>
+        </div>
+
+        <!-- Comparison Panel (Initially Hidden) -->
+        <div id="comparisonPanel" class="comparison-panel" style="display: none;">
+            <div class="comparison-header">
+                <h2><i class="fas fa-balance-scale" style="color: #c9a227;"></i> Service Comparison</h2>
+                <div class="comparison-selectors">
+                    <select id="compareService1" class="compare-select">
+                        <option value="external">External Services Summary</option>
+                        <option value="internal">Internal Services Summary</option>
+                        <option value="RID">Receiving of Incoming Documents</option>
+                        <option value="FRA">Filing of Rate Adjustment Application</option>
+                        <option value="HPP">Hiring of Plantilla Personnel</option>
+                        <option value="HIC">Hiring of Individual Contract</option>
+                        <option value="PPC">Processing of Payment of Claims</option>
+                        <option value="FCC">Filing of Customer Complaints</option>
+                        <option value="RWS">Request of Water Sampling</option>
+                        <option value="ROD">Retrieval of Official Documents</option>
+                        <option value="RIC">ICT Infrastructure Maintenance</option>
+                        <option value="RWD">Website Development</option>
+                        <option value="AGN">GovMail - New Account</option>
+                        <option value="AGP">GovMail - Password Reset</option>
+                        <option value="AGS">GovMail - Storage Increase</option>
+                        <option value="REP">Reimbursement from Petty Cash</option>
+                        <option value="RLC">Request & Liquidation Cash Advance</option>
+                        <option value="LCA">Liquidation of Cash Advance</option>
+                        <option value="PPF">Processing of Payments</option>
+                        <option value="PER">Employment Records</option>
+                        <option value="PCB">Procurement - Competitive Bidding</option>
+                        <option value="PRA">Purchase Request - Alternative</option>
+                        <option value="ITT">Issuance of Trip Ticket</option>
+                        <option value="IPA">Property Acknowledgment</option>
+                        <option value="RLP">Legal - Complex</option>
+                        <option value="RLT">Legal - Highly Technical</option>
+                    </select>
+                    <span style="color: #c9a227; font-weight: 600;">VS</span>
+                    <select id="compareService2" class="compare-select">
+                        <option value="internal">Internal Services Summary</option>
+                        <option value="external">External Services Summary</option>
+                        <option value="RID">Receiving of Incoming Documents</option>
+                        <option value="FRA">Filing of Rate Adjustment Application</option>
+                        <option value="HPP">Hiring of Plantilla Personnel</option>
+                        <option value="HIC">Hiring of Individual Contract</option>
+                        <option value="PPC">Processing of Payment of Claims</option>
+                        <option value="FCC">Filing of Customer Complaints</option>
+                        <option value="RWS">Request of Water Sampling</option>
+                        <option value="ROD">Retrieval of Official Documents</option>
+                        <option value="RIC">ICT Infrastructure Maintenance</option>
+                        <option value="RWD">Website Development</option>
+                        <option value="AGN">GovMail - New Account</option>
+                        <option value="AGP">GovMail - Password Reset</option>
+                        <option value="AGS">GovMail - Storage Increase</option>
+                        <option value="REP">Reimbursement from Petty Cash</option>
+                        <option value="RLC">Request & Liquidation Cash Advance</option>
+                        <option value="LCA">Liquidation of Cash Advance</option>
+                        <option value="PPF">Processing of Payments</option>
+                        <option value="PER">Employment Records</option>
+                        <option value="PCB">Procurement - Competitive Bidding</option>
+                        <option value="PRA">Purchase Request - Alternative</option>
+                        <option value="ITT">Issuance of Trip Ticket</option>
+                        <option value="IPA">Property Acknowledgment</option>
+                        <option value="RLP">Legal - Complex</option>
+                        <option value="RLT">Legal - Highly Technical</option>
+                    </select>
+                </div>
+            </div>
+            <div id="comparisonGrid" class="comparison-grid">
+                <!-- Comparison charts will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="chart-grid" id="mainChartGrid"></div>
+
+        <!-- SQD Section Header -->
+        <div class="section-header" id="sqdSectionHeader">
+            <i class="fas fa-star"></i> Service Quality Dimensions (SQD 0-8)
+        </div>
+
+        <!-- SQD Charts Container -->
+        <div class="sqd-charts-container" id="sqdChartsContainer"></div>
+
+        <!-- FOOTER - Updated with Copyright -->
+        <div class="dashboard-footer">
+            <div class="footer-copyright">
+                Copyright © 2026 Metropolitan Waterworks and Sewerage System Regulatory Office. ro.mwss.gov.ph. All rights reserved.
+            </div>
+            <div class="footer-powered">
+                Powered by: Management Information System
+            </div>
+            <div class="footer-developed">
+                Developed by: Jester John M. Junio
             </div>
         </div>
     </div>
 
-    <!-- FILTER SECTION - Clean service names WITHOUT parentheses -->
-    <div class="filter-section">
-        <div class="filter-group">
-            <span class="filter-label"><i class="fas fa-globe"></i> EXTERNAL</span>
-            <select class="service-select" id="externalServiceSelect">
-                <option value="">-- Select External Service --</option>
-                <option value="RID">Receiving of Incoming Documents</option>
-                <option value="FRA">Filing of Rate Adjustment Application</option>
-                <option value="HPP">Hiring of Plantilla Personnel</option>
-                <option value="HIC">Hiring of Individual Contract</option>
-                <option value="PPC">Processing of Payment of Claims</option>
-                <option value="FCC">Filing of Customer Complaints</option>
-                <option value="RWS">Request of Water Sampling</option>
-            </select>
-        </div>
-
-        <div class="filter-group">
-            <span class="filter-label"><i class="fas fa-building"></i> INTERNAL</span>
-            <select class="service-select" id="internalServiceSelect">
-                <option value="">-- Select Internal Service --</option>
-                <option value="ROD">Retrieval of Official Documents</option>
-                <option value="RIC">ICT Infrastructure Maintenance</option>
-                <option value="RWD">Website Development</option>
-                <option value="AGN">GovMail - New Account</option>
-                <option value="AGP">GovMail - Password Reset</option>
-                <option value="AGS">GovMail - Storage Increase</option>
-                <option value="REP">Reimbursement from Petty Cash</option>
-                <option value="RLC">Request & Liquidation Cash Advance</option>
-                <option value="LCA">Liquidation of Cash Advance</option>
-                <option value="PPF">Processing of Payments</option>
-                <option value="PER">Employment Records</option>
-                <option value="PCB">Procurement - Competitive Bidding</option>
-                <option value="PRA">Purchase Request - Alternative</option>
-                <option value="ITT">Issuance of Trip Ticket</option>
-                <option value="IPA">Property Acknowledgment</option>
-                <option value="RLP">Legal - Complex</option>
-                <option value="RLT">Legal - Highly Technical</option>
-            </select>
-        </div>
-
-        <button class="view-data-btn" id="viewFullDataBtn">
-            <i class="fas fa-table"></i> View Full Data
-        </button>
-
-        <div class="current-selection" id="currentSelection">
-            <i class="fas fa-chart-line"></i>
-            <span id="selectedServiceDisplay">Overall View</span>
-        </div>
-    </div>
-
-    <!-- Service Type Toggle -->
-    <div class="toggle-lead">
-        <div class="service-switch" id="serviceToggle">
-            <button class="switch-btn active" data-type="overall">
-                <i class="fas fa-globe-asia"></i> OVERALL
-            </button>
-            <button class="switch-btn" data-type="external">
-                <i class="fas fa-external-link-alt"></i> EXTERNAL
-            </button>
-            <button class="switch-btn" data-type="internal">
-                <i class="fas fa-building"></i> INTERNAL
-            </button>
-        </div>
-    </div>
-
-    <!-- Main Content Grid -->
-    <div class="chart-grid" id="mainChartGrid"></div>
-
-    <!-- SQD Section Header -->
-    <div class="section-header" id="sqdSectionHeader">
-        <i class="fas fa-star"></i> Service Quality Dimensions (SQD 0-8)
-    </div>
-
-    <!-- SQD Charts Container -->
-    <div class="sqd-charts-container" id="sqdChartsContainer"></div>
-
-    <!-- Footer -->
-    <div class="status-footer">
-        <span class="live-badge" id="liveStatus">
-            <i class="fas fa-circle"></i> Connected to Live Data
-        </span>
-        <span><i class="fas fa-check-circle"></i> MWSS RO Harmonized Client Satisfaction Measurement Dashboard</span>
-    </div>
-
-    <!-- Full Data Modal - ENHANCED: Complete view, scrollable -->
+    <!-- Full Data Modal -->
     <div id="dataModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -866,954 +1331,1407 @@
         </div>
     </div>
 
-</div>
+    <script>
+        (function() {
+            "use strict";
 
-<script>
-    (function() {
-        "use strict";
+            // ============================================================
+            // LOGIN FUNCTIONALITY
+            // ============================================================
+            const loginPage = document.getElementById('loginPage');
+            const dashboard = document.getElementById('dashboard');
+            const loginBtn = document.getElementById('loginBtn');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginError = document.getElementById('loginError');
 
-        // ============================================================
-        // Google Apps Script Web App URL
-        // ============================================================
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLZXAv_X7rm3OpJisAuQPKrgiF7rUXav0wdsHoxwP2t5H_4mYuxp8CUCpV8NUnMQrq/exec";
-        
-        // ============================================================
-        // Global State
-        // ============================================================
-        let currentService = 'overall';
-        let currentServiceCode = '';
-        let chartInstances = {};
-        let currentValues = null;
-        let currentMatrix = null;
-        let currentServiceDisplayName = 'Overall Summary';
-        
-        const mainGridEl = document.getElementById('mainChartGrid');
-        const sqdChartsContainer = document.getElementById('sqdChartsContainer');
-        const liveStatus = document.getElementById('liveStatus');
-        const externalSelect = document.getElementById('externalServiceSelect');
-        const internalSelect = document.getElementById('internalServiceSelect');
-        const selectedServiceDisplay = document.getElementById('selectedServiceDisplay');
-        const viewDataBtn = document.getElementById('viewFullDataBtn');
-        const dataModal = document.getElementById('dataModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalTableContainer = document.getElementById('modalTableContainer');
-        const closeModal = document.getElementById('closeModal');
-        const downloadCsvBtn = document.getElementById('downloadCsvBtn');
-        const refreshDataBtn = document.getElementById('refreshDataBtn');
+            const VALID_USERNAME = "cart-admin";
+            const VALID_PASSWORD = "mwssro-0897Hc$m";
 
-        // Service name mapping for display (clean names WITHOUT parentheses)
-        const serviceNames = {
-            'overall': 'Overall Summary',
-            'external': 'External Services Summary',
-            'internal': 'Internal Services Summary',
-            'RID': 'Receiving of Incoming Documents',
-            'FRA': 'Filing of Rate Adjustment Application',
-            'HPP': 'Hiring of Plantilla Personnel',
-            'HIC': 'Hiring of Individual Contract',
-            'PPC': 'Processing of Payment of Claims',
-            'FCC': 'Filing of Customer Complaints',
-            'RWS': 'Request of Water Sampling',
-            'ROD': 'Retrieval of Official Documents',
-            'RIC': 'ICT Infrastructure Maintenance',
-            'RWD': 'Website Development',
-            'AGN': 'GovMail - New Account',
-            'AGP': 'GovMail - Password Reset',
-            'AGS': 'GovMail - Storage Increase',
-            'REP': 'Reimbursement from Petty Cash',
-            'RLC': 'Request & Liquidation Cash Advance',
-            'LCA': 'Liquidation of Cash Advance',
-            'PPF': 'Processing of Payments',
-            'PER': 'Employment Records',
-            'PCB': 'Procurement - Competitive Bidding',
-            'PRA': 'Purchase Request - Alternative',
-            'ITT': 'Issuance of Trip Ticket',
-            'IPA': 'Property Acknowledgment',
-            'RLP': 'Legal - Complex',
-            'RLT': 'Legal - Highly Technical'
-        };
+            loginBtn.addEventListener('click', function() {
+                const username = usernameInput.value;
+                const password = passwordInput.value;
 
-        // ============================================================
-        // EXACT CELL MAPPING
-        // ============================================================
-        const CELL_MAPPINGS = {
-            sex: {
-                male: { colIndex: 1, rowIndex: 42 },
-                female: { colIndex: 2, rowIndex: 42 }
-            },
-            age: {
-                ns: { colIndex: 5, rowIndex: 34 },
-                age19b: { colIndex: 5, rowIndex: 35 },
-                age2029: { colIndex: 5, rowIndex: 36 },
-                age3039: { colIndex: 5, rowIndex: 37 },
-                age4049: { colIndex: 5, rowIndex: 38 },
-                age5059: { colIndex: 5, rowIndex: 39 },
-                age6069: { colIndex: 5, rowIndex: 40 },
-                age70: { colIndex: 5, rowIndex: 41 }
-            },
-            client: {
-                ns: { colIndex: 5, rowIndex: 18 },
-                citizen: { colIndex: 5, rowIndex: 19 },
-                business: { colIndex: 5, rowIndex: 20 },
-                government: { colIndex: 5, rowIndex: 21 }
-            },
-            region: {
-                ns: { colIndex: 7, rowIndex: 26 },
-                region3: { colIndex: 7, rowIndex: 27 },
-                region4a: { colIndex: 7, rowIndex: 28 },
-                ncr: { colIndex: 7, rowIndex: 29 }
-            },
-            cc1: {
-                ns: { colIndex: 5, rowIndex: 47 },
-                knowSaw: { colIndex: 5, rowIndex: 48 },
-                knowNotSaw: { colIndex: 5, rowIndex: 49 },
-                learned: { colIndex: 5, rowIndex: 50 },
-                dontKnow: { colIndex: 5, rowIndex: 51 }
-            },
-            cc2: {
-                ns: { colIndex: 5, rowIndex: 57 },
-                easy: { colIndex: 5, rowIndex: 58 },
-                somewhatEasy: { colIndex: 5, rowIndex: 59 },
-                difficult: { colIndex: 5, rowIndex: 60 },
-                notVisible: { colIndex: 5, rowIndex: 61 },
-                na: { colIndex: 5, rowIndex: 62 }
-            },
-            cc3: {
-                ns: { colIndex: 5, rowIndex: 68 },
-                helpedMuch: { colIndex: 5, rowIndex: 69 },
-                somewhatHelped: { colIndex: 5, rowIndex: 70 },
-                didNotHelp: { colIndex: 5, rowIndex: 71 },
-                na: { colIndex: 5, rowIndex: 72 }
-            },
-            sqd: {
-                sqd0: { colIndex: 8, rowIndex: 109 },
-                sqd1: { colIndex: 8, rowIndex: 111 },
-                sqd2: { colIndex: 8, rowIndex: 112 },
-                sqd3: { colIndex: 8, rowIndex: 113 },
-                sqd4: { colIndex: 8, rowIndex: 114 },
-                sqd5: { colIndex: 8, rowIndex: 115 },
-                sqd6: { colIndex: 8, rowIndex: 116 },
-                sqd7: { colIndex: 8, rowIndex: 117 },
-                sqd8: { colIndex: 8, rowIndex: 118 },
-                sqdOverall: { colIndex: 8, rowIndex: 119 }
-            }
-        };
+                if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                    loginPage.style.display = 'none';
+                    dashboard.classList.add('visible');
+                } else {
+                    loginError.style.display = 'block';
+                }
+            });
 
-        // ----- PNG Download Function -----
-        async function downloadAsPNG(elementId, filename) {
-            const element = document.getElementById(elementId)?.parentElement;
-            if (!element) return;
+            // Allow Enter key to login
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginBtn.click();
+                }
+            });
+
+            // ============================================================
+            // Google Apps Script Web App URL
+            // ============================================================
+            const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLZXAv_X7rm3OpJisAuQPKrgiF7rUXav0wdsHoxwP2t5H_4mYuxp8CUCpV8NUnMQrq/exec";
             
-            try {
-                const canvas = await html2canvas(element, {
-                    scale: 2,
-                    backgroundColor: '#ffffff',
-                    borderRadius: '28px'
-                });
+            // ============================================================
+            // Global State
+            // ============================================================
+            let currentService = 'overall';
+            let currentServiceCode = '';
+            let chartInstances = {};
+            let currentValues = null;
+            let currentMatrix = null;
+            let currentServiceDisplayName = 'Overall Summary';
+            let isCompareMode = false;
+            let compareService1 = 'external';
+            let compareService2 = 'internal';
+            let compareValues1 = null;
+            let compareValues2 = null;
+            
+            const mainGridEl = document.getElementById('mainChartGrid');
+            const sqdChartsContainer = document.getElementById('sqdChartsContainer');
+            const externalSelect = document.getElementById('externalServiceSelect');
+            const internalSelect = document.getElementById('internalServiceSelect');
+            const selectedServiceDisplay = document.getElementById('selectedServiceDisplay');
+            const viewDataBtn = document.getElementById('viewFullDataBtn');
+            const compareToggle = document.getElementById('compareToggle');
+            const comparisonPanel = document.getElementById('comparisonPanel');
+            const compareService1Select = document.getElementById('compareService1');
+            const compareService2Select = document.getElementById('compareService2');
+            const comparisonGrid = document.getElementById('comparisonGrid');
+            const dateFromInput = document.getElementById('dateFrom');
+            const dateToInput = document.getElementById('dateTo');
+            const updateDateBtn = document.getElementById('updateDateBtn');
+            const currentDateRange = document.getElementById('currentDateRange');
+
+            // Service name mapping for display
+            const serviceNames = {
+                'overall': 'Overall Summary',
+                'external': 'External Services Summary',
+                'internal': 'Internal Services Summary',
+                'RID': 'Receiving of Incoming Documents',
+                'FRA': 'Filing of Rate Adjustment Application',
+                'HPP': 'Hiring of Plantilla Personnel',
+                'HIC': 'Hiring of Individual Contract',
+                'PPC': 'Processing of Payment of Claims',
+                'FCC': 'Filing of Customer Complaints',
+                'RWS': 'Request of Water Sampling',
+                'ROD': 'Retrieval of Official Documents',
+                'RIC': 'ICT Infrastructure Maintenance',
+                'RWD': 'Website Development',
+                'AGN': 'GovMail - New Account',
+                'AGP': 'GovMail - Password Reset',
+                'AGS': 'GovMail - Storage Increase',
+                'REP': 'Reimbursement from Petty Cash',
+                'RLC': 'Request & Liquidation Cash Advance',
+                'LCA': 'Liquidation of Cash Advance',
+                'PPF': 'Processing of Payments',
+                'PER': 'Employment Records',
+                'PCB': 'Procurement - Competitive Bidding',
+                'PRA': 'Purchase Request - Alternative',
+                'ITT': 'Issuance of Trip Ticket',
+                'IPA': 'Property Acknowledgment',
+                'RLP': 'Legal - Complex',
+                'RLT': 'Legal - Highly Technical'
+            };
+
+            // ============================================================
+            // EXACT CELL MAPPING
+            // ============================================================
+            const CELL_MAPPINGS = {
+                dateFrom: { colIndex: 2, rowIndex: 5 }, // C6
+                dateTo: { colIndex: 2, rowIndex: 6 },   // C7
+                sex: {
+                    male: { colIndex: 1, rowIndex: 42 },
+                    female: { colIndex: 2, rowIndex: 42 }
+                },
+                age: {
+                    ns: { colIndex: 5, rowIndex: 34 },
+                    age19b: { colIndex: 5, rowIndex: 35 },
+                    age2029: { colIndex: 5, rowIndex: 36 },
+                    age3039: { colIndex: 5, rowIndex: 37 },
+                    age4049: { colIndex: 5, rowIndex: 38 },
+                    age5059: { colIndex: 5, rowIndex: 39 },
+                    age6069: { colIndex: 5, rowIndex: 40 },
+                    age70: { colIndex: 5, rowIndex: 41 }
+                },
+                client: {
+                    ns: { colIndex: 5, rowIndex: 18 },
+                    citizen: { colIndex: 5, rowIndex: 19 },
+                    business: { colIndex: 5, rowIndex: 20 },
+                    government: { colIndex: 5, rowIndex: 21 }
+                },
+                region: {
+                    ns: { colIndex: 7, rowIndex: 26 },
+                    region3: { colIndex: 7, rowIndex: 27 },
+                    region4a: { colIndex: 7, rowIndex: 28 },
+                    ncr: { colIndex: 7, rowIndex: 29 }
+                },
+                cc1: {
+                    ns: { colIndex: 5, rowIndex: 47 },
+                    knowSaw: { colIndex: 5, rowIndex: 48 },
+                    knowNotSaw: { colIndex: 5, rowIndex: 49 },
+                    learned: { colIndex: 5, rowIndex: 50 },
+                    dontKnow: { colIndex: 5, rowIndex: 51 }
+                },
+                cc2: {
+                    ns: { colIndex: 5, rowIndex: 57 },
+                    easy: { colIndex: 5, rowIndex: 58 },
+                    somewhatEasy: { colIndex: 5, rowIndex: 59 },
+                    difficult: { colIndex: 5, rowIndex: 60 },
+                    notVisible: { colIndex: 5, rowIndex: 61 },
+                    na: { colIndex: 5, rowIndex: 62 }
+                },
+                cc3: {
+                    ns: { colIndex: 5, rowIndex: 68 },
+                    helpedMuch: { colIndex: 5, rowIndex: 69 },
+                    somewhatHelped: { colIndex: 5, rowIndex: 70 },
+                    didNotHelp: { colIndex: 5, rowIndex: 71 },
+                    na: { colIndex: 5, rowIndex: 72 }
+                },
+                sqd: {
+                    sqd0: { colIndex: 8, rowIndex: 109 },
+                    sqd1: { colIndex: 8, rowIndex: 111 },
+                    sqd2: { colIndex: 8, rowIndex: 112 },
+                    sqd3: { colIndex: 8, rowIndex: 113 },
+                    sqd4: { colIndex: 8, rowIndex: 114 },
+                    sqd5: { colIndex: 8, rowIndex: 115 },
+                    sqd6: { colIndex: 8, rowIndex: 116 },
+                    sqd7: { colIndex: 8, rowIndex: 117 },
+                    sqd8: { colIndex: 8, rowIndex: 118 },
+                    sqdOverall: { colIndex: 8, rowIndex: 119 }
+                }
+            };
+
+            // ----- PNG Download Function -----
+            async function downloadAsPNG(elementId, filename) {
+                const element = document.getElementById(elementId)?.parentElement;
+                if (!element) return;
                 
-                const link = document.createElement('a');
-                link.download = `MWSS_${filename}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            } catch (error) {
-                console.error('PNG download failed:', error);
-            }
-        }
-
-        // ----- Reset dropdowns -----
-        function resetDropdowns() {
-            externalSelect.value = '';
-            internalSelect.value = '';
-        }
-
-        // ----- Update service display -----
-        function updateServiceDisplay() {
-            if (currentServiceCode && serviceNames[currentServiceCode]) {
-                currentServiceDisplayName = serviceNames[currentServiceCode];
-                selectedServiceDisplay.innerHTML = currentServiceDisplayName;
-            } else if (serviceNames[currentService]) {
-                currentServiceDisplayName = serviceNames[currentService];
-                selectedServiceDisplay.innerHTML = currentServiceDisplayName;
-            } else {
-                currentServiceDisplayName = 'Overall View';
-                selectedServiceDisplay.innerHTML = 'Overall View';
-            }
-        }
-
-        // ----- Fetch Sheet Data via JSONP -----
-        async function fetchSheetData(sheetType) {
-            return new Promise((resolve) => {
                 try {
-                    liveStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Loading ${serviceNames[sheetType] || sheetType}...`;
+                    const canvas = await html2canvas(element, {
+                        scale: 2,
+                        backgroundColor: '#ffffff',
+                        borderRadius: '28px'
+                    });
                     
-                    const callbackName = `jsonp_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-                    const url = `${APPS_SCRIPT_URL}?sheet=${sheetType}&callback=${callbackName}&t=${Date.now()}`;
-                    
-                    const timeout = setTimeout(() => {
-                        cleanup();
-                        liveStatus.innerHTML = `<i class="fas fa-circle"></i> Connected to Live Data`;
-                        const sample = generateSampleMatrix(sheetType);
-                        currentMatrix = sample;
-                        resolve(sample);
-                    }, 10000);
-                    
-                    function cleanup() {
-                        clearTimeout(timeout);
-                        if (window[callbackName]) delete window[callbackName];
-                        const script = document.querySelector(`script[src*="${callbackName}"]`);
-                        if (script) script.remove();
-                    }
-                    
-                    window[callbackName] = function(response) {
-                        cleanup();
-                        if (response?.success && response.data) {
-                            liveStatus.innerHTML = `<i class="fas fa-circle"></i> Connected to Live Data`;
-                            const matrix = parseCSVtoMatrix(response.data);
-                            currentMatrix = matrix;
-                            resolve(matrix);
-                        } else {
+                    const link = document.createElement('a');
+                    link.download = `MWSS_${filename}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                } catch (error) {
+                    console.error('PNG download failed:', error);
+                }
+            }
+
+            // ----- Reset dropdowns -----
+            function resetDropdowns() {
+                externalSelect.value = '';
+                internalSelect.value = '';
+            }
+
+            // ----- Update service display -----
+            function updateServiceDisplay() {
+                if (currentServiceCode && serviceNames[currentServiceCode]) {
+                    currentServiceDisplayName = serviceNames[currentServiceCode];
+                    selectedServiceDisplay.innerHTML = currentServiceDisplayName;
+                } else if (serviceNames[currentService]) {
+                    currentServiceDisplayName = serviceNames[currentService];
+                    selectedServiceDisplay.innerHTML = currentServiceDisplayName;
+                } else {
+                    currentServiceDisplayName = 'Overall View';
+                    selectedServiceDisplay.innerHTML = 'Overall View';
+                }
+            }
+
+            // ----- Format date for display -----
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+
+            // ----- Update date range display -----
+            function updateDateRangeDisplay(from, to) {
+                const fromDate = formatDate(from);
+                const toDate = formatDate(to);
+                currentDateRange.innerHTML = `Current: ${fromDate} - ${toDate}`;
+            }
+
+            // ----- Fetch Sheet Data via JSONP -----
+            async function fetchSheetData(sheetType) {
+                return new Promise((resolve) => {
+                    try {
+                        const callbackName = `jsonp_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+                        
+                        // Add date parameters to URL
+                        const dateFrom = dateFromInput.value;
+                        const dateTo = dateToInput.value;
+                        const url = `${APPS_SCRIPT_URL}?sheet=${sheetType}&callback=${callbackName}&from=${dateFrom}&to=${dateTo}&t=${Date.now()}`;
+                        
+                        const timeout = setTimeout(() => {
+                            cleanup();
                             const sample = generateSampleMatrix(sheetType);
                             currentMatrix = sample;
                             resolve(sample);
+                        }, 10000);
+                        
+                        function cleanup() {
+                            clearTimeout(timeout);
+                            if (window[callbackName]) delete window[callbackName];
+                            const script = document.querySelector(`script[src*="${callbackName}"]`);
+                            if (script) script.remove();
                         }
-                    };
-                    
-                    const script = document.createElement('script');
-                    script.src = url;
-                    script.onerror = function() {
-                        cleanup();
-                        liveStatus.innerHTML = `<i class="fas fa-circle"></i> Connected to Live Data`;
+                        
+                        window[callbackName] = function(response) {
+                            cleanup();
+                            if (response?.success && response.data) {
+                                const matrix = parseCSVtoMatrix(response.data);
+                                currentMatrix = matrix;
+                                
+                                // Read and set date range from sheet
+                                const sheetDateFrom = getCellValue(matrix, CELL_MAPPINGS.dateFrom.rowIndex, CELL_MAPPINGS.dateFrom.colIndex);
+                                const sheetDateTo = getCellValue(matrix, CELL_MAPPINGS.dateTo.rowIndex, CELL_MAPPINGS.dateTo.colIndex);
+                                
+                                if (sheetDateFrom && sheetDateTo) {
+                                    // Update date inputs if values exist
+                                    const fromParts = sheetDateFrom.split('/');
+                                    const toParts = sheetDateTo.split('/');
+                                    if (fromParts.length === 3) {
+                                        dateFromInput.value = `${fromParts[2]}-${fromParts[0].padStart(2,'0')}-${fromParts[1].padStart(2,'0')}`;
+                                    }
+                                    if (toParts.length === 3) {
+                                        dateToInput.value = `${toParts[2]}-${toParts[0].padStart(2,'0')}-${toParts[1].padStart(2,'0')}`;
+                                    }
+                                    updateDateRangeDisplay(sheetDateFrom, sheetDateTo);
+                                }
+                                
+                                resolve(matrix);
+                            } else {
+                                const sample = generateSampleMatrix(sheetType);
+                                currentMatrix = sample;
+                                resolve(sample);
+                            }
+                        };
+                        
+                        const script = document.createElement('script');
+                        script.src = url;
+                        script.onerror = function() {
+                            cleanup();
+                            const sample = generateSampleMatrix(sheetType);
+                            currentMatrix = sample;
+                            resolve(sample);
+                        };
+                        
+                        document.head.appendChild(script);
+                        
+                    } catch (e) {
                         const sample = generateSampleMatrix(sheetType);
                         currentMatrix = sample;
                         resolve(sample);
-                    };
-                    
-                    document.head.appendChild(script);
-                    
-                } catch (e) {
-                    liveStatus.innerHTML = `<i class="fas fa-circle"></i> Connected to Live Data`;
-                    const sample = generateSampleMatrix(sheetType);
-                    currentMatrix = sample;
-                    resolve(sample);
-                }
-            });
-        }
-
-        // ----- Parse CSV to Matrix -----
-        function parseCSVtoMatrix(csvText) {
-            const lines = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
-            const matrix = [];
-            
-            lines.forEach(line => {
-                const row = [];
-                let inQuotes = false;
-                let current = '';
-                
-                for (let char of line) {
-                    if (char === '"') {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
-                        row.push(current.trim());
-                        current = '';
-                    } else {
-                        current += char;
-                    }
-                }
-                row.push(current.trim());
-                matrix.push(row.map(cell => cell.replace(/^"|"$/g, '')));
-            });
-            
-            return matrix;
-        }
-
-        // ----- Get Cell Value by Index -----
-        function getCellValue(matrix, rowIndex, colIndex) {
-            if (!matrix?.length) return 0;
-            try {
-                if (matrix[rowIndex]?.[colIndex] !== undefined) {
-                    const val = matrix[rowIndex][colIndex];
-                    const num = parseFloat(val.replace(/[^\d.-]/g, ''));
-                    return isNaN(num) ? 0 : num;
-                }
-            } catch (e) {}
-            return 0;
-        }
-
-        // ----- Read All Cell Values -----
-        function readAllCells(matrix) {
-            const values = {};
-            
-            values.male = getCellValue(matrix, CELL_MAPPINGS.sex.male.rowIndex, CELL_MAPPINGS.sex.male.colIndex);
-            values.female = getCellValue(matrix, CELL_MAPPINGS.sex.female.rowIndex, CELL_MAPPINGS.sex.female.colIndex);
-            
-            values.ageNS = getCellValue(matrix, CELL_MAPPINGS.age.ns.rowIndex, CELL_MAPPINGS.age.ns.colIndex);
-            values.age19b = getCellValue(matrix, CELL_MAPPINGS.age.age19b.rowIndex, CELL_MAPPINGS.age.age19b.colIndex);
-            values.age2029 = getCellValue(matrix, CELL_MAPPINGS.age.age2029.rowIndex, CELL_MAPPINGS.age.age2029.colIndex);
-            values.age3039 = getCellValue(matrix, CELL_MAPPINGS.age.age3039.rowIndex, CELL_MAPPINGS.age.age3039.colIndex);
-            values.age4049 = getCellValue(matrix, CELL_MAPPINGS.age.age4049.rowIndex, CELL_MAPPINGS.age.age4049.colIndex);
-            values.age5059 = getCellValue(matrix, CELL_MAPPINGS.age.age5059.rowIndex, CELL_MAPPINGS.age.age5059.colIndex);
-            values.age6069 = getCellValue(matrix, CELL_MAPPINGS.age.age6069.rowIndex, CELL_MAPPINGS.age.age6069.colIndex);
-            values.age70 = getCellValue(matrix, CELL_MAPPINGS.age.age70.rowIndex, CELL_MAPPINGS.age.age70.colIndex);
-            
-            values.clientNS = getCellValue(matrix, CELL_MAPPINGS.client.ns.rowIndex, CELL_MAPPINGS.client.ns.colIndex);
-            values.citizen = getCellValue(matrix, CELL_MAPPINGS.client.citizen.rowIndex, CELL_MAPPINGS.client.citizen.colIndex);
-            values.business = getCellValue(matrix, CELL_MAPPINGS.client.business.rowIndex, CELL_MAPPINGS.client.business.colIndex);
-            values.government = getCellValue(matrix, CELL_MAPPINGS.client.government.rowIndex, CELL_MAPPINGS.client.government.colIndex);
-            
-            values.regionNS = getCellValue(matrix, CELL_MAPPINGS.region.ns.rowIndex, CELL_MAPPINGS.region.ns.colIndex);
-            values.region3 = getCellValue(matrix, CELL_MAPPINGS.region.region3.rowIndex, CELL_MAPPINGS.region.region3.colIndex);
-            values.region4a = getCellValue(matrix, CELL_MAPPINGS.region.region4a.rowIndex, CELL_MAPPINGS.region.region4a.colIndex);
-            values.ncr = getCellValue(matrix, CELL_MAPPINGS.region.ncr.rowIndex, CELL_MAPPINGS.region.ncr.colIndex);
-            
-            values.cc1NS = getCellValue(matrix, CELL_MAPPINGS.cc1.ns.rowIndex, CELL_MAPPINGS.cc1.ns.colIndex);
-            values.knowSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowSaw.rowIndex, CELL_MAPPINGS.cc1.knowSaw.colIndex);
-            values.knowNotSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowNotSaw.rowIndex, CELL_MAPPINGS.cc1.knowNotSaw.colIndex);
-            values.learned = getCellValue(matrix, CELL_MAPPINGS.cc1.learned.rowIndex, CELL_MAPPINGS.cc1.learned.colIndex);
-            values.dontKnow = getCellValue(matrix, CELL_MAPPINGS.cc1.dontKnow.rowIndex, CELL_MAPPINGS.cc1.dontKnow.colIndex);
-            
-            values.cc2NS = getCellValue(matrix, CELL_MAPPINGS.cc2.ns.rowIndex, CELL_MAPPINGS.cc2.ns.colIndex);
-            values.easy = getCellValue(matrix, CELL_MAPPINGS.cc2.easy.rowIndex, CELL_MAPPINGS.cc2.easy.colIndex);
-            values.somewhatEasy = getCellValue(matrix, CELL_MAPPINGS.cc2.somewhatEasy.rowIndex, CELL_MAPPINGS.cc2.somewhatEasy.colIndex);
-            values.difficult = getCellValue(matrix, CELL_MAPPINGS.cc2.difficult.rowIndex, CELL_MAPPINGS.cc2.difficult.colIndex);
-            values.notVisible = getCellValue(matrix, CELL_MAPPINGS.cc2.notVisible.rowIndex, CELL_MAPPINGS.cc2.notVisible.colIndex);
-            values.cc2na = getCellValue(matrix, CELL_MAPPINGS.cc2.na.rowIndex, CELL_MAPPINGS.cc2.na.colIndex);
-            
-            values.cc3NS = getCellValue(matrix, CELL_MAPPINGS.cc3.ns.rowIndex, CELL_MAPPINGS.cc3.ns.colIndex);
-            values.helpedMuch = getCellValue(matrix, CELL_MAPPINGS.cc3.helpedMuch.rowIndex, CELL_MAPPINGS.cc3.helpedMuch.colIndex);
-            values.somewhatHelped = getCellValue(matrix, CELL_MAPPINGS.cc3.somewhatHelped.rowIndex, CELL_MAPPINGS.cc3.somewhatHelped.colIndex);
-            values.didNotHelp = getCellValue(matrix, CELL_MAPPINGS.cc3.didNotHelp.rowIndex, CELL_MAPPINGS.cc3.didNotHelp.colIndex);
-            values.cc3na = getCellValue(matrix, CELL_MAPPINGS.cc3.na.rowIndex, CELL_MAPPINGS.cc3.na.colIndex);
-            
-            values.sqd0 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd0.rowIndex, CELL_MAPPINGS.sqd.sqd0.colIndex);
-            values.sqd1 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd1.rowIndex, CELL_MAPPINGS.sqd.sqd1.colIndex);
-            values.sqd2 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd2.rowIndex, CELL_MAPPINGS.sqd.sqd2.colIndex);
-            values.sqd3 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd3.rowIndex, CELL_MAPPINGS.sqd.sqd3.colIndex);
-            values.sqd4 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd4.rowIndex, CELL_MAPPINGS.sqd.sqd4.colIndex);
-            values.sqd5 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd5.rowIndex, CELL_MAPPINGS.sqd.sqd5.colIndex);
-            values.sqd6 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd6.rowIndex, CELL_MAPPINGS.sqd.sqd6.colIndex);
-            values.sqd7 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd7.rowIndex, CELL_MAPPINGS.sqd.sqd7.colIndex);
-            values.sqd8 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd8.rowIndex, CELL_MAPPINGS.sqd.sqd8.colIndex);
-            values.sqdOverall = getCellValue(matrix, CELL_MAPPINGS.sqd.sqdOverall.rowIndex, CELL_MAPPINGS.sqd.sqdOverall.colIndex);
-            
-            return values;
-        }
-
-        // ----- Sample Data Generator -----
-        function generateSampleMatrix(type) {
-            const m = [];
-            for (let i = 0; i < 150; i++) m[i] = [];
-            
-            // Sex
-            m[42] = m[42] || []; 
-            m[42][1] = 222;
-            m[42][2] = 218;
-            
-            // Age
-            m[34] = m[34] || []; m[34][5] = 20;
-            m[35] = m[35] || []; m[35][5] = 0;
-            m[36] = m[36] || []; m[36][5] = 32;
-            m[37] = m[37] || []; m[37][5] = 73;
-            m[38] = m[38] || []; m[38][5] = 46;
-            m[39] = m[39] || []; m[39][5] = 35;
-            m[40] = m[40] || []; m[40][5] = 6;
-            m[41] = m[41] || []; m[41][5] = 0;
-            
-            // Client
-            m[18] = m[18] || []; m[18][5] = 5;
-            m[19] = m[19] || []; m[19][5] = 251;
-            m[20] = m[20] || []; m[20][5] = 105;
-            m[21] = m[21] || []; m[21][5] = 84;
-            
-            // Region
-            m[26] = m[26] || []; m[26][7] = 4;
-            m[27] = m[27] || []; m[27][7] = 78;
-            m[28] = m[28] || []; m[28][7] = 94;
-            m[29] = m[29] || []; m[29][7] = 112;
-            
-            // CC1
-            m[47] = m[47] || []; m[47][5] = 6;
-            m[48] = m[48] || []; m[48][5] = 103;
-            m[49] = m[49] || []; m[49][5] = 47;
-            m[50] = m[50] || []; m[50][5] = 58;
-            m[51] = m[51] || []; m[51][5] = 32;
-            
-            // CC2
-            m[57] = m[57] || []; m[57][5] = 7;
-            m[58] = m[58] || []; m[58][5] = 89;
-            m[59] = m[59] || []; m[59][5] = 52;
-            m[60] = m[60] || []; m[60][5] = 23;
-            m[61] = m[61] || []; m[61][5] = 14;
-            m[62] = m[62] || []; m[62][5] = 41;
-            
-            // CC3
-            m[68] = m[68] || []; m[68][5] = 5;
-            m[69] = m[69] || []; m[69][5] = 112;
-            m[70] = m[70] || []; m[70][5] = 58;
-            m[71] = m[71] || []; m[71][5] = 16;
-            m[72] = m[72] || []; m[72][5] = 27;
-            
-            // SQD
-            m[109] = m[109] || []; m[109][8] = 90.25;
-            m[111] = m[111] || []; m[111][8] = 89.25;
-            m[112] = m[112] || []; m[112][8] = 91.50;
-            m[113] = m[113] || []; m[113][8] = 87.75;
-            m[114] = m[114] || []; m[114][8] = 93.25;
-            m[115] = m[115] || []; m[115][8] = 90.50;
-            m[116] = m[116] || []; m[116][8] = 88.25;
-            m[117] = m[117] || []; m[117][8] = 92.75;
-            m[118] = m[118] || []; m[118][8] = 89.50;
-            m[119] = m[119] || []; m[119][8] = 90.35;
-            
-            return m;
-        }
-
-        // ----- Render Main Charts (Enhanced) -----
-        function renderMainCharts(values) {
-            const totalSex = values.male + values.female;
-            const totalAge = values.ageNS + values.age19b + values.age2029 + values.age3039 + values.age4049 + values.age5059 + values.age6069 + values.age70;
-            const totalClient = values.clientNS + values.citizen + values.business + values.government;
-            const totalRegion = values.regionNS + values.region3 + values.region4a + values.ncr;
-            const totalCC1 = values.cc1NS + values.knowSaw + values.knowNotSaw + values.learned + values.dontKnow;
-            const awareDenom = totalCC1 - values.dontKnow - values.cc1NS || 1;
-
-            let html = '';
-
-            // Card 1: Sex - Doughnut with center total
-            html += `<div class="chart-card" id="chartSexContainer">
-                <div class="chart-header">
-                    <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD) by Service Type</h2>
-                    <div class="chart-actions">
-                        <span class="total-indicator">Total: ${totalSex}</span>
-                        <button class="download-btn" onclick="downloadAsPNG('chartSex', 'Sex_Chart')">
-                            <i class="fas fa-download"></i> PNG
-                        </button>
-                    </div>
-                </div>
-                <canvas id="chartSex"></canvas>
-                <div class="data-legend">
-                    <span>Male:</span> ${values.male} (${totalSex ? ((values.male/totalSex)*100).toFixed(2) : 0}%) 
-                    <span>Female:</span> ${values.female} (${totalSex ? ((values.female/totalSex)*100).toFixed(2) : 0}%)
-                </div>
-            </div>`;
-
-            // Card 2: Age - Stacked Bar (enhanced)
-            html += `<div class="chart-card" id="chartAgeContainer">
-                <div class="chart-header">
-                    <h2><i class="fas fa-calendar-alt"></i> Age Distribution by Service Type</h2>
-                    <div class="chart-actions">
-                        <span class="total-indicator">Total: ${totalAge}</span>
-                        <button class="download-btn" onclick="downloadAsPNG('chartAge', 'Age_Chart')">
-                            <i class="fas fa-download"></i> PNG
-                        </button>
-                    </div>
-                </div>
-                <canvas id="chartAge"></canvas>
-                <div class="data-legend">
-                    <div style="width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
-                        <div><span>N/S:</span> ${values.ageNS}</div>
-                        <div><span>19↓:</span> ${values.age19b}</div>
-                        <div><span>20-29:</span> ${values.age2029}</div>
-                        <div><span>30-39:</span> ${values.age3039}</div>
-                        <div><span>40-49:</span> ${values.age4049}</div>
-                        <div><span>50-59:</span> ${values.age5059}</div>
-                        <div><span>60-69:</span> ${values.age6069}</div>
-                        <div><span>70↑:</span> ${values.age70}</div>
-                    </div>
-                </div>
-            </div>`;
-
-            // Card 3: Client Type - Doughnut with center total
-            html += `<div class="chart-card" id="chartClientContainer">
-                <div class="chart-header">
-                    <h2><i class="fas fa-users"></i> Client Type by Service</h2>
-                    <div class="chart-actions">
-                        <span class="total-indicator">Total: ${totalClient}</span>
-                        <button class="download-btn" onclick="downloadAsPNG('chartClient', 'Client_Chart')">
-                            <i class="fas fa-download"></i> PNG
-                        </button>
-                    </div>
-                </div>
-                <canvas id="chartClient"></canvas>
-                <div class="data-legend">
-                    <div><span>N/S:</span> ${values.clientNS}</div>
-                    <div><span>Citizen:</span> ${values.citizen}</div>
-                    <div><span>Business:</span> ${values.business}</div>
-                    <div><span>Government:</span> ${values.government}</div>
-                </div>
-            </div>`;
-
-            // Card 4: Region - Pie chart
-            html += `<div class="chart-card" id="chartRegionContainer">
-                <div class="chart-header">
-                    <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
-                    <div class="chart-actions">
-                        <span class="total-indicator">Total: ${totalRegion}</span>
-                        <button class="download-btn" onclick="downloadAsPNG('chartRegion', 'Region_Chart')">
-                            <i class="fas fa-download"></i> PNG
-                        </button>
-                    </div>
-                </div>
-                <canvas id="chartRegion"></canvas>
-                <div class="data-legend">
-                    <div><span>N/S:</span> ${values.regionNS}</div>
-                    <div><span>Region III:</span> ${values.region3}</div>
-                    <div><span>Region IV-A:</span> ${values.region4a}</div>
-                    <div><span>NCR:</span> ${values.ncr}</div>
-                </div>
-            </div>`;
-
-            // Card 5: CC1 - Horizontal Bar (enhanced for long labels)
-            html += `<div class="chart-card" id="chartCC1Container">
-                <div class="chart-header">
-                    <h2><i class="fas fa-eye"></i> Citizen's Charter Awareness</h2>
-                    <div class="chart-actions">
-                        <span class="total-indicator">Total: ${totalCC1}</span>
-                        <button class="download-btn" onclick="downloadAsPNG('chartCC1', 'CC1_Chart')">
-                            <i class="fas fa-download"></i> PNG
-                        </button>
-                    </div>
-                </div>
-                <canvas id="chartCC1"></canvas>
-                <div class="data-legend">
-                    <div><span>N/S:</span> ${values.cc1NS}</div>
-                    <div><span>Know & Saw:</span> ${values.knowSaw}</div>
-                    <div><span>Know/Not Saw:</span> ${values.knowNotSaw}</div>
-                    <div><span>Learned:</span> ${values.learned}</div>
-                    <div><span>Don't know:</span> ${values.dontKnow}</div>
-                </div>
-            </div>`;
-
-            // Card 6: CC2 - Horizontal Bar
-            html += `<div class="chart-card" id="chartCC2Container">
-                <div class="chart-header">
-                    <h2><i class="fas fa-low-vision"></i> Citizen's Charter Visibility</h2>
-                    <div class="chart-actions">
-                        <span class="total-indicator">Aware: ${awareDenom}</span>
-                        <button class="download-btn" onclick="downloadAsPNG('chartCC2', 'CC2_Chart')">
-                            <i class="fas fa-download"></i> PNG
-                        </button>
-                    </div>
-                </div>
-                <canvas id="chartCC2"></canvas>
-                <div class="data-legend">
-                    <div><span>N/S:</span> ${values.cc2NS}</div>
-                    <div><span>Easy:</span> ${values.easy}</div>
-                    <div><span>Somewhat:</span> ${values.somewhatEasy}</div>
-                    <div><span>Difficult:</span> ${values.difficult}</div>
-                    <div><span>Not visible:</span> ${values.notVisible}</div>
-                    <div><span>N/A:</span> ${values.cc2na}</div>
-                </div>
-            </div>`;
-
-            // Card 7: CC3 - Horizontal Bar
-            html += `<div class="chart-card" id="chartCC3Container">
-                <div class="chart-header">
-                    <h2><i class="fas fa-check-circle"></i> Citizen's Charter Effectivity</h2>
-                    <div class="chart-actions">
-                        <span class="total-indicator">Aware: ${awareDenom}</span>
-                        <button class="download-btn" onclick="downloadAsPNG('chartCC3', 'CC3_Chart')">
-                            <i class="fas fa-download"></i> PNG
-                        </button>
-                    </div>
-                </div>
-                <canvas id="chartCC3"></canvas>
-                <div class="data-legend">
-                    <div><span>N/S:</span> ${values.cc3NS}</div>
-                    <div><span>Helped much:</span> ${values.helpedMuch}</div>
-                    <div><span>Somewhat:</span> ${values.somewhatHelped}</div>
-                    <div><span>Did not:</span> ${values.didNotHelp}</div>
-                    <div><span>N/A:</span> ${values.cc3na}</div>
-                </div>
-            </div>`;
-
-            mainGridEl.innerHTML = html;
-
-            // Destroy old charts
-            Object.values(chartInstances).forEach(chart => chart?.destroy());
-            chartInstances = {};
-
-            // Color palettes
-            const bluePalette = ['#1a7f9e', '#2f98b3', '#45b0c9', '#7fc5d9', '#a8dae8'];
-            const goldPalette = ['#c9a227', '#d9b44a', '#e5c36b', '#f0d59a', '#f8e7c4'];
-            const lightBluePalette = ['#7fc5d9', '#a8dae8', '#c4e6f0', '#dff1f7', '#eef8fc'];
-
-            // Create enhanced charts
-            const chartConfigs = [
-                { 
-                    id: 'chartSex', type: 'doughnut', 
-                    labels: ['Male', 'Female'], 
-                    data: [values.male, values.female], 
-                    colors: [bluePalette[0], goldPalette[0]],
-                    options: { cutout: '70%', plugins: { legend: { display: false } } }
-                },
-                { 
-                    id: 'chartAge', type: 'bar', 
-                    labels: ['N/S', '19↓', '20-29', '30-39', '40-49', '50-59', '60-69', '70↑'], 
-                    data: [values.ageNS, values.age19b, values.age2029, values.age3039, values.age4049, values.age5059, values.age6069, values.age70], 
-                    colors: bluePalette[1],
-                    options: { 
-                        indexAxis: 'x',
-                        scales: { y: { beginAtZero: true, grid: { color: '#e9ecef' } } }
-                    }
-                },
-                { 
-                    id: 'chartClient', type: 'doughnut', 
-                    labels: ['Citizen', 'Business', 'Government', 'N/S'], 
-                    data: [values.citizen, values.business, values.government, values.clientNS], 
-                    colors: [bluePalette[0], bluePalette[2], goldPalette[0], lightBluePalette[2]],
-                    options: { cutout: '70%' }
-                },
-                { 
-                    id: 'chartRegion', type: 'pie', 
-                    labels: ['Region III', 'Region IV-A', 'NCR', 'N/S'], 
-                    data: [values.region3, values.region4a, values.ncr, values.regionNS], 
-                    colors: [bluePalette[1], bluePalette[2], goldPalette[0], lightBluePalette[3]] 
-                },
-                { 
-                    id: 'chartCC1', type: 'bar', 
-                    labels: ['Know & Saw', 'Know/Not', 'Learned', 'Don\'t know', 'N/S'], 
-                    data: [values.knowSaw, values.knowNotSaw, values.learned, values.dontKnow, values.cc1NS], 
-                    colors: bluePalette[0],
-                    options: { indexAxis: 'y' } // Horizontal bar for better label reading
-                },
-                { 
-                    id: 'chartCC2', type: 'bar', 
-                    labels: ['Easy', 'Somewhat', 'Difficult', 'Not visible', 'N/A', 'N/S'], 
-                    data: [values.easy, values.somewhatEasy, values.difficult, values.notVisible, values.cc2na, values.cc2NS], 
-                    colors: goldPalette[0],
-                    options: { indexAxis: 'y' }
-                },
-                { 
-                    id: 'chartCC3', type: 'bar', 
-                    labels: ['Helped much', 'Somewhat', 'Did not', 'N/A', 'N/S'], 
-                    data: [values.helpedMuch, values.somewhatHelped, values.didNotHelp, values.cc3na, values.cc3NS], 
-                    colors: lightBluePalette[1],
-                    options: { indexAxis: 'y' }
-                }
-            ];
-
-            chartConfigs.forEach(cfg => {
-                const ctx = document.getElementById(cfg.id);
-                if (!ctx) return;
-                
-                chartInstances[cfg.id] = new Chart(ctx, {
-                    type: cfg.type,
-                    data: {
-                        labels: cfg.labels,
-                        datasets: [{
-                            data: cfg.data,
-                            backgroundColor: cfg.colors,
-                            borderWidth: 0,
-                            borderRadius: 6
-                        }]
-                    },
-                    options: {
-                        cutout: cfg.options?.cutout || (cfg.type === 'doughnut' ? '65%' : undefined),
-                        indexAxis: cfg.options?.indexAxis,
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        plugins: { 
-                            legend: { display: false }, 
-                            tooltip: { backgroundColor: '#0f859e' } 
-                        },
-                        scales: cfg.type === 'bar' ? { 
-                            y: cfg.options?.indexAxis === 'y' ? { 
-                                beginAtZero: true, 
-                                grid: { color: '#e9ecef' },
-                                ticks: { color: '#2a5e6e' }
-                            } : { 
-                                beginAtZero: true, 
-                                grid: { color: '#e9ecef' },
-                                ticks: { color: '#2a5e6e' }
-                            },
-                            x: { ticks: { color: '#2a5e6e' } }
-                        } : undefined
                     }
                 });
-            });
-        }
+            }
 
-        // ----- Render SQD Section (Enhanced) -----
-        function renderSQDSection(values) {
-            const sqdLabels = ['SQD 1', 'SQD 2', 'SQD 3', 'SQD 4', 'SQD 5', 'SQD 6', 'SQD 7', 'SQD 8'];
-            const sqdFullLabels = [
-                'Responsiveness', 'Reliability', 'Access & Facilities', 'Communication',
-                'Costs', 'Integrity', 'Assurance', 'Outcome'
-            ];
-            const sqdData = [
-                values.sqd1, values.sqd2, values.sqd3, values.sqd4,
-                values.sqd5, values.sqd6, values.sqd7, values.sqd8
-            ];
-
-            let html = `
-                <div class="percentage-card" id="sqd0Card">
-                    <div class="chart-actions" style="position: absolute; top: 1rem; right: 1rem;">
-                        <button class="download-btn" onclick="downloadCardAsPNG('sqd0Card', 'SQD0')">
-                            <i class="fas fa-download"></i> PNG
-                        </button>
-                    </div>
-                    <h3><i class="fas fa-star" style="color: #c9a227;"></i> SQD 0 - Overall Satisfaction</h3>
-                    <div class="percentage-value">${values.sqd0.toFixed(2)}%</div>
-                    <div class="percentage-label">Satisfaction Rating</div>
-                </div>
+            // ----- Parse CSV to Matrix -----
+            function parseCSVtoMatrix(csvText) {
+                const lines = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
+                const matrix = [];
                 
-                <div class="sqd-chart-panel" id="sqdChartPanel">
-                    <div class="sqd-chart-header">
-                        <h2><i class="fas fa-chart-bar"></i> SQD 1-8: Service Quality Dimensions</h2>
+                lines.forEach(line => {
+                    const row = [];
+                    let inQuotes = false;
+                    let current = '';
+                    
+                    for (let char of line) {
+                        if (char === '"') {
+                            inQuotes = !inQuotes;
+                        } else if (char === ',' && !inQuotes) {
+                            row.push(current.trim());
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                    row.push(current.trim());
+                    matrix.push(row.map(cell => cell.replace(/^"|"$/g, '')));
+                });
+                
+                return matrix;
+            }
+
+            // ----- Get Cell Value by Index -----
+            function getCellValue(matrix, rowIndex, colIndex) {
+                if (!matrix?.length) return 0;
+                try {
+                    if (matrix[rowIndex]?.[colIndex] !== undefined) {
+                        const val = matrix[rowIndex][colIndex];
+                        const num = parseFloat(val.replace(/[^\d.-]/g, ''));
+                        return isNaN(num) ? 0 : num;
+                    }
+                } catch (e) {}
+                return 0;
+            }
+
+            // ----- Read All Cell Values -----
+            function readAllCells(matrix) {
+                const values = {};
+                
+                values.male = getCellValue(matrix, CELL_MAPPINGS.sex.male.rowIndex, CELL_MAPPINGS.sex.male.colIndex);
+                values.female = getCellValue(matrix, CELL_MAPPINGS.sex.female.rowIndex, CELL_MAPPINGS.sex.female.colIndex);
+                
+                values.ageNS = getCellValue(matrix, CELL_MAPPINGS.age.ns.rowIndex, CELL_MAPPINGS.age.ns.colIndex);
+                values.age19b = getCellValue(matrix, CELL_MAPPINGS.age.age19b.rowIndex, CELL_MAPPINGS.age.age19b.colIndex);
+                values.age2029 = getCellValue(matrix, CELL_MAPPINGS.age.age2029.rowIndex, CELL_MAPPINGS.age.age2029.colIndex);
+                values.age3039 = getCellValue(matrix, CELL_MAPPINGS.age.age3039.rowIndex, CELL_MAPPINGS.age.age3039.colIndex);
+                values.age4049 = getCellValue(matrix, CELL_MAPPINGS.age.age4049.rowIndex, CELL_MAPPINGS.age.age4049.colIndex);
+                values.age5059 = getCellValue(matrix, CELL_MAPPINGS.age.age5059.rowIndex, CELL_MAPPINGS.age.age5059.colIndex);
+                values.age6069 = getCellValue(matrix, CELL_MAPPINGS.age.age6069.rowIndex, CELL_MAPPINGS.age.age6069.colIndex);
+                values.age70 = getCellValue(matrix, CELL_MAPPINGS.age.age70.rowIndex, CELL_MAPPINGS.age.age70.colIndex);
+                
+                values.clientNS = getCellValue(matrix, CELL_MAPPINGS.client.ns.rowIndex, CELL_MAPPINGS.client.ns.colIndex);
+                values.citizen = getCellValue(matrix, CELL_MAPPINGS.client.citizen.rowIndex, CELL_MAPPINGS.client.citizen.colIndex);
+                values.business = getCellValue(matrix, CELL_MAPPINGS.client.business.rowIndex, CELL_MAPPINGS.client.business.colIndex);
+                values.government = getCellValue(matrix, CELL_MAPPINGS.client.government.rowIndex, CELL_MAPPINGS.client.government.colIndex);
+                
+                values.regionNS = getCellValue(matrix, CELL_MAPPINGS.region.ns.rowIndex, CELL_MAPPINGS.region.ns.colIndex);
+                values.region3 = getCellValue(matrix, CELL_MAPPINGS.region.region3.rowIndex, CELL_MAPPINGS.region.region3.colIndex);
+                values.region4a = getCellValue(matrix, CELL_MAPPINGS.region.region4a.rowIndex, CELL_MAPPINGS.region.region4a.colIndex);
+                values.ncr = getCellValue(matrix, CELL_MAPPINGS.region.ncr.rowIndex, CELL_MAPPINGS.region.ncr.colIndex);
+                
+                values.cc1NS = getCellValue(matrix, CELL_MAPPINGS.cc1.ns.rowIndex, CELL_MAPPINGS.cc1.ns.colIndex);
+                values.knowSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowSaw.rowIndex, CELL_MAPPINGS.cc1.knowSaw.colIndex);
+                values.knowNotSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowNotSaw.rowIndex, CELL_MAPPINGS.cc1.knowNotSaw.colIndex);
+                values.learned = getCellValue(matrix, CELL_MAPPINGS.cc1.learned.rowIndex, CELL_MAPPINGS.cc1.learned.colIndex);
+                values.dontKnow = getCellValue(matrix, CELL_MAPPINGS.cc1.dontKnow.rowIndex, CELL_MAPPINGS.cc1.dontKnow.colIndex);
+                
+                values.cc2NS = getCellValue(matrix, CELL_MAPPINGS.cc2.ns.rowIndex, CELL_MAPPINGS.cc2.ns.colIndex);
+                values.easy = getCellValue(matrix, CELL_MAPPINGS.cc2.easy.rowIndex, CELL_MAPPINGS.cc2.easy.colIndex);
+                values.somewhatEasy = getCellValue(matrix, CELL_MAPPINGS.cc2.somewhatEasy.rowIndex, CELL_MAPPINGS.cc2.somewhatEasy.colIndex);
+                values.difficult = getCellValue(matrix, CELL_MAPPINGS.cc2.difficult.rowIndex, CELL_MAPPINGS.cc2.difficult.colIndex);
+                values.notVisible = getCellValue(matrix, CELL_MAPPINGS.cc2.notVisible.rowIndex, CELL_MAPPINGS.cc2.notVisible.colIndex);
+                values.cc2na = getCellValue(matrix, CELL_MAPPINGS.cc2.na.rowIndex, CELL_MAPPINGS.cc2.na.colIndex);
+                
+                values.cc3NS = getCellValue(matrix, CELL_MAPPINGS.cc3.ns.rowIndex, CELL_MAPPINGS.cc3.ns.colIndex);
+                values.helpedMuch = getCellValue(matrix, CELL_MAPPINGS.cc3.helpedMuch.rowIndex, CELL_MAPPINGS.cc3.helpedMuch.colIndex);
+                values.somewhatHelped = getCellValue(matrix, CELL_MAPPINGS.cc3.somewhatHelped.rowIndex, CELL_MAPPINGS.cc3.somewhatHelped.colIndex);
+                values.didNotHelp = getCellValue(matrix, CELL_MAPPINGS.cc3.didNotHelp.rowIndex, CELL_MAPPINGS.cc3.didNotHelp.colIndex);
+                values.cc3na = getCellValue(matrix, CELL_MAPPINGS.cc3.na.rowIndex, CELL_MAPPINGS.cc3.na.colIndex);
+                
+                values.sqd0 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd0.rowIndex, CELL_MAPPINGS.sqd.sqd0.colIndex);
+                values.sqd1 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd1.rowIndex, CELL_MAPPINGS.sqd.sqd1.colIndex);
+                values.sqd2 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd2.rowIndex, CELL_MAPPINGS.sqd.sqd2.colIndex);
+                values.sqd3 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd3.rowIndex, CELL_MAPPINGS.sqd.sqd3.colIndex);
+                values.sqd4 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd4.rowIndex, CELL_MAPPINGS.sqd.sqd4.colIndex);
+                values.sqd5 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd5.rowIndex, CELL_MAPPINGS.sqd.sqd5.colIndex);
+                values.sqd6 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd6.rowIndex, CELL_MAPPINGS.sqd.sqd6.colIndex);
+                values.sqd7 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd7.rowIndex, CELL_MAPPINGS.sqd.sqd7.colIndex);
+                values.sqd8 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd8.rowIndex, CELL_MAPPINGS.sqd.sqd8.colIndex);
+                values.sqdOverall = getCellValue(matrix, CELL_MAPPINGS.sqd.sqdOverall.rowIndex, CELL_MAPPINGS.sqd.sqdOverall.colIndex);
+                
+                return values;
+            }
+
+            // ----- Sample Data Generator -----
+            function generateSampleMatrix(type) {
+                const m = [];
+                for (let i = 0; i < 150; i++) m[i] = [];
+                
+                // Sex
+                m[42] = m[42] || []; 
+                m[42][1] = 222;
+                m[42][2] = 218;
+                
+                // Age
+                m[34] = m[34] || []; m[34][5] = 20;
+                m[35] = m[35] || []; m[35][5] = 0;
+                m[36] = m[36] || []; m[36][5] = 32;
+                m[37] = m[37] || []; m[37][5] = 73;
+                m[38] = m[38] || []; m[38][5] = 46;
+                m[39] = m[39] || []; m[39][5] = 35;
+                m[40] = m[40] || []; m[40][5] = 6;
+                m[41] = m[41] || []; m[41][5] = 0;
+                
+                // Client
+                m[18] = m[18] || []; m[18][5] = 5;
+                m[19] = m[19] || []; m[19][5] = 251;
+                m[20] = m[20] || []; m[20][5] = 105;
+                m[21] = m[21] || []; m[21][5] = 84;
+                
+                // Region
+                m[26] = m[26] || []; m[26][7] = 4;
+                m[27] = m[27] || []; m[27][7] = 78;
+                m[28] = m[28] || []; m[28][7] = 94;
+                m[29] = m[29] || []; m[29][7] = 112;
+                
+                // CC1
+                m[47] = m[47] || []; m[47][5] = 6;
+                m[48] = m[48] || []; m[48][5] = 103;
+                m[49] = m[49] || []; m[49][5] = 47;
+                m[50] = m[50] || []; m[50][5] = 58;
+                m[51] = m[51] || []; m[51][5] = 32;
+                
+                // CC2
+                m[57] = m[57] || []; m[57][5] = 7;
+                m[58] = m[58] || []; m[58][5] = 89;
+                m[59] = m[59] || []; m[59][5] = 52;
+                m[60] = m[60] || []; m[60][5] = 23;
+                m[61] = m[61] || []; m[61][5] = 14;
+                m[62] = m[62] || []; m[62][5] = 41;
+                
+                // CC3
+                m[68] = m[68] || []; m[68][5] = 5;
+                m[69] = m[69] || []; m[69][5] = 112;
+                m[70] = m[70] || []; m[70][5] = 58;
+                m[71] = m[71] || []; m[71][5] = 16;
+                m[72] = m[72] || []; m[72][5] = 27;
+                
+                // SQD
+                m[109] = m[109] || []; m[109][8] = 90.25;
+                m[111] = m[111] || []; m[111][8] = 89.25;
+                m[112] = m[112] || []; m[112][8] = 91.50;
+                m[113] = m[113] || []; m[113][8] = 87.75;
+                m[114] = m[114] || []; m[114][8] = 93.25;
+                m[115] = m[115] || []; m[115][8] = 90.50;
+                m[116] = m[116] || []; m[116][8] = 88.25;
+                m[117] = m[117] || []; m[117][8] = 92.75;
+                m[118] = m[118] || []; m[118][8] = 89.50;
+                m[119] = m[119] || []; m[119][8] = 90.35;
+                
+                return m;
+            }
+
+            // ----- Plugin to display values on charts -----
+            const valueLabelPlugin = {
+                id: 'valueLabel',
+                afterDatasetsDraw(chart) {
+                    const { ctx, data, scales } = chart;
+                    
+                    if (chart.config.type === 'bar') {
+                        const dataset = data.datasets[0];
+                        ctx.save();
+                        ctx.font = 'bold 10px Inter';
+                        ctx.fillStyle = '#0a4e5e';
+                        ctx.textAlign = 'center';
+                        
+                        dataset.data.forEach((value, index) => {
+                            const x = scales.x.getPixelForValue(index);
+                            const y = scales.y.getPixelForValue(value) - 5;
+                            
+                            if (value !== 0) {
+                                ctx.fillText(value.toFixed(1), x, y);
+                            }
+                        });
+                        ctx.restore();
+                    }
+                }
+            };
+
+            // ----- Render Main Charts with data labels -----
+            function renderMainCharts(values) {
+                const totalSex = values.male + values.female;
+                const totalAge = values.ageNS + values.age19b + values.age2029 + values.age3039 + values.age4049 + values.age5059 + values.age6069 + values.age70;
+                const totalClient = values.clientNS + values.citizen + values.business + values.government;
+                const totalRegion = values.regionNS + values.region3 + values.region4a + values.ncr;
+                const totalCC1 = values.cc1NS + values.knowSaw + values.knowNotSaw + values.learned + values.dontKnow;
+                const awareDenom = totalCC1 - values.dontKnow - values.cc1NS || 1;
+
+                let html = '';
+
+                // Card 1: Sex
+                html += `<div class="chart-card" id="chartSexContainer">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD) by Service Type</h2>
                         <div class="chart-actions">
-                            <span class="total-indicator">8 Dimensions</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartSQD1to8', 'SQD_Chart')">
+                            <span class="total-indicator">Total: ${totalSex}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartSex', 'Sex_Chart')">
                                 <i class="fas fa-download"></i> PNG
                             </button>
                         </div>
                     </div>
-                    <canvas id="chartSQD1to8"></canvas>
-                    <div class="data-legend" style="margin-top: 0.8rem; padding: 0.8rem; font-size: 0.7rem;">
-                        ${sqdFullLabels.map((label, index) => `<span>${label}:</span> ${sqdData[index].toFixed(2)}%`).join(' · ')}
+                    <canvas id="chartSex"></canvas>
+                    <div class="data-legend">
+                        <span>Male:</span> ${values.male} (${totalSex ? ((values.male/totalSex)*100).toFixed(2) : 0}%) 
+                        <span>Female:</span> ${values.female} (${totalSex ? ((values.female/totalSex)*100).toFixed(2) : 0}%)
                     </div>
-                </div>
-                
-                <div class="percentage-card" id="sqdOverallCard">
-                    <div class="chart-actions" style="position: absolute; top: 1rem; right: 1rem;">
-                        <button class="download-btn" onclick="downloadCardAsPNG('sqdOverallCard', 'SQD_Overall')">
-                            <i class="fas fa-download"></i> PNG
-                        </button>
+                </div>`;
+
+                // Card 2: Age
+                html += `<div class="chart-card" id="chartAgeContainer">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-calendar-alt"></i> Age Distribution by Service Type</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Total: ${totalAge}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartAge', 'Age_Chart')">
+                                <i class="fas fa-download"></i> PNG
+                            </button>
+                        </div>
                     </div>
-                    <h3><i class="fas fa-chart-pie" style="color: #c9a227;"></i> Overall SQD (1-8)</h3>
-                    <div class="percentage-value">${values.sqdOverall.toFixed(2)}%</div>
-                    <div class="percentage-label">Average Satisfaction</div>
-                </div>
-            `;
+                    <canvas id="chartAge"></canvas>
+                    <div class="data-legend">
+                        <div style="width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                            <div><span>N/S:</span> ${values.ageNS}</div>
+                            <div><span>19↓:</span> ${values.age19b}</div>
+                            <div><span>20-29:</span> ${values.age2029}</div>
+                            <div><span>30-39:</span> ${values.age3039}</div>
+                            <div><span>40-49:</span> ${values.age4049}</div>
+                            <div><span>50-59:</span> ${values.age5059}</div>
+                            <div><span>60-69:</span> ${values.age6069}</div>
+                            <div><span>70↑:</span> ${values.age70}</div>
+                        </div>
+                    </div>
+                </div>`;
 
-            sqdChartsContainer.innerHTML = html;
+                // Card 3: Client Type
+                html += `<div class="chart-card" id="chartClientContainer">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-users"></i> Client Type by Service</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Total: ${totalClient}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartClient', 'Client_Chart')">
+                                <i class="fas fa-download"></i> PNG
+                            </button>
+                        </div>
+                    </div>
+                    <canvas id="chartClient"></canvas>
+                    <div class="data-legend">
+                        <div><span>N/S:</span> ${values.clientNS}</div>
+                        <div><span>Citizen:</span> ${values.citizen}</div>
+                        <div><span>Business:</span> ${values.business}</div>
+                        <div><span>Government:</span> ${values.government}</div>
+                    </div>
+                </div>`;
 
-            const ctx = document.getElementById('chartSQD1to8');
-            if (ctx) {
-                chartInstances.sqdChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: sqdLabels,
-                        datasets: [{
-                            label: 'Satisfaction Percentage',
-                            data: sqdData,
-                            backgroundColor: '#1a7f9e',
-                            borderRadius: 6,
-                            barPercentage: 0.7
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                backgroundColor: '#0f859e',
-                                callbacks: {
-                                    label: function(context) {
-                                        return `${sqdFullLabels[context.dataIndex]}: ${context.raw.toFixed(2)}%`;
+                // Card 4: Region
+                html += `<div class="chart-card" id="chartRegionContainer">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Total: ${totalRegion}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartRegion', 'Region_Chart')">
+                                <i class="fas fa-download"></i> PNG
+                            </button>
+                        </div>
+                    </div>
+                    <canvas id="chartRegion"></canvas>
+                    <div class="data-legend">
+                        <div><span>N/S:</span> ${values.regionNS}</div>
+                        <div><span>Region III:</span> ${values.region3}</div>
+                        <div><span>Region IV-A:</span> ${values.region4a}</div>
+                        <div><span>NCR:</span> ${values.ncr}</div>
+                    </div>
+                </div>`;
+
+                // Card 5: CC1
+                html += `<div class="chart-card" id="chartCC1Container">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-eye"></i> Citizen's Charter Awareness</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Total: ${totalCC1}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartCC1', 'CC1_Chart')">
+                                <i class="fas fa-download"></i> PNG
+                            </button>
+                        </div>
+                    </div>
+                    <canvas id="chartCC1"></canvas>
+                    <div class="data-legend">
+                        <div><span>N/S:</span> ${values.cc1NS}</div>
+                        <div><span>Know & Saw:</span> ${values.knowSaw}</div>
+                        <div><span>Know/Not Saw:</span> ${values.knowNotSaw}</div>
+                        <div><span>Learned:</span> ${values.learned}</div>
+                        <div><span>Don't know:</span> ${values.dontKnow}</div>
+                    </div>
+                </div>`;
+
+                // Card 6: CC2
+                html += `<div class="chart-card" id="chartCC2Container">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-low-vision"></i> Citizen's Charter Visibility</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Aware: ${awareDenom}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartCC2', 'CC2_Chart')">
+                                <i class="fas fa-download"></i> PNG
+                            </button>
+                        </div>
+                    </div>
+                    <canvas id="chartCC2"></canvas>
+                    <div class="data-legend">
+                        <div><span>N/S:</span> ${values.cc2NS}</div>
+                        <div><span>Easy:</span> ${values.easy}</div>
+                        <div><span>Somewhat:</span> ${values.somewhatEasy}</div>
+                        <div><span>Difficult:</span> ${values.difficult}</div>
+                        <div><span>Not visible:</span> ${values.notVisible}</div>
+                        <div><span>N/A:</span> ${values.cc2na}</div>
+                    </div>
+                </div>`;
+
+                // Card 7: CC3
+                html += `<div class="chart-card" id="chartCC3Container">
+                    <div class="chart-header">
+                        <h2><i class="fas fa-check-circle"></i> Citizen's Charter Effectivity</h2>
+                        <div class="chart-actions">
+                            <span class="total-indicator">Aware: ${awareDenom}</span>
+                            <button class="download-btn" onclick="downloadAsPNG('chartCC3', 'CC3_Chart')">
+                                <i class="fas fa-download"></i> PNG
+                            </button>
+                        </div>
+                    </div>
+                    <canvas id="chartCC3"></canvas>
+                    <div class="data-legend">
+                        <div><span>N/S:</span> ${values.cc3NS}</div>
+                        <div><span>Helped much:</span> ${values.helpedMuch}</div>
+                        <div><span>Somewhat:</span> ${values.somewhatHelped}</div>
+                        <div><span>Did not:</span> ${values.didNotHelp}</div>
+                        <div><span>N/A:</span> ${values.cc3na}</div>
+                    </div>
+                </div>`;
+
+                mainGridEl.innerHTML = html;
+
+                // Destroy old charts
+                Object.values(chartInstances).forEach(chart => chart?.destroy());
+                chartInstances = {};
+
+                // Color palettes
+                const bluePalette = ['#1a7f9e', '#2f98b3', '#45b0c9', '#7fc5d9', '#a8dae8'];
+                const goldPalette = ['#c9a227', '#d9b44a', '#e5c36b', '#f0d59a', '#f8e7c4'];
+                const lightBluePalette = ['#7fc5d9', '#a8dae8', '#c4e6f0', '#dff1f7', '#eef8fc'];
+
+                // Create enhanced charts with value labels
+                const chartConfigs = [
+                    { 
+                        id: 'chartSex', type: 'doughnut', 
+                        labels: ['Male', 'Female'], 
+                        data: [values.male, values.female], 
+                        colors: [bluePalette[0], goldPalette[0]],
+                        options: { 
+                            cutout: '70%', 
+                            plugins: { 
+                                legend: { display: false },
+                                datalabels: {
+                                    display: true,
+                                    color: 'white',
+                                    formatter: (value, context) => {
+                                        return value + ' (' + ((value/totalSex)*100).toFixed(1) + '%)';
                                     }
+                                }
+                            } 
+                        }
+                    },
+                    { 
+                        id: 'chartAge', type: 'bar', 
+                        labels: ['N/S', '19↓', '20-29', '30-39', '40-49', '50-59', '60-69', '70↑'], 
+                        data: [values.ageNS, values.age19b, values.age2029, values.age3039, values.age4049, values.age5059, values.age6069, values.age70], 
+                        colors: bluePalette[1],
+                        options: { 
+                            indexAxis: 'x',
+                            scales: { y: { beginAtZero: true, grid: { color: '#e9ecef' } } }
+                        }
+                    },
+                    { 
+                        id: 'chartClient', type: 'doughnut', 
+                        labels: ['Citizen', 'Business', 'Government', 'N/S'], 
+                        data: [values.citizen, values.business, values.government, values.clientNS], 
+                        colors: [bluePalette[0], bluePalette[2], goldPalette[0], lightBluePalette[2]],
+                        options: { 
+                            cutout: '70%',
+                            plugins: { 
+                                legend: { display: false },
+                                datalabels: {
+                                    display: true,
+                                    color: 'white',
+                                    formatter: (value, context) => {
+                                        return value;
+                                    }
+                                }
+                            } 
+                        }
+                    },
+                    { 
+                        id: 'chartRegion', type: 'pie', 
+                        labels: ['Region III', 'Region IV-A', 'NCR', 'N/S'], 
+                        data: [values.region3, values.region4a, values.ncr, values.regionNS], 
+                        colors: [bluePalette[1], bluePalette[2], goldPalette[0], lightBluePalette[3]] 
+                    },
+                    { 
+                        id: 'chartCC1', type: 'bar', 
+                        labels: ['Know & Saw', 'Know/Not', 'Learned', 'Don\'t know', 'N/S'], 
+                        data: [values.knowSaw, values.knowNotSaw, values.learned, values.dontKnow, values.cc1NS], 
+                        colors: bluePalette[0],
+                        options: { indexAxis: 'y' }
+                    },
+                    { 
+                        id: 'chartCC2', type: 'bar', 
+                        labels: ['Easy', 'Somewhat', 'Difficult', 'Not visible', 'N/A', 'N/S'], 
+                        data: [values.easy, values.somewhatEasy, values.difficult, values.notVisible, values.cc2na, values.cc2NS], 
+                        colors: goldPalette[0],
+                        options: { indexAxis: 'y' }
+                    },
+                    { 
+                        id: 'chartCC3', type: 'bar', 
+                        labels: ['Helped much', 'Somewhat', 'Did not', 'N/A', 'N/S'], 
+                        data: [values.helpedMuch, values.somewhatHelped, values.didNotHelp, values.cc3na, values.cc3NS], 
+                        colors: lightBluePalette[1],
+                        options: { indexAxis: 'y' }
+                    }
+                ];
+
+                chartConfigs.forEach(cfg => {
+                    const ctx = document.getElementById(cfg.id);
+                    if (!ctx) return;
+                    
+                    // Register the value label plugin for this chart
+                    Chart.register(valueLabelPlugin);
+                    
+                    chartInstances[cfg.id] = new Chart(ctx, {
+                        type: cfg.type,
+                        data: {
+                            labels: cfg.labels,
+                            datasets: [{
+                                data: cfg.data,
+                                backgroundColor: cfg.colors,
+                                borderWidth: 0,
+                                borderRadius: 6
+                            }]
+                        },
+                        options: {
+                            cutout: cfg.options?.cutout || (cfg.type === 'doughnut' ? '65%' : undefined),
+                            indexAxis: cfg.options?.indexAxis,
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: { 
+                                legend: { display: false }, 
+                                tooltip: { backgroundColor: '#0f859e' },
+                                valueLabel: {
+                                    display: true
+                                }
+                            },
+                            scales: cfg.type === 'bar' ? { 
+                                y: cfg.options?.indexAxis === 'y' ? { 
+                                    beginAtZero: true, 
+                                    grid: { color: '#e9ecef' },
+                                    ticks: { color: '#2a5e6e' }
+                                } : { 
+                                    beginAtZero: true, 
+                                    grid: { color: '#e9ecef' },
+                                    ticks: { color: '#2a5e6e' }
+                                },
+                                x: { ticks: { color: '#2a5e6e' } }
+                            } : undefined
+                        },
+                        plugins: [valueLabelPlugin]
+                    });
+                });
+            }
+
+            // ----- Render SQD Section -----
+            function renderSQDSection(values) {
+                const sqdLabels = ['SQD 1', 'SQD 2', 'SQD 3', 'SQD 4', 'SQD 5', 'SQD 6', 'SQD 7', 'SQD 8'];
+                const sqdFullLabels = [
+                    'Responsiveness', 'Reliability', 'Access & Facilities', 'Communication',
+                    'Costs', 'Integrity', 'Assurance', 'Outcome'
+                ];
+                const sqdData = [
+                    values.sqd1, values.sqd2, values.sqd3, values.sqd4,
+                    values.sqd5, values.sqd6, values.sqd7, values.sqd8
+                ];
+
+                let html = `
+                    <div class="percentage-card" id="sqd0Card">
+                        <div class="chart-actions" style="position: absolute; top: 1rem; right: 1rem;">
+                            <button class="download-btn" onclick="downloadCardAsPNG('sqd0Card', 'SQD0')">
+                                <i class="fas fa-download"></i> PNG
+                            </button>
+                        </div>
+                        <h3><i class="fas fa-star" style="color: #c9a227;"></i> SQD 0 - Overall Satisfaction</h3>
+                        <div class="percentage-value">${values.sqd0.toFixed(2)}%</div>
+                        <div class="percentage-label">Satisfaction Rating</div>
+                    </div>
+                    
+                    <div class="sqd-chart-panel" id="sqdChartPanel">
+                        <div class="sqd-chart-header">
+                            <h2><i class="fas fa-chart-bar"></i> SQD 1-8: Service Quality Dimensions</h2>
+                            <div class="chart-actions">
+                                <span class="total-indicator">8 Dimensions</span>
+                                <button class="download-btn" onclick="downloadAsPNG('chartSQD1to8', 'SQD_Chart')">
+                                    <i class="fas fa-download"></i> PNG
+                                </button>
+                            </div>
+                        </div>
+                        <canvas id="chartSQD1to8"></canvas>
+                        <div class="data-legend" style="margin-top: 0.8rem; padding: 0.8rem; font-size: 0.7rem;">
+                            ${sqdFullLabels.map((label, index) => `<span>${label}:</span> ${sqdData[index].toFixed(2)}%`).join(' · ')}
+                        </div>
+                    </div>
+                    
+                    <div class="percentage-card" id="sqdOverallCard">
+                        <div class="chart-actions" style="position: absolute; top: 1rem; right: 1rem;">
+                            <button class="download-btn" onclick="downloadCardAsPNG('sqdOverallCard', 'SQD_Overall')">
+                                <i class="fas fa-download"></i> PNG
+                            </button>
+                        </div>
+                        <h3><i class="fas fa-chart-pie" style="color: #c9a227;"></i> Overall SQD (1-8)</h3>
+                        <div class="percentage-value">${values.sqdOverall.toFixed(2)}%</div>
+                        <div class="percentage-label">Average Satisfaction</div>
+                    </div>
+                `;
+
+                sqdChartsContainer.innerHTML = html;
+
+                const ctx = document.getElementById('chartSQD1to8');
+                if (ctx) {
+                    Chart.register(valueLabelPlugin);
+                    chartInstances.sqdChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: sqdLabels,
+                            datasets: [{
+                                label: 'Satisfaction Percentage',
+                                data: sqdData,
+                                backgroundColor: '#1a7f9e',
+                                borderRadius: 6,
+                                barPercentage: 0.7
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: '#0f859e',
+                                    callbacks: {
+                                        label: function(context) {
+                                            return `${sqdFullLabels[context.dataIndex]}: ${context.raw.toFixed(2)}%`;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    grid: { color: '#e9ecef' },
+                                    ticks: { callback: value => value + '%' }
                                 }
                             }
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                max: 100,
-                                grid: { color: '#e9ecef' },
-                                ticks: { callback: value => value + '%' }
-                            }
+                        plugins: [valueLabelPlugin]
+                    });
+                }
+            }
+
+            // ----- Render Comparison View -----
+            async function renderComparison() {
+                if (!compareValues1 || !compareValues2) return;
+
+                const name1 = serviceNames[compareService1] || compareService1;
+                const name2 = serviceNames[compareService2] || compareService2;
+
+                let html = '';
+
+                // Sex Comparison
+                html += `<div class="compare-card">
+                    <h3><i class="fas fa-venus-mars"></i> Sex Distribution</h3>
+                    <canvas id="compareSex"></canvas>
+                    <div class="data-legend" style="margin-top: 0.5rem;">
+                        <span style="color: #1a7f9e;">${name1}:</span> M:${compareValues1.male} F:${compareValues1.female}<br>
+                        <span style="color: #c9a227;">${name2}:</span> M:${compareValues2.male} F:${compareValues2.female}
+                    </div>
+                </div>`;
+
+                // Age Comparison
+                html += `<div class="compare-card">
+                    <h3><i class="fas fa-calendar-alt"></i> Age Distribution</h3>
+                    <canvas id="compareAge"></canvas>
+                </div>`;
+
+                // Client Type Comparison
+                html += `<div class="compare-card">
+                    <h3><i class="fas fa-users"></i> Client Type</h3>
+                    <canvas id="compareClient"></canvas>
+                </div>`;
+
+                // Region Comparison
+                html += `<div class="compare-card">
+                    <h3><i class="fas fa-map-marker-alt"></i> Region</h3>
+                    <canvas id="compareRegion"></canvas>
+                </div>`;
+
+                // CC1 Comparison
+                html += `<div class="compare-card">
+                    <h3><i class="fas fa-eye"></i> CC1 Awareness</h3>
+                    <canvas id="compareCC1"></canvas>
+                </div>`;
+
+                // CC2 Comparison
+                html += `<div class="compare-card">
+                    <h3><i class="fas fa-low-vision"></i> CC2 Visibility</h3>
+                    <canvas id="compareCC2"></canvas>
+                </div>`;
+
+                // CC3 Comparison
+                html += `<div class="compare-card">
+                    <h3><i class="fas fa-check-circle"></i> CC3 Effectivity</h3>
+                    <canvas id="compareCC3"></canvas>
+                </div>`;
+
+                comparisonGrid.innerHTML = html;
+
+                // Create comparison charts
+                const ctxSex = document.getElementById('compareSex');
+                if (ctxSex) {
+                    new Chart(ctxSex, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Male', 'Female'],
+                            datasets: [
+                                {
+                                    label: name1,
+                                    data: [compareValues1.male, compareValues1.female],
+                                    backgroundColor: '#1a7f9e',
+                                    borderRadius: 6
+                                },
+                                {
+                                    label: name2,
+                                    data: [compareValues2.male, compareValues2.female],
+                                    backgroundColor: '#c9a227',
+                                    borderRadius: 6
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
                         }
-                    }
-                });
-            }
-        }
-
-        // ----- Show Full Data Modal - COMPLETE VIEW -----
-        function showFullDataModal() {
-            if (!currentMatrix) {
-                alert('No data available yet');
-                return;
-            }
-
-            const title = currentServiceDisplayName;
-            modalTitle.innerHTML = `${title} - Complete Data (${currentMatrix.length} rows)`;
-
-            // Create table HTML with column letters
-            let tableHTML = '<table class="data-table"><thead><tr>';
-            
-            // Add column headers with letters (A, B, C, etc.)
-            if (currentMatrix.length > 0) {
-                for (let i = 0; i < currentMatrix[0].length; i++) {
-                    const colLetter = String.fromCharCode(65 + i);
-                    tableHTML += `<th><span class="col-letter">${colLetter}</span><br><span style="font-weight: normal; font-size: 0.7rem;">Column ${colLetter}</span></th>`;
+                    });
                 }
-                tableHTML += '</tr></thead><tbody>';
-                
-                // Show ALL rows - COMPLETE DATA
-                for (let i = 0; i < currentMatrix.length; i++) {
-                    tableHTML += '<tr>';
-                    for (let j = 0; j < currentMatrix[i].length; j++) {
-                        const cellValue = currentMatrix[i][j] || '';
-                        // Truncate extremely long values for display
-                        const displayValue = cellValue.length > 100 ? cellValue.substring(0, 100) + '...' : cellValue;
-                        tableHTML += `<td title="${cellValue.replace(/"/g, '&quot;')}">${displayValue}</td>`;
-                    }
-                    tableHTML += '</tr>';
+
+                // Age comparison chart
+                const ctxAge = document.getElementById('compareAge');
+                if (ctxAge) {
+                    new Chart(ctxAge, {
+                        type: 'bar',
+                        data: {
+                            labels: ['N/S', '19↓', '20-29', '30-39', '40-49', '50-59', '60-69', '70↑'],
+                            datasets: [
+                                {
+                                    label: name1,
+                                    data: [
+                                        compareValues1.ageNS, compareValues1.age19b,
+                                        compareValues1.age2029, compareValues1.age3039,
+                                        compareValues1.age4049, compareValues1.age5059,
+                                        compareValues1.age6069, compareValues1.age70
+                                    ],
+                                    backgroundColor: '#1a7f9e',
+                                    borderRadius: 6
+                                },
+                                {
+                                    label: name2,
+                                    data: [
+                                        compareValues2.ageNS, compareValues2.age19b,
+                                        compareValues2.age2029, compareValues2.age3039,
+                                        compareValues2.age4049, compareValues2.age5059,
+                                        compareValues2.age6069, compareValues2.age70
+                                    ],
+                                    backgroundColor: '#c9a227',
+                                    borderRadius: 6
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
                 }
-                
-                tableHTML += '</tbody></table>';
-            } else {
-                tableHTML = '<p style="text-align: center; padding: 2rem;">No data available</p>';
-            }
-            
-            modalTableContainer.innerHTML = tableHTML;
-            dataModal.style.display = 'block';
-        }
 
-        // ----- Download as CSV -----
-        function downloadCSV() {
-            if (!currentMatrix) {
-                alert('No data available');
-                return;
+                // Client comparison chart
+                const ctxClient = document.getElementById('compareClient');
+                if (ctxClient) {
+                    new Chart(ctxClient, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Citizen', 'Business', 'Government', 'N/S'],
+                            datasets: [
+                                {
+                                    label: name1,
+                                    data: [compareValues1.citizen, compareValues1.business, compareValues1.government, compareValues1.clientNS],
+                                    backgroundColor: '#1a7f9e',
+                                    borderRadius: 6
+                                },
+                                {
+                                    label: name2,
+                                    data: [compareValues2.citizen, compareValues2.business, compareValues2.government, compareValues2.clientNS],
+                                    backgroundColor: '#c9a227',
+                                    borderRadius: 6
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                // Region comparison chart
+                const ctxRegion = document.getElementById('compareRegion');
+                if (ctxRegion) {
+                    new Chart(ctxRegion, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Region III', 'Region IV-A', 'NCR', 'N/S'],
+                            datasets: [
+                                {
+                                    label: name1,
+                                    data: [compareValues1.region3, compareValues1.region4a, compareValues1.ncr, compareValues1.regionNS],
+                                    backgroundColor: '#1a7f9e',
+                                    borderRadius: 6
+                                },
+                                {
+                                    label: name2,
+                                    data: [compareValues2.region3, compareValues2.region4a, compareValues2.ncr, compareValues2.regionNS],
+                                    backgroundColor: '#c9a227',
+                                    borderRadius: 6
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                // CC1 comparison chart
+                const ctxCC1 = document.getElementById('compareCC1');
+                if (ctxCC1) {
+                    new Chart(ctxCC1, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Know & Saw', 'Know/Not', 'Learned', 'Don\'t know', 'N/S'],
+                            datasets: [
+                                {
+                                    label: name1,
+                                    data: [compareValues1.knowSaw, compareValues1.knowNotSaw, compareValues1.learned, compareValues1.dontKnow, compareValues1.cc1NS],
+                                    backgroundColor: '#1a7f9e',
+                                    borderRadius: 6
+                                },
+                                {
+                                    label: name2,
+                                    data: [compareValues2.knowSaw, compareValues2.knowNotSaw, compareValues2.learned, compareValues2.dontKnow, compareValues2.cc1NS],
+                                    backgroundColor: '#c9a227',
+                                    borderRadius: 6
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                // CC2 comparison chart
+                const ctxCC2 = document.getElementById('compareCC2');
+                if (ctxCC2) {
+                    new Chart(ctxCC2, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Easy', 'Somewhat', 'Difficult', 'Not visible', 'N/A', 'N/S'],
+                            datasets: [
+                                {
+                                    label: name1,
+                                    data: [compareValues1.easy, compareValues1.somewhatEasy, compareValues1.difficult, compareValues1.notVisible, compareValues1.cc2na, compareValues1.cc2NS],
+                                    backgroundColor: '#1a7f9e',
+                                    borderRadius: 6
+                                },
+                                {
+                                    label: name2,
+                                    data: [compareValues2.easy, compareValues2.somewhatEasy, compareValues2.difficult, compareValues2.notVisible, compareValues2.cc2na, compareValues2.cc2NS],
+                                    backgroundColor: '#c9a227',
+                                    borderRadius: 6
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                // CC3 comparison chart
+                const ctxCC3 = document.getElementById('compareCC3');
+                if (ctxCC3) {
+                    new Chart(ctxCC3, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Helped much', 'Somewhat', 'Did not', 'N/A', 'N/S'],
+                            datasets: [
+                                {
+                                    label: name1,
+                                    data: [compareValues1.helpedMuch, compareValues1.somewhatHelped, compareValues1.didNotHelp, compareValues1.cc3na, compareValues1.cc3NS],
+                                    backgroundColor: '#1a7f9e',
+                                    borderRadius: 6
+                                },
+                                {
+                                    label: name2,
+                                    data: [compareValues2.helpedMuch, compareValues2.somewhatHelped, compareValues2.didNotHelp, compareValues2.cc3na, compareValues2.cc3NS],
+                                    backgroundColor: '#c9a227',
+                                    borderRadius: 6
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { legend: { position: 'top' } },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
             }
 
-            let csvContent = '';
-            
-            // Convert matrix to CSV
-            currentMatrix.forEach(row => {
-                const escapedRow = row.map(cell => {
-                    if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"'))) {
-                        return `"${cell.replace(/"/g, '""')}"`;
-                    }
-                    return cell;
-                }).join(',');
-                csvContent += escapedRow + '\n';
+            // ----- Load Comparison Data -----
+            async function loadComparisonData() {
+                const matrix1 = await fetchSheetData(compareService1);
+                const matrix2 = await fetchSheetData(compareService2);
+                compareValues1 = readAllCells(matrix1);
+                compareValues2 = readAllCells(matrix2);
+                await renderComparison();
+            }
+
+            // ----- Toggle Comparison Mode -----
+            compareToggle.addEventListener('click', async function() {
+                isCompareMode = !isCompareMode;
+                if (isCompareMode) {
+                    compareToggle.classList.add('active');
+                    comparisonPanel.style.display = 'block';
+                    mainGridEl.style.display = 'none';
+                    sqdChartsContainer.style.display = 'none';
+                    document.getElementById('sqdSectionHeader').style.display = 'none';
+                    await loadComparisonData();
+                } else {
+                    compareToggle.classList.remove('active');
+                    comparisonPanel.style.display = 'none';
+                    mainGridEl.style.display = 'grid';
+                    sqdChartsContainer.style.display = 'grid';
+                    document.getElementById('sqdSectionHeader').style.display = 'flex';
+                    renderDashboard();
+                }
             });
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const filename = `MWSS_${currentServiceDisplayName.replace(/\s+/g, '_')}_data.csv`;
-            
-            link.href = URL.createObjectURL(blob);
-            link.download = filename;
-            link.click();
-        }
+            // Comparison select change events
+            compareService1Select.addEventListener('change', async function() {
+                compareService1 = this.value;
+                await loadComparisonData();
+            });
 
-        // ----- Render Dashboard -----
-        async function renderDashboard() {
-            const loadingHTML = `
-                <div class="loading-state">
-                    <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #c9a227;"></i>
-                    <p style="color: #0f859e;">Loading ${serviceNames[currentServiceCode] || serviceNames[currentService] || currentService}...</p>
-                </div>
-            `;
-            mainGridEl.innerHTML = loadingHTML;
-            sqdChartsContainer.innerHTML = '';
+            compareService2Select.addEventListener('change', async function() {
+                compareService2 = this.value;
+                await loadComparisonData();
+            });
 
-            const matrix = await fetchSheetData(currentServiceCode || currentService);
-            const values = readAllCells(matrix);
-            currentValues = values;
-            
-            renderMainCharts(values);
-            renderSQDSection(values);
-            updateServiceDisplay();
-        }
+            // ----- Show Full Data Modal -----
+            function showFullDataModal() {
+                if (!currentMatrix) {
+                    alert('No data available yet');
+                    return;
+                }
 
-        // ----- PNG download helpers -----
-        window.downloadAsPNG = downloadAsPNG;
-        window.downloadCardAsPNG = async function(cardId, filename) {
-            const element = document.getElementById(cardId);
-            if (!element) return;
-            
-            try {
-                const canvas = await html2canvas(element, {
-                    scale: 2,
-                    backgroundColor: '#ffffff',
-                    borderRadius: '28px'
-                });
+                const title = currentServiceDisplayName;
+                modalTitle.innerHTML = `${title} - Complete Data (${currentMatrix.length} rows)`;
+
+                let tableHTML = '<table class="data-table"><thead><tr>';
                 
+                if (currentMatrix.length > 0) {
+                    for (let i = 0; i < currentMatrix[0].length; i++) {
+                        const colLetter = String.fromCharCode(65 + i);
+                        tableHTML += `<th><span class="col-letter">${colLetter}</span></th>`;
+                    }
+                    tableHTML += '</tr></thead><tbody>';
+                    
+                    for (let i = 0; i < currentMatrix.length; i++) {
+                        tableHTML += '<tr>';
+                        for (let j = 0; j < currentMatrix[i].length; j++) {
+                            const cellValue = currentMatrix[i][j] || '';
+                            const displayValue = cellValue.length > 100 ? cellValue.substring(0, 100) + '...' : cellValue;
+                            tableHTML += `<td title="${cellValue.replace(/"/g, '&quot;')}">${displayValue}</td>`;
+                        }
+                        tableHTML += '</tr>';
+                    }
+                    
+                    tableHTML += '</tbody></table>';
+                } else {
+                    tableHTML = '<p style="text-align: center; padding: 2rem;">No data available</p>';
+                }
+                
+                modalTableContainer.innerHTML = tableHTML;
+                dataModal.style.display = 'block';
+            }
+
+            // ----- Download as CSV -----
+            function downloadCSV() {
+                if (!currentMatrix) {
+                    alert('No data available');
+                    return;
+                }
+
+                let csvContent = '';
+                
+                currentMatrix.forEach(row => {
+                    const escapedRow = row.map(cell => {
+                        if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"'))) {
+                            return `"${cell.replace(/"/g, '""')}"`;
+                        }
+                        return cell;
+                    }).join(',');
+                    csvContent += escapedRow + '\n';
+                });
+
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
                 const link = document.createElement('a');
-                link.download = `MWSS_${filename}.png`;
-                link.href = canvas.toDataURL('image/png');
+                const filename = `MWSS_${currentServiceDisplayName.replace(/\s+/g, '_')}_data.csv`;
+                
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
                 link.click();
-            } catch (error) {
-                console.error('PNG download failed:', error);
             }
-        };
 
-        // ----- Event Listeners -----
-        function initEvents() {
-            // Toggle buttons
-            document.querySelectorAll('.switch-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
+            // ----- PNG download helpers -----
+            window.downloadAsPNG = downloadAsPNG;
+            window.downloadCardAsPNG = async function(cardId, filename) {
+                const element = document.getElementById(cardId);
+                if (!element) return;
+                
+                try {
+                    const canvas = await html2canvas(element, {
+                        scale: 2,
+                        backgroundColor: '#ffffff',
+                        borderRadius: '28px'
+                    });
                     
-                    currentService = this.dataset.type;
-                    currentServiceCode = '';
-                    resetDropdowns();
-                    renderDashboard();
-                });
-            });
-
-            // External service select
-            externalSelect.addEventListener('change', function() {
-                if (this.value) {
-                    currentServiceCode = this.value;
-                    currentService = '';
-                    internalSelect.value = '';
-                    
-                    document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
-                    renderDashboard();
+                    const link = document.createElement('a');
+                    link.download = `MWSS_${filename}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                } catch (error) {
+                    console.error('PNG download failed:', error);
                 }
-            });
+            };
 
-            // Internal service select
-            internalSelect.addEventListener('change', function() {
-                if (this.value) {
-                    currentServiceCode = this.value;
-                    currentService = '';
-                    externalSelect.value = '';
-                    
-                    document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
-                    renderDashboard();
-                }
-            });
+            // ----- Render Dashboard -----
+            async function renderDashboard() {
+                if (isCompareMode) return;
 
-            // View full data button
-            viewDataBtn.addEventListener('click', showFullDataModal);
+                const loadingHTML = `
+                    <div class="loading-state">
+                        <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #c9a227;"></i>
+                        <p style="color: #0f859e;">Loading ${serviceNames[currentServiceCode] || serviceNames[currentService] || currentService}...</p>
+                    </div>
+                `;
+                mainGridEl.innerHTML = loadingHTML;
+                sqdChartsContainer.innerHTML = '';
 
-            // Close modal
-            closeModal.addEventListener('click', () => {
-                dataModal.style.display = 'none';
-            });
+                const matrix = await fetchSheetData(currentServiceCode || currentService);
+                const values = readAllCells(matrix);
+                currentValues = values;
+                
+                renderMainCharts(values);
+                renderSQDSection(values);
+                updateServiceDisplay();
+            }
 
-            // Click outside to close
-            window.addEventListener('click', (e) => {
-                if (e.target === dataModal) {
-                    dataModal.style.display = 'none';
-                }
-            });
-
-            // Download CSV button
-            downloadCsvBtn.addEventListener('click', downloadCSV);
-
-            // Refresh data button
-            refreshDataBtn.addEventListener('click', () => {
+            // ----- Update Date Range -----
+            updateDateBtn.addEventListener('click', function() {
                 renderDashboard();
-                setTimeout(() => {
-                    if (currentMatrix) {
-                        showFullDataModal();
-                    }
-                }, 500);
             });
-        }
 
-        // ----- Start -----
-        window.addEventListener('DOMContentLoaded', () => {
-            initEvents();
-            renderDashboard();
-        });
-    })();
-</script>
+            // ----- Event Listeners -----
+            function initEvents() {
+                // Toggle buttons
+                document.querySelectorAll('.switch-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        currentService = this.dataset.type;
+                        currentServiceCode = '';
+                        resetDropdowns();
+                        renderDashboard();
+                    });
+                });
+
+                // External service select
+                externalSelect.addEventListener('change', function() {
+                    if (this.value) {
+                        currentServiceCode = this.value;
+                        currentService = '';
+                        internalSelect.value = '';
+                        
+                        document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
+                        renderDashboard();
+                    }
+                });
+
+                // Internal service select
+                internalSelect.addEventListener('change', function() {
+                    if (this.value) {
+                        currentServiceCode = this.value;
+                        currentService = '';
+                        externalSelect.value = '';
+                        
+                        document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
+                        renderDashboard();
+                    }
+                });
+
+                // View full data button
+                viewDataBtn.addEventListener('click', showFullDataModal);
+
+                // Modal elements
+                const dataModal = document.getElementById('dataModal');
+                const closeModal = document.getElementById('closeModal');
+                const downloadCsvBtn = document.getElementById('downloadCsvBtn');
+                const refreshDataBtn = document.getElementById('refreshDataBtn');
+
+                // Close modal
+                closeModal.addEventListener('click', () => {
+                    dataModal.style.display = 'none';
+                });
+
+                // Click outside to close
+                window.addEventListener('click', (e) => {
+                    if (e.target === dataModal) {
+                        dataModal.style.display = 'none';
+                    }
+                });
+
+                // Download CSV button
+                downloadCsvBtn.addEventListener('click', downloadCSV);
+
+                // Refresh data button
+                refreshDataBtn.addEventListener('click', () => {
+                    renderDashboard();
+                    setTimeout(() => {
+                        if (currentMatrix) {
+                            showFullDataModal();
+                        }
+                    }, 500);
+                });
+            }
+
+            // ----- Start -----
+            window.addEventListener('DOMContentLoaded', () => {
+                initEvents();
+                renderDashboard();
+            });
+        })();
+    </script>
 </body>
 </html>
