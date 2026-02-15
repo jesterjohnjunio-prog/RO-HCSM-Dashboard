@@ -205,7 +205,7 @@
             color: #1a4a5f;
             background: white;
             cursor: pointer;
-            min-width: 300px;
+            min-width: 280px;
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230f6f84' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
@@ -536,7 +536,7 @@
             font-size: 1.1rem;
         }
 
-        /* Modal Styles */
+        /* ========== ENHANCED MODAL - FULL DATA VIEW ========== */
         .modal {
             display: none;
             position: fixed;
@@ -552,13 +552,14 @@
 
         .modal-content {
             background: white;
-            margin: 3% auto;
+            margin: 2% auto;
             padding: 2rem;
             border-radius: 40px;
-            width: 90%;
-            max-width: 1200px;
-            max-height: 85vh;
-            overflow-y: auto;
+            width: 95%;
+            max-width: 1600px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
             box-shadow: 0 25px 50px rgba(0,70,90,0.2);
             animation: slideUp 0.4s ease;
         }
@@ -570,6 +571,7 @@
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+            flex-shrink: 0;
         }
 
         .modal-header h2 {
@@ -584,6 +586,7 @@
             cursor: pointer;
             color: #4a7a86;
             transition: all 0.2s ease;
+            line-height: 1;
         }
 
         .close-modal:hover {
@@ -595,6 +598,7 @@
             display: flex;
             gap: 1rem;
             margin-bottom: 1.5rem;
+            flex-shrink: 0;
         }
 
         .modal-btn {
@@ -627,29 +631,62 @@
             background: rgba(212, 175, 55, 0.2);
         }
 
+        /* Table Container - Scrollable */
+        .table-container {
+            flex: 1;
+            overflow: auto;
+            border: 1px solid rgba(147,197,214,0.2);
+            border-radius: 20px;
+            background: white;
+        }
+
         .data-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.85rem;
+            min-width: 800px;
         }
 
         .data-table th {
             background: rgba(15,133,158,0.08);
             color: #0f6f84;
             font-weight: 600;
-            padding: 0.8rem;
+            padding: 1rem;
             text-align: left;
-            border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(4px);
         }
 
         .data-table td {
-            padding: 0.6rem 0.8rem;
-            border-bottom: 1px solid rgba(147,197,214,0.2);
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid rgba(147,197,214,0.15);
             color: #1a4a5f;
         }
 
-        .data-table tr:hover {
-            background: rgba(212, 175, 55, 0.02);
+        .data-table tbody tr:nth-child(even) {
+            background: rgba(15,133,158,0.02);
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .data-table td:first-child, .data-table th:first-child {
+            padding-left: 1.5rem;
+        }
+
+        .data-table td:last-child, .data-table th:last-child {
+            padding-right: 1.5rem;
+        }
+
+        /* Column letter indicator */
+        .col-letter {
+            color: #c9a227;
+            font-weight: 600;
+            margin-right: 0.3rem;
         }
 
         .status-footer {
@@ -693,6 +730,7 @@
             .chart-grid { grid-template-columns: 1fr; }
             .switch-btn { padding: 0.8rem 1.8rem; }
             .dashboard-subtitle { font-size: 1.2rem; }
+            .modal-content { width: 98%; margin: 1% auto; }
         }
     </style>
 </head>
@@ -723,19 +761,19 @@
         </div>
     </div>
 
-    <!-- FILTER SECTION - Clean service names without codes -->
+    <!-- FILTER SECTION - Clean service names WITHOUT parentheses -->
     <div class="filter-section">
         <div class="filter-group">
             <span class="filter-label"><i class="fas fa-globe"></i> EXTERNAL</span>
             <select class="service-select" id="externalServiceSelect">
                 <option value="">-- Select External Service --</option>
-                <option value="RID">Receiving of Incoming Documents (OCR)</option>
-                <option value="FRA">Filing of Rate Adjustment Application (OCR)</option>
-                <option value="HPP">Hiring of Plantilla Personnel (ALA)</option>
-                <option value="HIC">Hiring of Individual Contract (ALA)</option>
-                <option value="PPC">Processing of Payment of Claims (ALA)</option>
+                <option value="RID">Receiving of Incoming Documents</option>
+                <option value="FRA">Filing of Rate Adjustment Application</option>
+                <option value="HPP">Hiring of Plantilla Personnel</option>
+                <option value="HIC">Hiring of Individual Contract</option>
+                <option value="PPC">Processing of Payment of Claims</option>
                 <option value="FCC">Filing of Customer Complaints</option>
-                <option value="RWS">Request of Water Sampling (TRA)</option>
+                <option value="RWS">Request of Water Sampling</option>
             </select>
         </div>
 
@@ -743,21 +781,21 @@
             <span class="filter-label"><i class="fas fa-building"></i> INTERNAL</span>
             <select class="service-select" id="internalServiceSelect">
                 <option value="">-- Select Internal Service --</option>
-                <option value="ROD">Retrieval of Official Documents (OCR)</option>
-                <option value="RIC">ICT Infrastructure Maintenance (MIS)</option>
-                <option value="RWD">Website Development (MIS)</option>
-                <option value="AGN">GovMail - New Account (MIS)</option>
-                <option value="AGP">GovMail - Password Reset (MIS)</option>
-                <option value="AGS">GovMail - Storage Increase (MIS)</option>
-                <option value="REP">Reimbursement from Petty Cash (Finance)</option>
-                <option value="RLC">Request & Liquidation Cash Advance (Finance)</option>
-                <option value="LCA">Liquidation of Cash Advance (Finance)</option>
-                <option value="PPF">Processing of Payments (Finance)</option>
-                <option value="PER">Employment Records (HR)</option>
+                <option value="ROD">Retrieval of Official Documents</option>
+                <option value="RIC">ICT Infrastructure Maintenance</option>
+                <option value="RWD">Website Development</option>
+                <option value="AGN">GovMail - New Account</option>
+                <option value="AGP">GovMail - Password Reset</option>
+                <option value="AGS">GovMail - Storage Increase</option>
+                <option value="REP">Reimbursement from Petty Cash</option>
+                <option value="RLC">Request & Liquidation Cash Advance</option>
+                <option value="LCA">Liquidation of Cash Advance</option>
+                <option value="PPF">Processing of Payments</option>
+                <option value="PER">Employment Records</option>
                 <option value="PCB">Procurement - Competitive Bidding</option>
                 <option value="PRA">Purchase Request - Alternative</option>
-                <option value="ITT">Issuance of Trip Ticket (Property)</option>
-                <option value="IPA">Property Acknowledgment (Property)</option>
+                <option value="ITT">Issuance of Trip Ticket</option>
+                <option value="IPA">Property Acknowledgment</option>
                 <option value="RLP">Legal - Complex</option>
                 <option value="RLT">Legal - Highly Technical</option>
             </select>
@@ -807,7 +845,7 @@
         <span><i class="fas fa-check-circle"></i> MWSS RO Harmonized Client Satisfaction Measurement Dashboard</span>
     </div>
 
-    <!-- Full Data Modal -->
+    <!-- Full Data Modal - ENHANCED: Complete view, scrollable -->
     <div id="dataModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -822,7 +860,7 @@
                     <i class="fas fa-sync-alt"></i> Refresh Data
                 </button>
             </div>
-            <div id="modalTableContainer">
+            <div class="table-container" id="modalTableContainer">
                 <!-- Table will be inserted here -->
             </div>
         </div>
@@ -863,33 +901,33 @@
         const downloadCsvBtn = document.getElementById('downloadCsvBtn');
         const refreshDataBtn = document.getElementById('refreshDataBtn');
 
-        // Service name mapping for display (clean names without codes)
+        // Service name mapping for display (clean names WITHOUT parentheses)
         const serviceNames = {
             'overall': 'Overall Summary',
             'external': 'External Services Summary',
             'internal': 'Internal Services Summary',
-            'RID': 'Receiving of Incoming Documents (OCR)',
-            'FRA': 'Filing of Rate Adjustment Application (OCR)',
-            'HPP': 'Hiring of Plantilla Personnel (ALA)',
-            'HIC': 'Hiring of Individual Contract (ALA)',
-            'PPC': 'Processing of Payment of Claims (ALA)',
+            'RID': 'Receiving of Incoming Documents',
+            'FRA': 'Filing of Rate Adjustment Application',
+            'HPP': 'Hiring of Plantilla Personnel',
+            'HIC': 'Hiring of Individual Contract',
+            'PPC': 'Processing of Payment of Claims',
             'FCC': 'Filing of Customer Complaints',
-            'RWS': 'Request of Water Sampling (TRA)',
-            'ROD': 'Retrieval of Official Documents (OCR)',
-            'RIC': 'ICT Infrastructure Maintenance (MIS)',
-            'RWD': 'Website Development (MIS)',
-            'AGN': 'GovMail - New Account (MIS)',
-            'AGP': 'GovMail - Password Reset (MIS)',
-            'AGS': 'GovMail - Storage Increase (MIS)',
-            'REP': 'Reimbursement from Petty Cash (Finance)',
-            'RLC': 'Request & Liquidation Cash Advance (Finance)',
-            'LCA': 'Liquidation of Cash Advance (Finance)',
-            'PPF': 'Processing of Payments (Finance)',
-            'PER': 'Employment Records (HR)',
+            'RWS': 'Request of Water Sampling',
+            'ROD': 'Retrieval of Official Documents',
+            'RIC': 'ICT Infrastructure Maintenance',
+            'RWD': 'Website Development',
+            'AGN': 'GovMail - New Account',
+            'AGP': 'GovMail - Password Reset',
+            'AGS': 'GovMail - Storage Increase',
+            'REP': 'Reimbursement from Petty Cash',
+            'RLC': 'Request & Liquidation Cash Advance',
+            'LCA': 'Liquidation of Cash Advance',
+            'PPF': 'Processing of Payments',
+            'PER': 'Employment Records',
             'PCB': 'Procurement - Competitive Bidding',
             'PRA': 'Purchase Request - Alternative',
-            'ITT': 'Issuance of Trip Ticket (Property)',
-            'IPA': 'Property Acknowledgment (Property)',
+            'ITT': 'Issuance of Trip Ticket',
+            'IPA': 'Property Acknowledgment',
             'RLP': 'Legal - Complex',
             'RLT': 'Legal - Highly Technical'
         };
@@ -1589,27 +1627,7 @@
             }
         }
 
-        // ----- Render Dashboard -----
-        async function renderDashboard() {
-            const loadingHTML = `
-                <div class="loading-state">
-                    <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #c9a227;"></i>
-                    <p style="color: #0f859e;">Loading ${serviceNames[currentServiceCode] || serviceNames[currentService] || currentService}...</p>
-                </div>
-            `;
-            mainGridEl.innerHTML = loadingHTML;
-            sqdChartsContainer.innerHTML = '';
-
-            const matrix = await fetchSheetData(currentServiceCode || currentService);
-            const values = readAllCells(matrix);
-            currentValues = values;
-            
-            renderMainCharts(values);
-            renderSQDSection(values);
-            updateServiceDisplay();
-        }
-
-        // ----- Show Full Data Modal -----
+        // ----- Show Full Data Modal - COMPLETE VIEW -----
         function showFullDataModal() {
             if (!currentMatrix) {
                 alert('No data available yet');
@@ -1617,30 +1635,29 @@
             }
 
             const title = currentServiceDisplayName;
-            modalTitle.innerHTML = `${title} - Full Data`;
+            modalTitle.innerHTML = `${title} - Complete Data (${currentMatrix.length} rows)`;
 
-            // Create table HTML
+            // Create table HTML with column letters
             let tableHTML = '<table class="data-table"><thead><tr>';
             
-            // Add headers (first row)
+            // Add column headers with letters (A, B, C, etc.)
             if (currentMatrix.length > 0) {
                 for (let i = 0; i < currentMatrix[0].length; i++) {
-                    tableHTML += `<th>Column ${String.fromCharCode(65 + i)}</th>`;
+                    const colLetter = String.fromCharCode(65 + i);
+                    tableHTML += `<th><span class="col-letter">${colLetter}</span><br><span style="font-weight: normal; font-size: 0.7rem;">Column ${colLetter}</span></th>`;
                 }
                 tableHTML += '</tr></thead><tbody>';
                 
-                // Add data rows (first 100 rows to avoid performance issues)
-                const rowsToShow = Math.min(currentMatrix.length, 100);
-                for (let i = 0; i < rowsToShow; i++) {
+                // Show ALL rows - COMPLETE DATA
+                for (let i = 0; i < currentMatrix.length; i++) {
                     tableHTML += '<tr>';
                     for (let j = 0; j < currentMatrix[i].length; j++) {
-                        tableHTML += `<td>${currentMatrix[i][j] || ''}</td>`;
+                        const cellValue = currentMatrix[i][j] || '';
+                        // Truncate extremely long values for display
+                        const displayValue = cellValue.length > 100 ? cellValue.substring(0, 100) + '...' : cellValue;
+                        tableHTML += `<td title="${cellValue.replace(/"/g, '&quot;')}">${displayValue}</td>`;
                     }
                     tableHTML += '</tr>';
-                }
-                
-                if (currentMatrix.length > 100) {
-                    tableHTML += `<tr><td colspan="${currentMatrix[0].length}" style="text-align: center; font-style: italic;">... and ${currentMatrix.length - 100} more rows</td></tr>`;
                 }
                 
                 tableHTML += '</tbody></table>';
@@ -1679,6 +1696,26 @@
             link.href = URL.createObjectURL(blob);
             link.download = filename;
             link.click();
+        }
+
+        // ----- Render Dashboard -----
+        async function renderDashboard() {
+            const loadingHTML = `
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #c9a227;"></i>
+                    <p style="color: #0f859e;">Loading ${serviceNames[currentServiceCode] || serviceNames[currentService] || currentService}...</p>
+                </div>
+            `;
+            mainGridEl.innerHTML = loadingHTML;
+            sqdChartsContainer.innerHTML = '';
+
+            const matrix = await fetchSheetData(currentServiceCode || currentService);
+            const values = readAllCells(matrix);
+            currentValues = values;
+            
+            renderMainCharts(values);
+            renderSQDSection(values);
+            updateServiceDisplay();
         }
 
         // ----- PNG download helpers -----
