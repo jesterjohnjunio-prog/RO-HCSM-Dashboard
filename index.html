@@ -1284,7 +1284,7 @@
             });
 
             // ============================================================
-            // UPDATED APPS SCRIPT URL (YOUR NEW DEPLOYMENT)
+            // APPS SCRIPT URL
             // ============================================================
             const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpf6VJlzshJWhTpvLj6XODAqmwh6ixqL0jZv7ghGq3oqhFyPH17UKhdh7e7BpMHi4p/exec";
             
@@ -1341,7 +1341,7 @@
                 '#74b9ff'  // Sky Blue
             ];
 
-            // Service name mapping
+            // Service name mapping (YOUR EXACT TEXTS)
             const serviceNames = {
                 'overall': 'Overall Summary',
                 'external': 'External Services Summary',
@@ -1373,7 +1373,7 @@
             };
 
             // ============================================================
-            // CELL MAPPINGS
+            // CELL MAPPINGS (YOUR EXACT CELLS)
             // ============================================================
             const CELL_MAPPINGS = {
                 sex: {
@@ -1619,7 +1619,7 @@
                 return values;
             }
 
-            // ----- Sample Data Generator -----
+            // ----- Sample Data Generator (YOUR EXACT SAMPLE DATA) -----
             function generateSampleMatrix(type) {
                 const m = [];
                 for (let i = 0; i < 150; i++) m[i] = [];
@@ -1684,86 +1684,45 @@
             // FIXED PNG DOWNLOAD FUNCTIONS
             // ============================================================
             
-            // Main PNG download function for charts
-            async function downloadChartAsPNG(chartId, filename) {
-                const canvas = document.getElementById(chartId);
-                if (!canvas) return;
-                
-                try {
-                    // Create a temporary container to hold the canvas with its styling
-                    const tempContainer = document.createElement('div');
-                    tempContainer.style.position = 'absolute';
-                    tempContainer.style.left = '-9999px';
-                    tempContainer.style.top = '-9999px';
-                    tempContainer.style.backgroundColor = 'white';
-                    tempContainer.style.padding = '1.5rem';
-                    tempContainer.style.borderRadius = '28px';
-                    tempContainer.style.boxShadow = '0 8px 24px rgba(0,70,90,0.04)';
-                    
-                    // Clone the canvas
-                    const canvasClone = canvas.cloneNode(true);
-                    canvasClone.style.maxHeight = '220px';
-                    canvasClone.style.width = '100%';
-                    
-                    tempContainer.appendChild(canvasClone);
-                    document.body.appendChild(tempContainer);
-                    
-                    // Use html2canvas on the container
-                    const resultCanvas = await html2canvas(tempContainer, {
-                        scale: 2,
-                        backgroundColor: '#ffffff',
-                        allowTaint: true,
-                        useCORS: true,
-                        logging: false
-                    });
-                    
-                    // Create download link
-                    const link = document.createElement('a');
-                    link.download = `MWSS_${filename}.png`;
-                    link.href = resultCanvas.toDataURL('image/png');
-                    link.click();
-                    
-                    // Clean up
-                    document.body.removeChild(tempContainer);
-                } catch (error) {
-                    console.error('PNG download failed:', error);
-                    alert('Failed to download PNG. Please try again.');
-                }
-            }
-
-            // Download function for chart cards (entire card including header and legend)
+            // Main PNG download function for entire cards
             async function downloadCardAsPNG(cardId, filename) {
                 const card = document.getElementById(cardId);
                 if (!card) return;
                 
                 try {
+                    // Store original styles
+                    const originalBoxShadow = card.style.boxShadow;
+                    const originalTransform = card.style.transform;
+                    
+                    // Remove hover effects temporarily
+                    card.style.boxShadow = 'none';
+                    card.style.transform = 'none';
+                    
                     const canvas = await html2canvas(card, {
                         scale: 2,
                         backgroundColor: '#ffffff',
                         allowTaint: true,
                         useCORS: true,
                         logging: false,
-                        onclone: (clonedDoc, element) => {
-                            // Ensure all text is visible in the clone
-                            const clonedCard = element;
-                            if (clonedCard) {
-                                clonedCard.style.transform = 'none';
-                            }
-                        }
+                        windowWidth: card.scrollWidth,
+                        windowHeight: card.scrollHeight
                     });
+                    
+                    // Restore original styles
+                    card.style.boxShadow = originalBoxShadow;
+                    card.style.transform = originalTransform;
                     
                     const link = document.createElement('a');
                     link.download = `MWSS_${filename}.png`;
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                 } catch (error) {
-                    console.error('Card PNG download failed:', error);
+                    console.error('PNG download failed:', error);
                     alert('Failed to download PNG. Please try again.');
                 }
             }
 
-            // Make functions globally available
-            window.downloadChartAsPNG = downloadChartAsPNG;
+            // Make function globally available
             window.downloadCardAsPNG = downloadCardAsPNG;
 
             // ----- Plugin for value labels -----
@@ -1805,9 +1764,10 @@
 
                 let html = '';
 
+                // Card 1: Sex - WITH FULL TEXT
                 html += `<div class="chart-card" id="chartSexContainer">
                     <div class="chart-header">
-                        <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD)</h2>
+                        <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD) by Service Type</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Total: ${totalSex}</span>
                             <button class="download-btn" onclick="downloadCardAsPNG('chartSexContainer', 'Sex_Chart')"><i class="fas fa-download"></i> PNG</button>
@@ -1820,9 +1780,10 @@
                     </div>
                 </div>`;
 
+                // Card 2: Age - WITH FULL TEXTS
                 html += `<div class="chart-card" id="chartAgeContainer">
                     <div class="chart-header">
-                        <h2><i class="fas fa-calendar-alt"></i> Age Distribution</h2>
+                        <h2><i class="fas fa-calendar-alt"></i> Age Distribution by Service Type</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Total: ${totalAge}</span>
                             <button class="download-btn" onclick="downloadCardAsPNG('chartAgeContainer', 'Age_Chart')"><i class="fas fa-download"></i> PNG</button>
@@ -1831,21 +1792,22 @@
                     <canvas id="chartAge"></canvas>
                     <div class="data-legend">
                         <div style="width:100%; display:grid; grid-template-columns:repeat(2,1fr); gap:0.5rem;">
-                            <div><span>N/S:</span> ${values.ageNS}</div>
-                            <div><span>19↓:</span> ${values.age19b}</div>
+                            <div><span>Not Specified (N/S):</span> ${values.ageNS}</div>
+                            <div><span>19 and below:</span> ${values.age19b}</div>
                             <div><span>20-29:</span> ${values.age2029}</div>
                             <div><span>30-39:</span> ${values.age3039}</div>
                             <div><span>40-49:</span> ${values.age4049}</div>
                             <div><span>50-59:</span> ${values.age5059}</div>
                             <div><span>60-69:</span> ${values.age6069}</div>
-                            <div><span>70↑:</span> ${values.age70}</div>
+                            <div><span>70 and above:</span> ${values.age70}</div>
                         </div>
                     </div>
                 </div>`;
 
+                // Card 3: Client Type - WITH FULL TEXTS
                 html += `<div class="chart-card" id="chartClientContainer">
                     <div class="chart-header">
-                        <h2><i class="fas fa-users"></i> Client Type</h2>
+                        <h2><i class="fas fa-users"></i> Client Type by Service</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Total: ${totalClient}</span>
                             <button class="download-btn" onclick="downloadCardAsPNG('chartClientContainer', 'Client_Chart')"><i class="fas fa-download"></i> PNG</button>
@@ -1853,13 +1815,14 @@
                     </div>
                     <canvas id="chartClient"></canvas>
                     <div class="data-legend">
-                        <div><span>N/S:</span> ${values.clientNS}</div>
-                        <div><span>Citizen:</span> ${values.citizen}</div>
-                        <div><span>Business:</span> ${values.business}</div>
-                        <div><span>Government:</span> ${values.government}</div>
+                        <div><span>Not Specified (N/S):</span> ${values.clientNS}</div>
+                        <div><span>Citizen (Mamamayan):</span> ${values.citizen}</div>
+                        <div><span>Business (Negosyo):</span> ${values.business}</div>
+                        <div><span>Government (Gobyerno):</span> ${values.government}</div>
                     </div>
                 </div>`;
 
+                // Card 4: Region - WITH FULL TEXTS
                 html += `<div class="chart-card" id="chartRegionContainer">
                     <div class="chart-header">
                         <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
@@ -1870,16 +1833,17 @@
                     </div>
                     <canvas id="chartRegion"></canvas>
                     <div class="data-legend">
-                        <div><span>N/S:</span> ${values.regionNS}</div>
+                        <div><span>Not Specified (N/S):</span> ${values.regionNS}</div>
                         <div><span>Region III:</span> ${values.region3}</div>
                         <div><span>Region IV-A:</span> ${values.region4a}</div>
                         <div><span>NCR:</span> ${values.ncr}</div>
                     </div>
                 </div>`;
 
+                // Card 5: CC1 - WITH FULL TEXTS
                 html += `<div class="chart-card" id="chartCC1Container">
                     <div class="chart-header">
-                        <h2><i class="fas fa-eye"></i> CC1 Awareness</h2>
+                        <h2><i class="fas fa-eye"></i> Citizen's Charter Awareness</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Total: ${totalCC1}</span>
                             <button class="download-btn" onclick="downloadCardAsPNG('chartCC1Container', 'CC1_Chart')"><i class="fas fa-download"></i> PNG</button>
@@ -1887,48 +1851,50 @@
                     </div>
                     <canvas id="chartCC1"></canvas>
                     <div class="data-legend">
-                        <div><span>N/S:</span> ${values.cc1NS}</div>
-                        <div><span>Know & Saw:</span> ${values.knowSaw}</div>
-                        <div><span>Know/Not:</span> ${values.knowNotSaw}</div>
-                        <div><span>Learned:</span> ${values.learned}</div>
-                        <div><span>Don't know:</span> ${values.dontKnow}</div>
+                        <div><span>Not Specified (N/S):</span> ${values.cc1NS}</div>
+                        <div><span>I know what a CC is and I saw this office’s CC:</span> ${values.knowSaw}</div>
+                        <div><span>I know what a CC is but I did NOT see this office’s CC:</span> ${values.knowNotSaw}</div>
+                        <div><span>I learned of the CC only when I saw this office’s CC:</span> ${values.learned}</div>
+                        <div><span>I do not know what a CC is and I did not see one in this office:</span> ${values.dontKnow}</div>
                     </div>
                 </div>`;
 
+                // Card 6: CC2 - WITH FULL TEXTS
                 html += `<div class="chart-card" id="chartCC2Container">
                     <div class="chart-header">
-                        <h2><i class="fas fa-low-vision"></i> CC2 Visibility</h2>
+                        <h2><i class="fas fa-low-vision"></i> Citizen's Charter Visibility</h2>
                         <div class="chart-actions">
-                            <span class="total-indicator">Aware: ${awareDenom}</span>
+                            <span class="total-indicator">Aware respondents: ${awareDenom}</span>
                             <button class="download-btn" onclick="downloadCardAsPNG('chartCC2Container', 'CC2_Chart')"><i class="fas fa-download"></i> PNG</button>
                         </div>
                     </div>
                     <canvas id="chartCC2"></canvas>
                     <div class="data-legend">
-                        <div><span>N/S:</span> ${values.cc2NS}</div>
-                        <div><span>Easy:</span> ${values.easy}</div>
-                        <div><span>Somewhat:</span> ${values.somewhatEasy}</div>
-                        <div><span>Difficult:</span> ${values.difficult}</div>
-                        <div><span>Not visible:</span> ${values.notVisible}</div>
-                        <div><span>N/A:</span> ${values.cc2na}</div>
+                        <div><span>Not Specified (N/S):</span> ${values.cc2NS}</div>
+                        <div><span>Easy to see:</span> ${values.easy}</div>
+                        <div><span>Somewhat easy to see:</span> ${values.somewhatEasy}</div>
+                        <div><span>Difficult to see:</span> ${values.difficult}</div>
+                        <div><span>Not visible at all:</span> ${values.notVisible}</div>
+                        <div><span>N/A (Not Applicable):</span> ${values.cc2na}</div>
                     </div>
                 </div>`;
 
+                // Card 7: CC3 - WITH FULL TEXTS
                 html += `<div class="chart-card" id="chartCC3Container">
                     <div class="chart-header">
-                        <h2><i class="fas fa-check-circle"></i> CC3 Effectivity</h2>
+                        <h2><i class="fas fa-check-circle"></i> Citizen's Charter Effectivity</h2>
                         <div class="chart-actions">
-                            <span class="total-indicator">Aware: ${awareDenom}</span>
+                            <span class="total-indicator">Aware respondents: ${awareDenom}</span>
                             <button class="download-btn" onclick="downloadCardAsPNG('chartCC3Container', 'CC3_Chart')"><i class="fas fa-download"></i> PNG</button>
                         </div>
                     </div>
                     <canvas id="chartCC3"></canvas>
                     <div class="data-legend">
-                        <div><span>N/S:</span> ${values.cc3NS}</div>
-                        <div><span>Helped much:</span> ${values.helpedMuch}</div>
-                        <div><span>Somewhat:</span> ${values.somewhatHelped}</div>
-                        <div><span>Did not:</span> ${values.didNotHelp}</div>
-                        <div><span>N/A:</span> ${values.cc3na}</div>
+                        <div><span>Not Specified (N/S):</span> ${values.cc3NS}</div>
+                        <div><span>Helped very much:</span> ${values.helpedMuch}</div>
+                        <div><span>Somewhat helped:</span> ${values.somewhatHelped}</div>
+                        <div><span>Did not helped:</span> ${values.didNotHelp}</div>
+                        <div><span>N/A (Not Applicable):</span> ${values.cc3na}</div>
                     </div>
                 </div>`;
 
@@ -1976,7 +1942,7 @@
                 });
             }
 
-            // ----- Render SQD Section -----
+            // ----- Render SQD Section - WITH FULL TEXTS -----
             function renderSQDSection(values) {
                 const sqdLabels = ['SQD 1','SQD 2','SQD 3','SQD 4','SQD 5','SQD 6','SQD 7','SQD 8'];
                 const sqdFullLabels = ['Responsiveness','Reliability','Access','Communication','Costs','Integrity','Assurance','Outcome'];
@@ -1994,7 +1960,7 @@
                     
                     <div class="sqd-chart-panel" id="sqdChartPanel">
                         <div class="sqd-chart-header">
-                            <h2><i class="fas fa-chart-bar"></i> SQD 1-8: Service Quality</h2>
+                            <h2><i class="fas fa-chart-bar"></i> SQD 1-8: Service Quality Dimensions</h2>
                             <div class="chart-actions">
                                 <span class="total-indicator">8 Dimensions</span>
                                 <button class="download-btn" onclick="downloadCardAsPNG('sqdChartPanel', 'SQD_Chart')"><i class="fas fa-download"></i> PNG</button>
@@ -2282,8 +2248,8 @@
                         <div class="service-selector-row">
                             <select class="compare-select" data-index="${index}">
                                 <option value="overall" ${service === 'overall' ? 'selected' : ''}>Overall Summary</option>
-                                <option value="external" ${service === 'external' ? 'selected' : ''}>External Summary</option>
-                                <option value="internal" ${service === 'internal' ? 'selected' : ''}>Internal Summary</option>
+                                <option value="external" ${service === 'external' ? 'selected' : ''}>External Services Summary</option>
+                                <option value="internal" ${service === 'internal' ? 'selected' : ''}>Internal Services Summary</option>
                                 <optgroup label="EXTERNAL SERVICES">
                                     ${externalServices.map(s => `<option value="${s}" ${service === s ? 'selected' : ''}>${serviceNames[s]}</option>`).join('')}
                                 </optgroup>
