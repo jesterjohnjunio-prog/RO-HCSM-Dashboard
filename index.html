@@ -319,103 +319,6 @@
             font-size: 0.9rem;
         }
 
-        /* ========== DATE FILTER SECTION ========== */
-        .date-filter-section {
-            background: white;
-            border-radius: 100px;
-            padding: 1rem 2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 8px 20px rgba(0,70,90,0.06);
-            border: 1px solid rgba(147,197,214,0.2);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            animation: slideUp 0.6s ease-out 0.5s both;
-        }
-
-        .date-range {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .date-item {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .date-label {
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: #0f6f84;
-            background: rgba(18,128,155,0.05);
-            padding: 0.3rem 1rem;
-            border-radius: 60px;
-            border: 1px solid rgba(18,128,155,0.1);
-        }
-
-        .date-input {
-            border: 1px solid rgba(147,197,214,0.3);
-            border-radius: 60px;
-            padding: 0.6rem 1.2rem;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            color: #1a4a5f;
-            background: white;
-            transition: all 0.3s ease;
-        }
-
-        .date-input:hover {
-            border-color: #c9a227;
-        }
-
-        .date-input:focus {
-            outline: none;
-            border-color: #0f859e;
-            box-shadow: 0 0 0 3px rgba(15,133,158,0.1);
-        }
-
-        .update-date-btn {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 60px;
-            padding: 0.6rem 1.8rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #a17f28;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .update-date-btn:hover {
-            background: rgba(212, 175, 55, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .current-date-range {
-            font-size: 0.85rem;
-            color: #4a7a86;
-            background: rgba(15,133,158,0.05);
-            padding: 0.4rem 1.2rem;
-            border-radius: 60px;
-        }
-
-        .date-hierarchy-note {
-            font-size: 0.75rem;
-            color: #a17f28;
-            background: rgba(212, 175, 55, 0.05);
-            padding: 0.2rem 1rem;
-            border-radius: 60px;
-            margin-left: 1rem;
-        }
-
         /* ========== SERVICE FILTER SECTION ========== */
         .filter-section {
             background: white;
@@ -604,12 +507,11 @@
 
         .comparison-header {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
             margin-bottom: 1.5rem;
             padding-bottom: 1rem;
             border-bottom: 2px solid rgba(212, 175, 55, 0.2);
-            flex-wrap: wrap;
             gap: 1rem;
         }
 
@@ -660,6 +562,14 @@
             background: rgba(220, 53, 69, 0.2);
         }
 
+        .comparison-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
         .add-service-btn {
             background: rgba(40, 167, 69, 0.1);
             border: 1px solid rgba(40, 167, 69, 0.2);
@@ -671,7 +581,6 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            margin-top: 0.5rem;
         }
 
         .add-service-btn:hover {
@@ -682,7 +591,7 @@
             background: #0f859e;
             border: none;
             border-radius: 60px;
-            padding: 0.8rem 2rem;
+            padding: 0.6rem 1.5rem;
             color: white;
             font-weight: 600;
             cursor: pointer;
@@ -690,7 +599,6 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            margin-top: 1rem;
         }
 
         .execute-compare-btn:hover {
@@ -1141,7 +1049,6 @@
             .sqd-charts-container { grid-template-columns: 1fr; }
             .filter-section { flex-direction: column; padding: 1.2rem; }
             .service-select { min-width: 250px; }
-            .date-filter-section { flex-direction: column; }
             .comparison-grid { grid-template-columns: 1fr; }
         }
 
@@ -1210,29 +1117,6 @@
                     <span class="badge"><i class="fas fa-star"></i> SQD 0-8</span>
                     <span class="badge"><i class="fas fa-code-branch"></i> 25+ Services</span>
                 </div>
-            </div>
-        </div>
-
-        <!-- DATE FILTER SECTION -->
-        <div class="date-filter-section">
-            <div class="date-range">
-                <div class="date-item">
-                    <span class="date-label"><i class="fas fa-calendar-alt"></i> FROM</span>
-                    <input type="date" id="dateFrom" class="date-input" value="2026-01-01">
-                </div>
-                <div class="date-item">
-                    <span class="date-label"><i class="fas fa-calendar-alt"></i> TO</span>
-                    <input type="date" id="dateTo" class="date-input" value="2026-12-31">
-                </div>
-                <button class="update-date-btn" id="updateDateBtn">
-                    <i class="fas fa-sync-alt"></i> Update Range
-                </button>
-                <span class="date-hierarchy-note" id="hierarchyNote">
-                    <i class="fas fa-sitemap"></i> Affects: <span id="affectedSheets">ALL sheets</span>
-                </span>
-            </div>
-            <div class="current-date-range" id="currentDateRange">
-                Current: Jan 1, 2026 - Dec 31, 2026
             </div>
         </div>
 
@@ -1311,7 +1195,7 @@
                 <div class="comparison-selectors" id="comparisonSelectors">
                     <!-- Service selectors will be dynamically added here -->
                 </div>
-                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <div class="comparison-actions">
                     <button class="add-service-btn" id="addServiceBtn">
                         <i class="fas fa-plus"></i> Add Service
                     </button>
@@ -1414,7 +1298,7 @@
             let currentMatrix = null;
             let currentServiceDisplayName = 'Overall Summary';
             let isCompareMode = false;
-            let compareServices = ['external', 'internal'];
+            let compareServices = ['external', 'internal']; // Start with 2 services
             let compareValues = [];
             
             const externalServices = ['RID', 'FRA', 'HPP', 'HIC', 'PPC', 'FCC', 'RWS'];
@@ -1432,19 +1316,29 @@
             const comparisonGrid = document.getElementById('comparisonGrid');
             const addServiceBtn = document.getElementById('addServiceBtn');
             const executeCompareBtn = document.getElementById('executeCompareBtn');
-            const dateFromInput = document.getElementById('dateFrom');
-            const dateToInput = document.getElementById('dateTo');
-            const updateDateBtn = document.getElementById('updateDateBtn');
-            const currentDateRange = document.getElementById('currentDateRange');
-            const hierarchyNote = document.getElementById('affectedSheets');
 
-            // Color palette for multiple services
+            // Color palette for multiple services (extended for unlimited services)
             const compareColors = [
                 '#1a7f9e', // Blue
                 '#c9a227', // Gold
                 '#2e8b57', // Green
                 '#9b59b6', // Purple
-                '#e67e22'  // Orange
+                '#e67e22', // Orange
+                '#e74c3c', // Red
+                '#3498db', // Light Blue
+                '#f1c40f', // Yellow
+                '#1abc9c', // Turquoise
+                '#e84393', // Pink
+                '#6c5ce7', // Purple Blue
+                '#00b894', // Green Teal
+                '#d63031', // Bright Red
+                '#fdcb6e', // Light Orange
+                '#e17055', // Coral
+                '#0984e3', // Royal Blue
+                '#a29bfe', // Light Purple
+                '#55efc4', // Mint
+                '#81ecec', // Cyan
+                '#74b9ff'  // Sky Blue
             ];
 
             // Service name mapping
@@ -1482,8 +1376,6 @@
             // CELL MAPPINGS
             // ============================================================
             const CELL_MAPPINGS = {
-                dateFrom: { colIndex: 2, rowIndex: 5 },
-                dateTo: { colIndex: 2, rowIndex: 6 },
                 sex: {
                     male: { colIndex: 1, rowIndex: 42 },
                     female: { colIndex: 2, rowIndex: 42 }
@@ -1547,18 +1439,6 @@
             };
 
             // ----- Helper Functions -----
-            function updateHierarchyNote() {
-                if (currentServiceCode) {
-                    hierarchyNote.innerHTML = `${serviceNames[currentServiceCode]}`;
-                } else if (currentService === 'external') {
-                    hierarchyNote.innerHTML = 'All 7 External services';
-                } else if (currentService === 'internal') {
-                    hierarchyNote.innerHTML = 'All 18 Internal services';
-                } else {
-                    hierarchyNote.innerHTML = 'ALL sheets (25+ services)';
-                }
-            }
-
             function updateServiceDisplay() {
                 if (currentServiceCode && serviceNames[currentServiceCode]) {
                     currentServiceDisplayName = serviceNames[currentServiceCode];
@@ -1570,16 +1450,6 @@
                     currentServiceDisplayName = 'Overall View';
                     selectedServiceDisplay.innerHTML = 'Overall View';
                 }
-                updateHierarchyNote();
-            }
-
-            function formatDate(dateString) {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            }
-
-            function updateDateRangeDisplay(from, to) {
-                currentDateRange.innerHTML = `Current: ${formatDate(from)} - ${formatDate(to)}`;
             }
 
             function resetDropdowns() {
@@ -1587,11 +1457,8 @@
                 internalSelect.value = '';
             }
 
-            // ----- Build URL with date parameters -----
+            // ----- Build URL with sheet parameters -----
             function buildUrlWithDateParams(baseUrl, sheetType) {
-                const dateFrom = dateFromInput.value;
-                const dateTo = dateToInput.value;
-                
                 let sheets = [];
                 if (sheetType === 'overall') {
                     sheets = ['overall', 'external', 'internal', ...externalServices, ...internalServices];
@@ -1604,7 +1471,7 @@
                 }
                 
                 const sheetsParam = sheets.join(',');
-                return `${baseUrl}?sheet=${sheetType}&sheets=${sheetsParam}&from=${dateFrom}&to=${dateTo}&callback=`;
+                return `${baseUrl}?sheet=${sheetType}&sheets=${sheetsParam}&callback=`;
             }
 
             // ----- Fetch Sheet Data -----
@@ -1813,16 +1680,76 @@
                 return m;
             }
 
-            // ----- PNG Download Function -----
-            async function downloadAsPNG(elementId, filename) {
-                const element = document.getElementById(elementId);
-                if (!element) return;
+            // ============================================================
+            // FIXED PNG DOWNLOAD FUNCTIONS
+            // ============================================================
+            
+            // Main PNG download function for charts
+            async function downloadChartAsPNG(chartId, filename) {
+                const canvas = document.getElementById(chartId);
+                if (!canvas) return;
                 
                 try {
-                    const canvas = await html2canvas(element, {
+                    // Create a temporary container to hold the canvas with its styling
+                    const tempContainer = document.createElement('div');
+                    tempContainer.style.position = 'absolute';
+                    tempContainer.style.left = '-9999px';
+                    tempContainer.style.top = '-9999px';
+                    tempContainer.style.backgroundColor = 'white';
+                    tempContainer.style.padding = '1.5rem';
+                    tempContainer.style.borderRadius = '28px';
+                    tempContainer.style.boxShadow = '0 8px 24px rgba(0,70,90,0.04)';
+                    
+                    // Clone the canvas
+                    const canvasClone = canvas.cloneNode(true);
+                    canvasClone.style.maxHeight = '220px';
+                    canvasClone.style.width = '100%';
+                    
+                    tempContainer.appendChild(canvasClone);
+                    document.body.appendChild(tempContainer);
+                    
+                    // Use html2canvas on the container
+                    const resultCanvas = await html2canvas(tempContainer, {
                         scale: 2,
                         backgroundColor: '#ffffff',
-                        borderRadius: '28px'
+                        allowTaint: true,
+                        useCORS: true,
+                        logging: false
+                    });
+                    
+                    // Create download link
+                    const link = document.createElement('a');
+                    link.download = `MWSS_${filename}.png`;
+                    link.href = resultCanvas.toDataURL('image/png');
+                    link.click();
+                    
+                    // Clean up
+                    document.body.removeChild(tempContainer);
+                } catch (error) {
+                    console.error('PNG download failed:', error);
+                    alert('Failed to download PNG. Please try again.');
+                }
+            }
+
+            // Download function for chart cards (entire card including header and legend)
+            async function downloadCardAsPNG(cardId, filename) {
+                const card = document.getElementById(cardId);
+                if (!card) return;
+                
+                try {
+                    const canvas = await html2canvas(card, {
+                        scale: 2,
+                        backgroundColor: '#ffffff',
+                        allowTaint: true,
+                        useCORS: true,
+                        logging: false,
+                        onclone: (clonedDoc, element) => {
+                            // Ensure all text is visible in the clone
+                            const clonedCard = element;
+                            if (clonedCard) {
+                                clonedCard.style.transform = 'none';
+                            }
+                        }
                     });
                     
                     const link = document.createElement('a');
@@ -1830,17 +1757,20 @@
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                 } catch (error) {
-                    console.error('PNG download failed:', error);
+                    console.error('Card PNG download failed:', error);
+                    alert('Failed to download PNG. Please try again.');
                 }
             }
 
-            window.downloadAsPNG = downloadAsPNG;
+            // Make functions globally available
+            window.downloadChartAsPNG = downloadChartAsPNG;
+            window.downloadCardAsPNG = downloadCardAsPNG;
 
             // ----- Plugin for value labels -----
             const valueLabelPlugin = {
                 id: 'valueLabel',
                 afterDatasetsDraw(chart) {
-                    const { ctx, data, scales } = chart;
+                    const { ctx } = chart;
                     
                     if (chart.config.type === 'bar') {
                         chart.data.datasets.forEach((dataset, datasetIndex) => {
@@ -1880,7 +1810,7 @@
                         <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD)</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Total: ${totalSex}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartSex', 'Sex_Chart')"><i class="fas fa-download"></i> PNG</button>
+                            <button class="download-btn" onclick="downloadCardAsPNG('chartSexContainer', 'Sex_Chart')"><i class="fas fa-download"></i> PNG</button>
                         </div>
                     </div>
                     <canvas id="chartSex"></canvas>
@@ -1895,7 +1825,7 @@
                         <h2><i class="fas fa-calendar-alt"></i> Age Distribution</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Total: ${totalAge}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartAge', 'Age_Chart')"><i class="fas fa-download"></i> PNG</button>
+                            <button class="download-btn" onclick="downloadCardAsPNG('chartAgeContainer', 'Age_Chart')"><i class="fas fa-download"></i> PNG</button>
                         </div>
                     </div>
                     <canvas id="chartAge"></canvas>
@@ -1918,7 +1848,7 @@
                         <h2><i class="fas fa-users"></i> Client Type</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Total: ${totalClient}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartClient', 'Client_Chart')"><i class="fas fa-download"></i> PNG</button>
+                            <button class="download-btn" onclick="downloadCardAsPNG('chartClientContainer', 'Client_Chart')"><i class="fas fa-download"></i> PNG</button>
                         </div>
                     </div>
                     <canvas id="chartClient"></canvas>
@@ -1935,7 +1865,7 @@
                         <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Total: ${totalRegion}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartRegion', 'Region_Chart')"><i class="fas fa-download"></i> PNG</button>
+                            <button class="download-btn" onclick="downloadCardAsPNG('chartRegionContainer', 'Region_Chart')"><i class="fas fa-download"></i> PNG</button>
                         </div>
                     </div>
                     <canvas id="chartRegion"></canvas>
@@ -1952,7 +1882,7 @@
                         <h2><i class="fas fa-eye"></i> CC1 Awareness</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Total: ${totalCC1}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartCC1', 'CC1_Chart')"><i class="fas fa-download"></i> PNG</button>
+                            <button class="download-btn" onclick="downloadCardAsPNG('chartCC1Container', 'CC1_Chart')"><i class="fas fa-download"></i> PNG</button>
                         </div>
                     </div>
                     <canvas id="chartCC1"></canvas>
@@ -1970,7 +1900,7 @@
                         <h2><i class="fas fa-low-vision"></i> CC2 Visibility</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Aware: ${awareDenom}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartCC2', 'CC2_Chart')"><i class="fas fa-download"></i> PNG</button>
+                            <button class="download-btn" onclick="downloadCardAsPNG('chartCC2Container', 'CC2_Chart')"><i class="fas fa-download"></i> PNG</button>
                         </div>
                     </div>
                     <canvas id="chartCC2"></canvas>
@@ -1989,7 +1919,7 @@
                         <h2><i class="fas fa-check-circle"></i> CC3 Effectivity</h2>
                         <div class="chart-actions">
                             <span class="total-indicator">Aware: ${awareDenom}</span>
-                            <button class="download-btn" onclick="downloadAsPNG('chartCC3', 'CC3_Chart')"><i class="fas fa-download"></i> PNG</button>
+                            <button class="download-btn" onclick="downloadCardAsPNG('chartCC3Container', 'CC3_Chart')"><i class="fas fa-download"></i> PNG</button>
                         </div>
                     </div>
                     <canvas id="chartCC3"></canvas>
@@ -2067,7 +1997,7 @@
                             <h2><i class="fas fa-chart-bar"></i> SQD 1-8: Service Quality</h2>
                             <div class="chart-actions">
                                 <span class="total-indicator">8 Dimensions</span>
-                                <button class="download-btn" onclick="downloadAsPNG('chartSQD1to8', 'SQD_Chart')"><i class="fas fa-download"></i> PNG</button>
+                                <button class="download-btn" onclick="downloadCardAsPNG('sqdChartPanel', 'SQD_Chart')"><i class="fas fa-download"></i> PNG</button>
                             </div>
                         </div>
                         <canvas id="chartSQD1to8"></canvas>
@@ -2107,82 +2037,70 @@
                 }
             }
 
-            window.downloadCardAsPNG = async function(cardId, filename) {
-                const element = document.getElementById(cardId);
-                if (!element) return;
-                try {
-                    const canvas = await html2canvas(element, { scale: 2, backgroundColor: '#ffffff' });
-                    const link = document.createElement('a');
-                    link.download = `MWSS_${filename}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                } catch (e) { console.error('PNG download failed:', e); }
-            };
-
-            // ----- Render Comparison (Multi-Service) -----
+            // ----- Render Comparison (Multi-Service) - UNLIMITED SERVICES -----
             async function renderComparison() {
                 if (compareValues.length === 0) return;
 
                 let html = '';
 
                 // Sex Comparison
-                html += `<div class="compare-card" id="compareSexCard">
+                html += `<div class="compare-card" id="compareSexContainer">
                     <div class="compare-chart-actions">
-                        <button class="download-btn" onclick="downloadAsPNG('compareSex', 'Compare_Sex')"><i class="fas fa-download"></i> PNG</button>
+                        <button class="download-btn" onclick="downloadCardAsPNG('compareSexContainer', 'Compare_Sex')"><i class="fas fa-download"></i> PNG</button>
                     </div>
                     <h3><i class="fas fa-venus-mars"></i> Sex Distribution</h3>
                     <canvas id="compareSex"></canvas>
                 </div>`;
 
                 // Age Comparison
-                html += `<div class="compare-card" id="compareAgeCard">
+                html += `<div class="compare-card" id="compareAgeContainer">
                     <div class="compare-chart-actions">
-                        <button class="download-btn" onclick="downloadAsPNG('compareAge', 'Compare_Age')"><i class="fas fa-download"></i> PNG</button>
+                        <button class="download-btn" onclick="downloadCardAsPNG('compareAgeContainer', 'Compare_Age')"><i class="fas fa-download"></i> PNG</button>
                     </div>
                     <h3><i class="fas fa-calendar-alt"></i> Age Distribution</h3>
                     <canvas id="compareAge"></canvas>
                 </div>`;
 
                 // Client Comparison
-                html += `<div class="compare-card" id="compareClientCard">
+                html += `<div class="compare-card" id="compareClientContainer">
                     <div class="compare-chart-actions">
-                        <button class="download-btn" onclick="downloadAsPNG('compareClient', 'Compare_Client')"><i class="fas fa-download"></i> PNG</button>
+                        <button class="download-btn" onclick="downloadCardAsPNG('compareClientContainer', 'Compare_Client')"><i class="fas fa-download"></i> PNG</button>
                     </div>
                     <h3><i class="fas fa-users"></i> Client Type</h3>
                     <canvas id="compareClient"></canvas>
                 </div>`;
 
                 // Region Comparison
-                html += `<div class="compare-card" id="compareRegionCard">
+                html += `<div class="compare-card" id="compareRegionContainer">
                     <div class="compare-chart-actions">
-                        <button class="download-btn" onclick="downloadAsPNG('compareRegion', 'Compare_Region')"><i class="fas fa-download"></i> PNG</button>
+                        <button class="download-btn" onclick="downloadCardAsPNG('compareRegionContainer', 'Compare_Region')"><i class="fas fa-download"></i> PNG</button>
                     </div>
                     <h3><i class="fas fa-map-marker-alt"></i> Region</h3>
                     <canvas id="compareRegion"></canvas>
                 </div>`;
 
                 // CC1 Comparison
-                html += `<div class="compare-card" id="compareCC1Card">
+                html += `<div class="compare-card" id="compareCC1Container">
                     <div class="compare-chart-actions">
-                        <button class="download-btn" onclick="downloadAsPNG('compareCC1', 'Compare_CC1')"><i class="fas fa-download"></i> PNG</button>
+                        <button class="download-btn" onclick="downloadCardAsPNG('compareCC1Container', 'Compare_CC1')"><i class="fas fa-download"></i> PNG</button>
                     </div>
                     <h3><i class="fas fa-eye"></i> CC1 Awareness</h3>
                     <canvas id="compareCC1"></canvas>
                 </div>`;
 
                 // CC2 Comparison
-                html += `<div class="compare-card" id="compareCC2Card">
+                html += `<div class="compare-card" id="compareCC2Container">
                     <div class="compare-chart-actions">
-                        <button class="download-btn" onclick="downloadAsPNG('compareCC2', 'Compare_CC2')"><i class="fas fa-download"></i> PNG</button>
+                        <button class="download-btn" onclick="downloadCardAsPNG('compareCC2Container', 'Compare_CC2')"><i class="fas fa-download"></i> PNG</button>
                     </div>
                     <h3><i class="fas fa-low-vision"></i> CC2 Visibility</h3>
                     <canvas id="compareCC2"></canvas>
                 </div>`;
 
                 // CC3 Comparison
-                html += `<div class="compare-card" id="compareCC3Card">
+                html += `<div class="compare-card" id="compareCC3Container">
                     <div class="compare-chart-actions">
-                        <button class="download-btn" onclick="downloadAsPNG('compareCC3', 'Compare_CC3')"><i class="fas fa-download"></i> PNG</button>
+                        <button class="download-btn" onclick="downloadCardAsPNG('compareCC3Container', 'Compare_CC3')"><i class="fas fa-download"></i> PNG</button>
                     </div>
                     <h3><i class="fas fa-check-circle"></i> CC3 Effectivity</h3>
                     <canvas id="compareCC3"></canvas>
@@ -2356,7 +2274,7 @@
                 await renderComparison();
             }
 
-            // ----- Update Comparison Selectors -----
+            // ----- Update Comparison Selectors (UNLIMITED SERVICES) -----
             function updateComparisonSelectors() {
                 let html = '';
                 compareServices.forEach((service, index) => {
@@ -2373,11 +2291,9 @@
                                     ${internalServices.map(s => `<option value="${s}" ${service === s ? 'selected' : ''}>${serviceNames[s]}</option>`).join('')}
                                 </optgroup>
                             </select>
-                            ${compareServices.length > 2 ? `
-                                <button class="remove-service-btn" data-index="${index}">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            ` : ''}
+                            <button class="remove-service-btn" data-index="${index}">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
                     `;
                 });
@@ -2394,7 +2310,10 @@
                     btn.addEventListener('click', function() {
                         const index = parseInt(this.dataset.index);
                         compareServices.splice(index, 1);
-                        if (compareServices.length < 2) compareServices = ['external', 'internal'];
+                        if (compareServices.length === 0) {
+                            // If no services left, add default two
+                            compareServices = ['external', 'internal'];
+                        }
                         updateComparisonSelectors();
                     });
                 });
@@ -2422,10 +2341,9 @@
             });
 
             addServiceBtn.addEventListener('click', function() {
-                if (compareServices.length < 5) {
-                    compareServices.push('external');
-                    updateComparisonSelectors();
-                }
+                // No limit - can add unlimited services
+                compareServices.push('external');
+                updateComparisonSelectors();
             });
 
             executeCompareBtn.addEventListener('click', function() {
@@ -2484,8 +2402,6 @@
                 renderSQDSection(values);
                 updateServiceDisplay();
             }
-
-            updateDateBtn.addEventListener('click', renderDashboard);
 
             // ----- Event Listeners -----
             function initEvents() {
