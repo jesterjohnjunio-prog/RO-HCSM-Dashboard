@@ -1814,7 +1814,12 @@
                                 resolve(fetchSheetData(sheetType, retryCount + 1));
                             } else {
                                 showError(`Timeout loading ${serviceNames[sheetType] || sheetType}`);
-                                resolve(generateSampleMatrix(sheetType));
+                                const sampleMatrix = generateSampleMatrix(sheetType);
+                                // FIX: Set currentMatrix for View Full Data
+                                if (!isCompareMode) {
+                                    currentMatrix = sampleMatrix;
+                                }
+                                resolve(sampleMatrix);
                             }
                         }, 8000); // 8 second timeout
                         
@@ -1833,13 +1838,22 @@
                             if (response?.success && response.data) {
                                 const matrix = parseCSVtoMatrix(response.data);
                                 setCachedData(cacheKey, matrix);
+                                // FIX: Set currentMatrix for View Full Data
+                                if (!isCompareMode) {
+                                    currentMatrix = matrix;
+                                }
                                 resolve(matrix);
                             } else {
                                 if (retryCount < 2) {
                                     resolve(fetchSheetData(sheetType, retryCount + 1));
                                 } else {
                                     showError(`Failed to load ${serviceNames[sheetType] || sheetType}`);
-                                    resolve(generateSampleMatrix(sheetType));
+                                    const sampleMatrix = generateSampleMatrix(sheetType);
+                                    // FIX: Set currentMatrix for View Full Data
+                                    if (!isCompareMode) {
+                                        currentMatrix = sampleMatrix;
+                                    }
+                                    resolve(sampleMatrix);
                                 }
                             }
                         };
@@ -1853,7 +1867,12 @@
                                 resolve(fetchSheetData(sheetType, retryCount + 1));
                             } else {
                                 showError(`Network error loading ${serviceNames[sheetType] || sheetType}`);
-                                resolve(generateSampleMatrix(sheetType));
+                                const sampleMatrix = generateSampleMatrix(sheetType);
+                                // FIX: Set currentMatrix for View Full Data
+                                if (!isCompareMode) {
+                                    currentMatrix = sampleMatrix;
+                                }
+                                resolve(sampleMatrix);
                             }
                         };
                         
@@ -1865,7 +1884,12 @@
                             resolve(fetchSheetData(sheetType, retryCount + 1));
                         } else {
                             showError(`Error loading data`);
-                            resolve(generateSampleMatrix(sheetType));
+                            const sampleMatrix = generateSampleMatrix(sheetType);
+                            // FIX: Set currentMatrix for View Full Data
+                            if (!isCompareMode) {
+                                currentMatrix = sampleMatrix;
+                            }
+                            resolve(sampleMatrix);
                         }
                     }
                 });
@@ -2675,18 +2699,27 @@
                 });
             }
 
-            // ----- Show Full Data Modal -----
+            // ----- Show Full Data Modal (FIXED) -----
             function showFullDataModal() {
-                if (!currentMatrix) { alert('No data available'); return; }
+                if (!currentMatrix) { 
+                    alert('No data available. Please load a service first.'); 
+                    return; 
+                }
+                
                 const modalTitle = document.getElementById('modalTitle');
                 const modalTableContainer = document.getElementById('modalTableContainer');
+                const dataModal = document.getElementById('dataModal');
+                
                 if (modalTitle) modalTitle.innerHTML = `${currentServiceDisplayName} - Complete Data (${currentMatrix.length} rows)`;
+                
                 let tableHTML = '<table class="data-table"><thead><tr>';
                 if (currentMatrix.length > 0) {
                     for (let i = 0; i < currentMatrix[0].length; i++) {
                         tableHTML += `<th><span class="col-letter">${String.fromCharCode(65 + i)}</span></th>`;
                     }
                     tableHTML += '</tr></thead><tbody>';
+                    
+                    // Show all rows
                     for (let i = 0; i < currentMatrix.length; i++) {
                         tableHTML += '<tr>';
                         for (let j = 0; j < currentMatrix[i].length; j++) {
@@ -2697,13 +2730,16 @@
                     }
                     tableHTML += '</tbody></table>';
                 }
+                
                 if (modalTableContainer) modalTableContainer.innerHTML = tableHTML;
-                const dataModal = document.getElementById('dataModal');
                 if (dataModal) dataModal.style.display = 'block';
             }
 
             function downloadCSV() {
-                if (!currentMatrix) { alert('No data'); return; }
+                if (!currentMatrix) { 
+                    alert('No data available'); 
+                    return; 
+                }
                 let csv = currentMatrix.map(r => r.map(c => {
                     if (typeof c === 'string' && (c.includes(',') || c.includes('"'))) return `"${c.replace(/"/g,'""')}"`;
                     return c;
