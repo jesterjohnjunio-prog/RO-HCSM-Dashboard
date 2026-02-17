@@ -1,3 +1,5 @@
+Lets do this!
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1058,43 +1060,9 @@
             .dashboard-subtitle { font-size: 1.2rem; }
             .modal-content { width: 98%; margin: 1% auto; }
         }
-
-        /* ========== SESSION TIMEOUT INDICATOR ========== */
-        .session-indicator {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 0.6rem 1.2rem;
-            border-radius: 60px;
-            font-size: 0.8rem;
-            color: #0f6f84;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            z-index: 1001;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .session-indicator i {
-            color: #c9a227;
-        }
-
-        .session-timer {
-            font-weight: 700;
-            color: #0f859e;
-        }
     </style>
 </head>
 <body>
-    <!-- SESSION TIMEOUT INDICATOR (hidden by default) -->
-    <div id="sessionIndicator" class="session-indicator" style="display: none;">
-        <i class="fas fa-clock"></i>
-        <span>Session expires in: <span id="sessionTimer" class="session-timer">10:00</span></span>
-    </div>
-
     <!-- LOGIN PAGE -->
     <div id="loginPage" class="login-container">
         <div class="water-bg">
@@ -1292,91 +1260,7 @@
             "use strict";
 
             // ============================================================
-            // SESSION MANAGEMENT - 10 MINUTE TIMEOUT
-            // ============================================================
-            const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 minutes in milliseconds
-            let sessionTimer = null;
-            let lastActivity = Date.now();
-            
-            const sessionIndicator = document.getElementById('sessionIndicator');
-            const sessionTimerDisplay = document.getElementById('sessionTimer');
-            
-            // Check session on page load
-            function checkSession() {
-                const loggedIn = sessionStorage.getItem('loggedIn');
-                const loginTime = parseInt(sessionStorage.getItem('loginTime') || '0');
-                const currentTime = Date.now();
-                
-                if (loggedIn === 'true' && (currentTime - loginTime) < SESSION_TIMEOUT) {
-                    // Session is still valid
-                    loginPage.style.display = 'none';
-                    dashboard.classList.add('visible');
-                    lastActivity = currentTime;
-                    startSessionTimer();
-                    showSessionIndicator();
-                } else {
-                    // Session expired or not logged in
-                    sessionStorage.removeItem('loggedIn');
-                    sessionStorage.removeItem('loginTime');
-                    loginPage.style.display = 'flex';
-                    dashboard.classList.remove('visible');
-                    hideSessionIndicator();
-                }
-            }
-            
-            // Start session timer and inactivity monitor
-            function startSessionTimer() {
-                if (sessionTimer) clearInterval(sessionTimer);
-                
-                sessionTimer = setInterval(() => {
-                    const now = Date.now();
-                    const elapsed = now - lastActivity;
-                    const remaining = SESSION_TIMEOUT - elapsed;
-                    
-                    if (remaining <= 0) {
-                        // Session expired
-                        logout();
-                        return;
-                    }
-                    
-                    // Update timer display
-                    const minutes = Math.floor(remaining / 60000);
-                    const seconds = Math.floor((remaining % 60000) / 1000);
-                    sessionTimerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                }, 1000);
-            }
-            
-            // Reset inactivity timer on user activity
-            function resetActivity() {
-                lastActivity = Date.now();
-            }
-            
-            // Show session indicator
-            function showSessionIndicator() {
-                sessionIndicator.style.display = 'flex';
-            }
-            
-            function hideSessionIndicator() {
-                sessionIndicator.style.display = 'none';
-            }
-            
-            // Logout function
-            function logout() {
-                if (sessionTimer) clearInterval(sessionTimer);
-                sessionStorage.removeItem('loggedIn');
-                sessionStorage.removeItem('loginTime');
-                loginPage.style.display = 'flex';
-                dashboard.classList.remove('visible');
-                hideSessionIndicator();
-            }
-            
-            // Track user activity
-            ['mousedown', 'keydown', 'scroll', 'mousemove'].forEach(event => {
-                document.addEventListener(event, resetActivity);
-            });
-
-            // ============================================================
-            // LOGIN FUNCTIONALITY (UPDATED)
+            // LOGIN FUNCTIONALITY
             // ============================================================
             const loginPage = document.getElementById('loginPage');
             const dashboard = document.getElementById('dashboard');
@@ -1390,17 +1274,8 @@
 
             loginBtn.addEventListener('click', function() {
                 if (usernameInput.value === VALID_USERNAME && passwordInput.value === VALID_PASSWORD) {
-                    // Set session
-                    sessionStorage.setItem('loggedIn', 'true');
-                    sessionStorage.setItem('loginTime', Date.now().toString());
-                    lastActivity = Date.now();
-                    
                     loginPage.style.display = 'none';
                     dashboard.classList.add('visible');
-                    loginError.style.display = 'none';
-                    
-                    startSessionTimer();
-                    showSessionIndicator();
                 } else {
                     loginError.style.display = 'block';
                 }
@@ -1409,9 +1284,6 @@
             passwordInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') loginBtn.click();
             });
-
-            // Check session on page load
-            checkSession();
 
             // ============================================================
             // APPS SCRIPT URL
@@ -2548,7 +2420,7 @@
 
             window.addEventListener('DOMContentLoaded', () => {
                 initEvents();
-                // Session check already runs on load
+                renderDashboard();
             });
         })();
     </script>
