@@ -188,7 +188,7 @@
             display: block;
         }
 
-        /* ========== ANIMATED HEADER ========== */
+        /* ========== ANIMATED HEADER WITH ACTION BUTTONS ========== */
         .hero {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
@@ -317,6 +317,56 @@
 
         .badge i {
             font-size: 0.9rem;
+        }
+
+        /* ========== HEADER ACTION BUTTONS ========== */
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(15,133,158,0.2);
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0f6f84;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+        }
+
+        .action-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(15,133,158,0.15);
+            border-color: #0f859e;
+        }
+
+        .action-btn i {
+            font-size: 0.9rem;
+        }
+
+        .action-btn.logout {
+            color: #a17f28;
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .action-btn.logout:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: #c9a227;
+        }
+
+        .action-btn.refresh:hover {
+            background: rgba(15,133,158,0.1);
         }
 
         /* ========== SERVICE FILTER SECTION ========== */
@@ -527,6 +577,9 @@
             width: 100%;
             max-width: 800px;
             margin: 0 auto;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0.5rem;
         }
 
         .service-selector-row {
@@ -1045,6 +1098,38 @@
             color: #0f859e;
         }
 
+        /* ========== ERROR MESSAGE ========== */
+        .error-message-banner {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 60px;
+            padding: 0.8rem 1.5rem;
+            margin-bottom: 1rem;
+            color: #721c24;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .error-message-banner i {
+            color: #721c24;
+        }
+
+        .retry-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 60px;
+            padding: 0.3rem 1.2rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .retry-btn:hover {
+            background: #c82333;
+        }
+
         @media (max-width: 1200px) {
             .sqd-charts-container { grid-template-columns: 1fr; }
             .filter-section { flex-direction: column; padding: 1.2rem; }
@@ -1057,10 +1142,45 @@
             .switch-btn { padding: 0.8rem 1.8rem; }
             .dashboard-subtitle { font-size: 1.2rem; }
             .modal-content { width: 98%; margin: 1% auto; }
+            .header-actions { justify-content: center; }
+        }
+
+        /* ========== SESSION TIMEOUT INDICATOR ========== */
+        .session-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 0.6rem 1.2rem;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            color: #0f6f84;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .session-indicator i {
+            color: #c9a227;
+        }
+
+        .session-timer {
+            font-weight: 700;
+            color: #0f859e;
         }
     </style>
 </head>
 <body>
+    <!-- SESSION TIMEOUT INDICATOR -->
+    <div id="sessionIndicator" class="session-indicator" style="display: none;">
+        <i class="fas fa-clock"></i>
+        <span>Session expires in: <span id="sessionTimer" class="session-timer">10:00</span></span>
+    </div>
+
     <!-- LOGIN PAGE -->
     <div id="loginPage" class="login-container">
         <div class="water-bg">
@@ -1096,7 +1216,7 @@
 
     <!-- DASHBOARD -->
     <div id="dashboard" class="dashboard">
-        <!-- ANIMATED HEADER -->
+        <!-- ANIMATED HEADER WITH ACTION BUTTONS -->
         <div class="hero">
             <div class="header-content">
                 <div class="logo-container">
@@ -1117,7 +1237,24 @@
                     <span class="badge"><i class="fas fa-star"></i> SQD 0-8</span>
                     <span class="badge"><i class="fas fa-code-branch"></i> 25+ Services</span>
                 </div>
+
+                <!-- ACTION BUTTONS (LOGOUT + REFRESH) -->
+                <div class="header-actions">
+                    <button class="action-btn refresh" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> Refresh Data
+                    </button>
+                    <button class="action-btn logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
             </div>
+        </div>
+
+        <!-- ERROR MESSAGE BANNER (hidden by default) -->
+        <div id="errorBanner" class="error-message-banner" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span id="errorMessage">Failed to load data. Please try again.</span>
+            <button class="retry-btn" id="retryBtn">Retry</button>
         </div>
 
         <!-- SERVICE FILTER SECTION -->
@@ -1258,6 +1395,95 @@
             "use strict";
 
             // ============================================================
+            // SESSION MANAGEMENT - 10 MINUTE TIMEOUT
+            // ============================================================
+            const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 minutes in milliseconds
+            let sessionTimer = null;
+            let lastActivity = Date.now();
+            
+            const sessionIndicator = document.getElementById('sessionIndicator');
+            const sessionTimerDisplay = document.getElementById('sessionTimer');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const refreshBtn = document.getElementById('refreshBtn');
+            const errorBanner = document.getElementById('errorBanner');
+            const errorMessage = document.getElementById('errorMessage');
+            const retryBtn = document.getElementById('retryBtn');
+            
+            // Check session on page load
+            function checkSession() {
+                const loggedIn = sessionStorage.getItem('loggedIn');
+                const loginTime = parseInt(sessionStorage.getItem('loginTime') || '0');
+                const currentTime = Date.now();
+                
+                if (loggedIn === 'true' && (currentTime - loginTime) < SESSION_TIMEOUT) {
+                    // Session is still valid
+                    loginPage.style.display = 'none';
+                    dashboard.classList.add('visible');
+                    lastActivity = currentTime;
+                    startSessionTimer();
+                    showSessionIndicator();
+                } else {
+                    // Session expired or not logged in
+                    sessionStorage.removeItem('loggedIn');
+                    sessionStorage.removeItem('loginTime');
+                    loginPage.style.display = 'flex';
+                    dashboard.classList.remove('visible');
+                    hideSessionIndicator();
+                }
+            }
+            
+            // Start session timer and inactivity monitor
+            function startSessionTimer() {
+                if (sessionTimer) clearInterval(sessionTimer);
+                
+                sessionTimer = setInterval(() => {
+                    const now = Date.now();
+                    const elapsed = now - lastActivity;
+                    const remaining = SESSION_TIMEOUT - elapsed;
+                    
+                    if (remaining <= 0) {
+                        // Session expired
+                        logout();
+                        return;
+                    }
+                    
+                    // Update timer display
+                    const minutes = Math.floor(remaining / 60000);
+                    const seconds = Math.floor((remaining % 60000) / 1000);
+                    sessionTimerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+            
+            // Reset inactivity timer on user activity
+            function resetActivity() {
+                lastActivity = Date.now();
+            }
+            
+            // Show session indicator
+            function showSessionIndicator() {
+                sessionIndicator.style.display = 'flex';
+            }
+            
+            function hideSessionIndicator() {
+                sessionIndicator.style.display = 'none';
+            }
+            
+            // Logout function
+            function logout() {
+                if (sessionTimer) clearInterval(sessionTimer);
+                sessionStorage.removeItem('loggedIn');
+                sessionStorage.removeItem('loginTime');
+                loginPage.style.display = 'flex';
+                dashboard.classList.remove('visible');
+                hideSessionIndicator();
+            }
+            
+            // Track user activity
+            ['mousedown', 'keydown', 'scroll', 'mousemove'].forEach(event => {
+                document.addEventListener(event, resetActivity);
+            });
+
+            // ============================================================
             // LOGIN FUNCTIONALITY
             // ============================================================
             const loginPage = document.getElementById('loginPage');
@@ -1272,8 +1498,17 @@
 
             loginBtn.addEventListener('click', function() {
                 if (usernameInput.value === VALID_USERNAME && passwordInput.value === VALID_PASSWORD) {
+                    // Set session
+                    sessionStorage.setItem('loggedIn', 'true');
+                    sessionStorage.setItem('loginTime', Date.now().toString());
+                    lastActivity = Date.now();
+                    
                     loginPage.style.display = 'none';
                     dashboard.classList.add('visible');
+                    loginError.style.display = 'none';
+                    
+                    startSessionTimer();
+                    showSessionIndicator();
                 } else {
                     loginError.style.display = 'block';
                 }
@@ -1284,10 +1519,82 @@
             });
 
             // ============================================================
+            // LOGOUT BUTTON HANDLER
+            // ============================================================
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    logout();
+                });
+            }
+
+            // ============================================================
+            // REFRESH BUTTON HANDLER
+            // ============================================================
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function() {
+                    hideError();
+                    if (isCompareMode) {
+                        loadComparisonData();
+                    } else {
+                        renderDashboard();
+                    }
+                    // Visual feedback
+                    refreshBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Refreshing...';
+                    setTimeout(() => {
+                        refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Data';
+                    }, 2000);
+                });
+            }
+
+            // ============================================================
+            // ERROR HANDLING FUNCTIONS (NEW)
+            // ============================================================
+            function showError(message) {
+                errorMessage.textContent = message || 'Failed to load data. Please try again.';
+                errorBanner.style.display = 'flex';
+            }
+
+            function hideError() {
+                errorBanner.style.display = 'none';
+            }
+
+            if (retryBtn) {
+                retryBtn.addEventListener('click', function() {
+                    hideError();
+                    if (isCompareMode) {
+                        loadComparisonData();
+                    } else {
+                        renderDashboard();
+                    }
+                });
+            }
+
+            // ============================================================
             // APPS SCRIPT URL
             // ============================================================
             const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpf6VJlzshJWhTpvLj6XODAqmwh6ixqL0jZv7ghGq3oqhFyPH17UKhdh7e7BpMHi4p/exec";
             
+            // ============================================================
+            // CACHE MANAGEMENT (NEW)
+            // ============================================================
+            const dataCache = {};
+            const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+
+            function getCachedData(key) {
+                const cached = dataCache[key];
+                if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION) {
+                    return cached.data;
+                }
+                return null;
+            }
+
+            function setCachedData(key, data) {
+                dataCache[key] = {
+                    data: data,
+                    timestamp: Date.now()
+                };
+            }
+
             // ============================================================
             // Global State
             // ============================================================
@@ -1298,8 +1605,9 @@
             let currentMatrix = null;
             let currentServiceDisplayName = 'Overall Summary';
             let isCompareMode = false;
-            let compareServices = ['external', 'internal']; // Start with 2 services
+            let compareServices = ['external', 'internal'];
             let compareValues = [];
+            let isFetching = false;
             
             const externalServices = ['RID', 'FRA', 'HPP', 'HIC', 'PPC', 'FCC', 'RWS'];
             const internalServices = ['ROD', 'RIC', 'RWD', 'AGN', 'AGP', 'AGS', 'REP', 'RLC', 'LCA', 'PPF', 'PER', 'PCB', 'PRA', 'ITT', 'IPA', 'RLP', 'RLT'];
@@ -1317,31 +1625,15 @@
             const addServiceBtn = document.getElementById('addServiceBtn');
             const executeCompareBtn = document.getElementById('executeCompareBtn');
 
-            // Color palette for multiple services (extended for unlimited services)
+            // Color palette for multiple services
             const compareColors = [
-                '#1a7f9e', // Blue
-                '#c9a227', // Gold
-                '#2e8b57', // Green
-                '#9b59b6', // Purple
-                '#e67e22', // Orange
-                '#e74c3c', // Red
-                '#3498db', // Light Blue
-                '#f1c40f', // Yellow
-                '#1abc9c', // Turquoise
-                '#e84393', // Pink
-                '#6c5ce7', // Purple Blue
-                '#00b894', // Green Teal
-                '#d63031', // Bright Red
-                '#fdcb6e', // Light Orange
-                '#e17055', // Coral
-                '#0984e3', // Royal Blue
-                '#a29bfe', // Light Purple
-                '#55efc4', // Mint
-                '#81ecec', // Cyan
-                '#74b9ff'  // Sky Blue
+                '#1a7f9e', '#c9a227', '#2e8b57', '#9b59b6', '#e67e22',
+                '#e74c3c', '#3498db', '#f1c40f', '#1abc9c', '#e84393',
+                '#6c5ce7', '#00b894', '#d63031', '#fdcb6e', '#e17055',
+                '#0984e3', '#a29bfe', '#55efc4', '#81ecec', '#74b9ff'
             ];
 
-            // Service name mapping (YOUR EXACT TEXTS)
+            // Service name mapping
             const serviceNames = {
                 'overall': 'Overall Summary',
                 'external': 'External Services Summary',
@@ -1373,7 +1665,7 @@
             };
 
             // ============================================================
-            // CELL MAPPINGS (YOUR EXACT CELLS)
+            // CELL MAPPINGS
             // ============================================================
             const CELL_MAPPINGS = {
                 sex: {
@@ -1474,9 +1766,24 @@
                 return `${baseUrl}?sheet=${sheetType}&sheets=${sheetsParam}&callback=`;
             }
 
-            // ----- Fetch Sheet Data -----
-            async function fetchSheetData(sheetType) {
+            // ----- OPTIMIZED Fetch Sheet Data with caching and retry -----
+            async function fetchSheetData(sheetType, retryCount = 0) {
+                // Check cache first
+                const cacheKey = `${sheetType}_${Date.now() - (Date.now() % CACHE_DURATION)}`;
+                const cached = getCachedData(cacheKey);
+                if (cached && !isCompareMode) {
+                    return cached;
+                }
+
                 return new Promise((resolve) => {
+                    if (isFetching && retryCount === 0) {
+                        // If already fetching, wait a bit
+                        setTimeout(() => resolve(fetchSheetData(sheetType, retryCount)), 500);
+                        return;
+                    }
+                    
+                    isFetching = true;
+                    
                     try {
                         const callbackName = `jsonp_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
                         const baseUrl = buildUrlWithDateParams(APPS_SCRIPT_URL, sheetType);
@@ -1484,8 +1791,15 @@
                         
                         const timeout = setTimeout(() => {
                             cleanup();
-                            resolve(generateSampleMatrix(sheetType));
-                        }, 15000);
+                            isFetching = false;
+                            if (retryCount < 2) {
+                                // Retry up to 2 times
+                                resolve(fetchSheetData(sheetType, retryCount + 1));
+                            } else {
+                                showError(`Failed to load ${serviceNames[sheetType] || sheetType}. Please check your connection.`);
+                                resolve(generateSampleMatrix(sheetType));
+                            }
+                        }, 10000); // Reduced timeout to 10 seconds
                         
                         function cleanup() {
                             clearTimeout(timeout);
@@ -1496,12 +1810,21 @@
                         
                         window[callbackName] = function(response) {
                             cleanup();
+                            isFetching = false;
+                            hideError();
+                            
                             if (response?.success && response.data) {
                                 const matrix = parseCSVtoMatrix(response.data);
                                 currentMatrix = matrix;
+                                setCachedData(cacheKey, matrix);
                                 resolve(matrix);
                             } else {
-                                resolve(generateSampleMatrix(sheetType));
+                                if (retryCount < 2) {
+                                    resolve(fetchSheetData(sheetType, retryCount + 1));
+                                } else {
+                                    showError(`Failed to load ${serviceNames[sheetType] || sheetType}. Using sample data.`);
+                                    resolve(generateSampleMatrix(sheetType));
+                                }
                             }
                         };
                         
@@ -1509,13 +1832,25 @@
                         script.src = url;
                         script.onerror = () => {
                             cleanup();
-                            resolve(generateSampleMatrix(sheetType));
+                            isFetching = false;
+                            if (retryCount < 2) {
+                                resolve(fetchSheetData(sheetType, retryCount + 1));
+                            } else {
+                                showError(`Network error loading ${serviceNames[sheetType] || sheetType}. Using sample data.`);
+                                resolve(generateSampleMatrix(sheetType));
+                            }
                         };
                         
                         document.head.appendChild(script);
                         
                     } catch (e) {
-                        resolve(generateSampleMatrix(sheetType));
+                        isFetching = false;
+                        if (retryCount < 2) {
+                            resolve(fetchSheetData(sheetType, retryCount + 1));
+                        } else {
+                            showError(`Error loading data. Using sample data.`);
+                            resolve(generateSampleMatrix(sheetType));
+                        }
                     }
                 });
             }
@@ -1619,7 +1954,7 @@
                 return values;
             }
 
-            // ----- Sample Data Generator (YOUR EXACT SAMPLE DATA) -----
+            // ----- Sample Data Generator -----
             function generateSampleMatrix(type) {
                 const m = [];
                 for (let i = 0; i < 150; i++) m[i] = [];
@@ -1681,20 +2016,17 @@
             }
 
             // ============================================================
-            // FIXED PNG DOWNLOAD FUNCTIONS
+            // PNG DOWNLOAD FUNCTIONS
             // ============================================================
             
-            // Main PNG download function for entire cards
             async function downloadCardAsPNG(cardId, filename) {
                 const card = document.getElementById(cardId);
                 if (!card) return;
                 
                 try {
-                    // Store original styles
                     const originalBoxShadow = card.style.boxShadow;
                     const originalTransform = card.style.transform;
                     
-                    // Remove hover effects temporarily
                     card.style.boxShadow = 'none';
                     card.style.transform = 'none';
                     
@@ -1708,7 +2040,6 @@
                         windowHeight: card.scrollHeight
                     });
                     
-                    // Restore original styles
                     card.style.boxShadow = originalBoxShadow;
                     card.style.transform = originalTransform;
                     
@@ -1722,7 +2053,6 @@
                 }
             }
 
-            // Make function globally available
             window.downloadCardAsPNG = downloadCardAsPNG;
 
             // ----- Plugin for value labels -----
@@ -1764,7 +2094,7 @@
 
                 let html = '';
 
-                // Card 1: Sex - WITH FULL TEXT
+                // Card 1: Sex
                 html += `<div class="chart-card" id="chartSexContainer">
                     <div class="chart-header">
                         <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD) by Service Type</h2>
@@ -1780,7 +2110,7 @@
                     </div>
                 </div>`;
 
-                // Card 2: Age - WITH FULL TEXTS
+                // Card 2: Age
                 html += `<div class="chart-card" id="chartAgeContainer">
                     <div class="chart-header">
                         <h2><i class="fas fa-calendar-alt"></i> Age Distribution by Service Type</h2>
@@ -1804,7 +2134,7 @@
                     </div>
                 </div>`;
 
-                // Card 3: Client Type - WITH FULL TEXTS
+                // Card 3: Client Type
                 html += `<div class="chart-card" id="chartClientContainer">
                     <div class="chart-header">
                         <h2><i class="fas fa-users"></i> Client Type by Service</h2>
@@ -1822,7 +2152,7 @@
                     </div>
                 </div>`;
 
-                // Card 4: Region - WITH FULL TEXTS
+                // Card 4: Region
                 html += `<div class="chart-card" id="chartRegionContainer">
                     <div class="chart-header">
                         <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
@@ -1840,7 +2170,7 @@
                     </div>
                 </div>`;
 
-                // Card 5: CC1 - WITH FULL TEXTS
+                // Card 5: CC1
                 html += `<div class="chart-card" id="chartCC1Container">
                     <div class="chart-header">
                         <h2><i class="fas fa-eye"></i> Citizen's Charter Awareness</h2>
@@ -1859,7 +2189,7 @@
                     </div>
                 </div>`;
 
-                // Card 6: CC2 - WITH FULL TEXTS
+                // Card 6: CC2
                 html += `<div class="chart-card" id="chartCC2Container">
                     <div class="chart-header">
                         <h2><i class="fas fa-low-vision"></i> Citizen's Charter Visibility</h2>
@@ -1879,7 +2209,7 @@
                     </div>
                 </div>`;
 
-                // Card 7: CC3 - WITH FULL TEXTS
+                // Card 7: CC3
                 html += `<div class="chart-card" id="chartCC3Container">
                     <div class="chart-header">
                         <h2><i class="fas fa-check-circle"></i> Citizen's Charter Effectivity</h2>
@@ -1942,7 +2272,7 @@
                 });
             }
 
-            // ----- Render SQD Section - WITH FULL TEXTS -----
+            // ----- Render SQD Section -----
             function renderSQDSection(values) {
                 const sqdLabels = ['SQD 1','SQD 2','SQD 3','SQD 4','SQD 5','SQD 6','SQD 7','SQD 8'];
                 const sqdFullLabels = ['Responsiveness','Reliability','Access','Communication','Costs','Integrity','Assurance','Outcome'];
@@ -2003,7 +2333,7 @@
                 }
             }
 
-            // ----- Render Comparison (Multi-Service) - UNLIMITED SERVICES -----
+            // ----- Render Comparison (Multi-Service) -----
             async function renderComparison() {
                 if (compareValues.length === 0) return;
 
@@ -2277,7 +2607,6 @@
                         const index = parseInt(this.dataset.index);
                         compareServices.splice(index, 1);
                         if (compareServices.length === 0) {
-                            // If no services left, add default two
                             compareServices = ['external', 'internal'];
                         }
                         updateComparisonSelectors();
@@ -2307,7 +2636,6 @@
             });
 
             addServiceBtn.addEventListener('click', function() {
-                // No limit - can add unlimited services
                 compareServices.push('external');
                 updateComparisonSelectors();
             });
@@ -2418,10 +2746,9 @@
 
             window.addEventListener('DOMContentLoaded', () => {
                 initEvents();
-                renderDashboard();
+                checkSession();
             });
         })();
     </script>
 </body>
 </html>
-
