@@ -1395,12 +1395,16 @@
             "use strict";
 
             // ============================================================
-            // SESSION MANAGEMENT - 10 MINUTE TIMEOUT
+            // GLOBAL VARIABLES (MOVE TO TOP FOR ACCESSIBILITY)
             // ============================================================
-            const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 minutes in milliseconds
-            let sessionTimer = null;
-            let lastActivity = Date.now();
+            const loginPage = document.getElementById('loginPage');
+            const dashboard = document.getElementById('dashboard');
+            const loginBtn = document.getElementById('loginBtn');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginError = document.getElementById('loginError');
             
+            // Session elements
             const sessionIndicator = document.getElementById('sessionIndicator');
             const sessionTimerDisplay = document.getElementById('sessionTimer');
             const logoutBtn = document.getElementById('logoutBtn');
@@ -1408,6 +1412,13 @@
             const errorBanner = document.getElementById('errorBanner');
             const errorMessage = document.getElementById('errorMessage');
             const retryBtn = document.getElementById('retryBtn');
+
+            // ============================================================
+            // SESSION MANAGEMENT - 10 MINUTE TIMEOUT
+            // ============================================================
+            const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 minutes in milliseconds
+            let sessionTimer = null;
+            let lastActivity = Date.now();
             
             // Check session on page load
             function checkSession() {
@@ -1450,7 +1461,9 @@
                     // Update timer display
                     const minutes = Math.floor(remaining / 60000);
                     const seconds = Math.floor((remaining % 60000) / 1000);
-                    sessionTimerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    if (sessionTimerDisplay) {
+                        sessionTimerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    }
                 }, 1000);
             }
             
@@ -1461,11 +1474,11 @@
             
             // Show session indicator
             function showSessionIndicator() {
-                sessionIndicator.style.display = 'flex';
+                if (sessionIndicator) sessionIndicator.style.display = 'flex';
             }
             
             function hideSessionIndicator() {
-                sessionIndicator.style.display = 'none';
+                if (sessionIndicator) sessionIndicator.style.display = 'none';
             }
             
             // Logout function
@@ -1486,40 +1499,40 @@
             // ============================================================
             // LOGIN FUNCTIONALITY
             // ============================================================
-            const loginPage = document.getElementById('loginPage');
-            const dashboard = document.getElementById('dashboard');
-            const loginBtn = document.getElementById('loginBtn');
-            const usernameInput = document.getElementById('username');
-            const passwordInput = document.getElementById('password');
-            const loginError = document.getElementById('loginError');
-
             const VALID_USERNAME = "cart-admin";
             const VALID_PASSWORD = "mwssro-0897Hc$m";
 
-            loginBtn.addEventListener('click', function() {
-                if (usernameInput.value === VALID_USERNAME && passwordInput.value === VALID_PASSWORD) {
-                    // Set session
-                    sessionStorage.setItem('loggedIn', 'true');
-                    sessionStorage.setItem('loginTime', Date.now().toString());
-                    lastActivity = Date.now();
-                    
-                    loginPage.style.display = 'none';
-                    dashboard.classList.add('visible');
-                    loginError.style.display = 'none';
-                    
-                    startSessionTimer();
-                    showSessionIndicator();
-                } else {
-                    loginError.style.display = 'block';
-                }
-            });
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function() {
+                    if (usernameInput.value === VALID_USERNAME && passwordInput.value === VALID_PASSWORD) {
+                        // Set session
+                        sessionStorage.setItem('loggedIn', 'true');
+                        sessionStorage.setItem('loginTime', Date.now().toString());
+                        lastActivity = Date.now();
+                        
+                        loginPage.style.display = 'none';
+                        dashboard.classList.add('visible');
+                        loginError.style.display = 'none';
+                        
+                        startSessionTimer();
+                        showSessionIndicator();
+                        
+                        // Initial load
+                        renderDashboard();
+                    } else {
+                        loginError.style.display = 'block';
+                    }
+                });
+            }
 
-            passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') loginBtn.click();
-            });
+            if (passwordInput) {
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter' && loginBtn) loginBtn.click();
+                });
+            }
 
             // ============================================================
-            // LOGOUT BUTTON HANDLER
+            // LOGOUT BUTTON HANDLER (FIXED)
             // ============================================================
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', function() {
@@ -1528,16 +1541,21 @@
             }
 
             // ============================================================
-            // REFRESH BUTTON HANDLER
+            // REFRESH BUTTON HANDLER (FIXED)
             // ============================================================
             if (refreshBtn) {
                 refreshBtn.addEventListener('click', function() {
                     hideError();
+                    // Clear cache for current service
+                    const cacheKey = `${currentServiceCode || currentService}`;
+                    delete dataCache[cacheKey];
+                    
                     if (isCompareMode) {
                         loadComparisonData();
                     } else {
                         renderDashboard();
                     }
+                    
                     // Visual feedback
                     refreshBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Refreshing...';
                     setTimeout(() => {
@@ -1547,15 +1565,15 @@
             }
 
             // ============================================================
-            // ERROR HANDLING FUNCTIONS (NEW)
+            // ERROR HANDLING FUNCTIONS
             // ============================================================
             function showError(message) {
-                errorMessage.textContent = message || 'Failed to load data. Please try again.';
-                errorBanner.style.display = 'flex';
+                if (errorMessage) errorMessage.textContent = message || 'Failed to load data. Please try again.';
+                if (errorBanner) errorBanner.style.display = 'flex';
             }
 
             function hideError() {
-                errorBanner.style.display = 'none';
+                if (errorBanner) errorBanner.style.display = 'none';
             }
 
             if (retryBtn) {
@@ -1575,10 +1593,11 @@
             const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxpf6VJlzshJWhTpvLj6XODAqmwh6ixqL0jZv7ghGq3oqhFyPH17UKhdh7e7BpMHi4p/exec";
             
             // ============================================================
-            // CACHE MANAGEMENT (NEW)
+            // CACHE MANAGEMENT (OPTIMIZED)
             // ============================================================
             const dataCache = {};
             const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+            let pendingRequests = {}; // Track pending requests to prevent duplicates
 
             function getCachedData(key) {
                 const cached = dataCache[key];
@@ -1608,6 +1627,7 @@
             let compareServices = ['external', 'internal'];
             let compareValues = [];
             let isFetching = false;
+            let fetchQueue = []; // Queue for sequential fetching
             
             const externalServices = ['RID', 'FRA', 'HPP', 'HIC', 'PPC', 'FCC', 'RWS'];
             const internalServices = ['ROD', 'RIC', 'RWD', 'AGN', 'AGP', 'AGS', 'REP', 'RLC', 'LCA', 'PPF', 'PER', 'PCB', 'PRA', 'ITT', 'IPA', 'RLP', 'RLT'];
@@ -1665,7 +1685,7 @@
             };
 
             // ============================================================
-            // CELL MAPPINGS
+            // CELL MAPPINGS (YOUR EXACT CELLS)
             // ============================================================
             const CELL_MAPPINGS = {
                 sex: {
@@ -1734,19 +1754,19 @@
             function updateServiceDisplay() {
                 if (currentServiceCode && serviceNames[currentServiceCode]) {
                     currentServiceDisplayName = serviceNames[currentServiceCode];
-                    selectedServiceDisplay.innerHTML = currentServiceDisplayName;
+                    if (selectedServiceDisplay) selectedServiceDisplay.innerHTML = currentServiceDisplayName;
                 } else if (serviceNames[currentService]) {
                     currentServiceDisplayName = serviceNames[currentService];
-                    selectedServiceDisplay.innerHTML = currentServiceDisplayName;
+                    if (selectedServiceDisplay) selectedServiceDisplay.innerHTML = currentServiceDisplayName;
                 } else {
                     currentServiceDisplayName = 'Overall View';
-                    selectedServiceDisplay.innerHTML = 'Overall View';
+                    if (selectedServiceDisplay) selectedServiceDisplay.innerHTML = 'Overall View';
                 }
             }
 
             function resetDropdowns() {
-                externalSelect.value = '';
-                internalSelect.value = '';
+                if (externalSelect) externalSelect.value = '';
+                if (internalSelect) internalSelect.value = '';
             }
 
             // ----- Build URL with sheet parameters -----
@@ -1766,24 +1786,22 @@
                 return `${baseUrl}?sheet=${sheetType}&sheets=${sheetsParam}&callback=`;
             }
 
-            // ----- OPTIMIZED Fetch Sheet Data with caching and retry -----
+            // ----- OPTIMIZED Fetch Sheet Data with queue to prevent multiple requests -----
             async function fetchSheetData(sheetType, retryCount = 0) {
                 // Check cache first
-                const cacheKey = `${sheetType}_${Date.now() - (Date.now() % CACHE_DURATION)}`;
+                const cacheKey = `${sheetType}_${Math.floor(Date.now() / CACHE_DURATION)}`;
                 const cached = getCachedData(cacheKey);
                 if (cached && !isCompareMode) {
                     return cached;
                 }
 
-                return new Promise((resolve) => {
-                    if (isFetching && retryCount === 0) {
-                        // If already fetching, wait a bit
-                        setTimeout(() => resolve(fetchSheetData(sheetType, retryCount)), 500);
-                        return;
-                    }
-                    
-                    isFetching = true;
-                    
+                // Check if there's already a pending request for this sheet
+                if (pendingRequests[sheetType]) {
+                    return pendingRequests[sheetType];
+                }
+
+                // Create new promise
+                const promise = new Promise((resolve) => {
                     try {
                         const callbackName = `jsonp_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
                         const baseUrl = buildUrlWithDateParams(APPS_SCRIPT_URL, sheetType);
@@ -1791,15 +1809,14 @@
                         
                         const timeout = setTimeout(() => {
                             cleanup();
-                            isFetching = false;
+                            delete pendingRequests[sheetType];
                             if (retryCount < 2) {
-                                // Retry up to 2 times
                                 resolve(fetchSheetData(sheetType, retryCount + 1));
                             } else {
-                                showError(`Failed to load ${serviceNames[sheetType] || sheetType}. Please check your connection.`);
+                                showError(`Timeout loading ${serviceNames[sheetType] || sheetType}`);
                                 resolve(generateSampleMatrix(sheetType));
                             }
-                        }, 10000); // Reduced timeout to 10 seconds
+                        }, 8000); // 8 second timeout
                         
                         function cleanup() {
                             clearTimeout(timeout);
@@ -1810,19 +1827,18 @@
                         
                         window[callbackName] = function(response) {
                             cleanup();
-                            isFetching = false;
+                            delete pendingRequests[sheetType];
                             hideError();
                             
                             if (response?.success && response.data) {
                                 const matrix = parseCSVtoMatrix(response.data);
-                                currentMatrix = matrix;
                                 setCachedData(cacheKey, matrix);
                                 resolve(matrix);
                             } else {
                                 if (retryCount < 2) {
                                     resolve(fetchSheetData(sheetType, retryCount + 1));
                                 } else {
-                                    showError(`Failed to load ${serviceNames[sheetType] || sheetType}. Using sample data.`);
+                                    showError(`Failed to load ${serviceNames[sheetType] || sheetType}`);
                                     resolve(generateSampleMatrix(sheetType));
                                 }
                             }
@@ -1832,11 +1848,11 @@
                         script.src = url;
                         script.onerror = () => {
                             cleanup();
-                            isFetching = false;
+                            delete pendingRequests[sheetType];
                             if (retryCount < 2) {
                                 resolve(fetchSheetData(sheetType, retryCount + 1));
                             } else {
-                                showError(`Network error loading ${serviceNames[sheetType] || sheetType}. Using sample data.`);
+                                showError(`Network error loading ${serviceNames[sheetType] || sheetType}`);
                                 resolve(generateSampleMatrix(sheetType));
                             }
                         };
@@ -1844,15 +1860,18 @@
                         document.head.appendChild(script);
                         
                     } catch (e) {
-                        isFetching = false;
+                        delete pendingRequests[sheetType];
                         if (retryCount < 2) {
                             resolve(fetchSheetData(sheetType, retryCount + 1));
                         } else {
-                            showError(`Error loading data. Using sample data.`);
+                            showError(`Error loading data`);
                             resolve(generateSampleMatrix(sheetType));
                         }
                     }
                 });
+
+                pendingRequests[sheetType] = promise;
+                return promise;
             }
 
             // ----- Parse CSV -----
@@ -1954,7 +1973,7 @@
                 return values;
             }
 
-            // ----- Sample Data Generator -----
+            // ----- Sample Data Generator (YOUR EXACT SAMPLE DATA) -----
             function generateSampleMatrix(type) {
                 const m = [];
                 for (let i = 0; i < 150; i++) m[i] = [];
@@ -2083,7 +2102,7 @@
                 }
             };
 
-            // ----- Render Main Charts -----
+            // ----- Render Main Charts (YOUR EXACT TEXTS) -----
             function renderMainCharts(values) {
                 const totalSex = values.male + values.female;
                 const totalAge = values.ageNS + values.age19b + values.age2029 + values.age3039 + values.age4049 + values.age5059 + values.age6069 + values.age70;
@@ -2228,7 +2247,7 @@
                     </div>
                 </div>`;
 
-                mainGridEl.innerHTML = html;
+                if (mainGridEl) mainGridEl.innerHTML = html;
 
                 Object.values(chartInstances).forEach(chart => chart?.destroy());
                 chartInstances = {};
@@ -2312,7 +2331,7 @@
                     </div>
                 `;
 
-                sqdChartsContainer.innerHTML = html;
+                if (sqdChartsContainer) sqdChartsContainer.innerHTML = html;
 
                 const ctx = document.getElementById('chartSQD1to8');
                 if (ctx) {
@@ -2402,7 +2421,7 @@
                     <canvas id="compareCC3"></canvas>
                 </div>`;
 
-                comparisonGrid.innerHTML = html;
+                if (comparisonGrid) comparisonGrid.innerHTML = html;
 
                 // Create Sex chart
                 const ctxSex = document.getElementById('compareSex');
@@ -2561,12 +2580,15 @@
 
             // ----- Load Comparison Data -----
             async function loadComparisonData() {
-                comparisonGrid.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-pulse fa-2x"></i><p>Loading comparison data...</p></div>';
+                if (comparisonGrid) comparisonGrid.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-pulse fa-2x"></i><p>Loading comparison data...</p></div>';
                 compareValues = [];
+                
+                // Load services sequentially to avoid overwhelming
                 for (let service of compareServices) {
                     const matrix = await fetchSheetData(service);
                     compareValues.push(readAllCells(matrix));
                 }
+                
                 await renderComparison();
             }
 
@@ -2593,7 +2615,8 @@
                         </div>
                     `;
                 });
-                comparisonSelectors.innerHTML = html;
+                
+                if (comparisonSelectors) comparisonSelectors.innerHTML = html;
 
                 document.querySelectorAll('.compare-select').forEach(select => {
                     select.addEventListener('change', function() {
@@ -2615,41 +2638,49 @@
             }
 
             // ----- Toggle Comparison Mode -----
-            compareToggle.addEventListener('click', async function() {
-                isCompareMode = !isCompareMode;
-                if (isCompareMode) {
-                    compareToggle.classList.add('active');
-                    comparisonPanel.style.display = 'block';
-                    mainGridEl.style.display = 'none';
-                    sqdChartsContainer.style.display = 'none';
-                    document.getElementById('sqdSectionHeader').style.display = 'none';
-                    compareServices = ['external', 'internal'];
+            if (compareToggle) {
+                compareToggle.addEventListener('click', async function() {
+                    isCompareMode = !isCompareMode;
+                    if (isCompareMode) {
+                        compareToggle.classList.add('active');
+                        if (comparisonPanel) comparisonPanel.style.display = 'block';
+                        if (mainGridEl) mainGridEl.style.display = 'none';
+                        if (sqdChartsContainer) sqdChartsContainer.style.display = 'none';
+                        const header = document.getElementById('sqdSectionHeader');
+                        if (header) header.style.display = 'none';
+                        compareServices = ['external', 'internal'];
+                        updateComparisonSelectors();
+                    } else {
+                        compareToggle.classList.remove('active');
+                        if (comparisonPanel) comparisonPanel.style.display = 'none';
+                        if (mainGridEl) mainGridEl.style.display = 'grid';
+                        if (sqdChartsContainer) sqdChartsContainer.style.display = 'grid';
+                        const header = document.getElementById('sqdSectionHeader');
+                        if (header) header.style.display = 'flex';
+                        renderDashboard();
+                    }
+                });
+            }
+
+            if (addServiceBtn) {
+                addServiceBtn.addEventListener('click', function() {
+                    compareServices.push('external');
                     updateComparisonSelectors();
-                } else {
-                    compareToggle.classList.remove('active');
-                    comparisonPanel.style.display = 'none';
-                    mainGridEl.style.display = 'grid';
-                    sqdChartsContainer.style.display = 'grid';
-                    document.getElementById('sqdSectionHeader').style.display = 'flex';
-                    renderDashboard();
-                }
-            });
+                });
+            }
 
-            addServiceBtn.addEventListener('click', function() {
-                compareServices.push('external');
-                updateComparisonSelectors();
-            });
-
-            executeCompareBtn.addEventListener('click', function() {
-                loadComparisonData();
-            });
+            if (executeCompareBtn) {
+                executeCompareBtn.addEventListener('click', function() {
+                    loadComparisonData();
+                });
+            }
 
             // ----- Show Full Data Modal -----
             function showFullDataModal() {
                 if (!currentMatrix) { alert('No data available'); return; }
                 const modalTitle = document.getElementById('modalTitle');
                 const modalTableContainer = document.getElementById('modalTableContainer');
-                modalTitle.innerHTML = `${currentServiceDisplayName} - Complete Data (${currentMatrix.length} rows)`;
+                if (modalTitle) modalTitle.innerHTML = `${currentServiceDisplayName} - Complete Data (${currentMatrix.length} rows)`;
                 let tableHTML = '<table class="data-table"><thead><tr>';
                 if (currentMatrix.length > 0) {
                     for (let i = 0; i < currentMatrix[0].length; i++) {
@@ -2666,8 +2697,9 @@
                     }
                     tableHTML += '</tbody></table>';
                 }
-                modalTableContainer.innerHTML = tableHTML;
-                dataModal.style.display = 'block';
+                if (modalTableContainer) modalTableContainer.innerHTML = tableHTML;
+                const dataModal = document.getElementById('dataModal');
+                if (dataModal) dataModal.style.display = 'block';
             }
 
             function downloadCSV() {
@@ -2686,9 +2718,11 @@
             // ----- Render Dashboard -----
             async function renderDashboard() {
                 if (isCompareMode) return;
-                const loadingHTML = `<div class="loading-state"><i class="fas fa-spinner fa-pulse" style="font-size:2rem; color:#c9a227;"></i><p style="color:#0f859e;">Loading...</p></div>`;
-                mainGridEl.innerHTML = loadingHTML;
-                sqdChartsContainer.innerHTML = '';
+                if (mainGridEl) {
+                    mainGridEl.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-pulse" style="font-size:2rem; color:#c9a227;"></i><p style="color:#0f859e;">Loading...</p></div>';
+                }
+                if (sqdChartsContainer) sqdChartsContainer.innerHTML = '';
+                
                 const matrix = await fetchSheetData(currentServiceCode || currentService);
                 const values = readAllCells(matrix);
                 currentValues = values;
@@ -2710,40 +2744,57 @@
                     });
                 });
 
-                externalSelect.addEventListener('change', function() {
-                    if (this.value) {
-                        currentServiceCode = this.value;
-                        currentService = '';
-                        internalSelect.value = '';
-                        document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
-                        renderDashboard();
-                    }
-                });
+                if (externalSelect) {
+                    externalSelect.addEventListener('change', function() {
+                        if (this.value) {
+                            currentServiceCode = this.value;
+                            currentService = '';
+                            if (internalSelect) internalSelect.value = '';
+                            document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
+                            renderDashboard();
+                        }
+                    });
+                }
 
-                internalSelect.addEventListener('change', function() {
-                    if (this.value) {
-                        currentServiceCode = this.value;
-                        currentService = '';
-                        externalSelect.value = '';
-                        document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
-                        renderDashboard();
-                    }
-                });
+                if (internalSelect) {
+                    internalSelect.addEventListener('change', function() {
+                        if (this.value) {
+                            currentServiceCode = this.value;
+                            currentService = '';
+                            if (externalSelect) externalSelect.value = '';
+                            document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'));
+                            renderDashboard();
+                        }
+                    });
+                }
 
-                viewDataBtn.addEventListener('click', showFullDataModal);
+                if (viewDataBtn) viewDataBtn.addEventListener('click', showFullDataModal);
 
                 const closeModal = document.getElementById('closeModal');
                 const dataModal = document.getElementById('dataModal');
-                closeModal.addEventListener('click', () => dataModal.style.display = 'none');
-                window.addEventListener('click', (e) => { if (e.target === dataModal) dataModal.style.display = 'none'; });
-
-                document.getElementById('downloadCsvBtn').addEventListener('click', downloadCSV);
-                document.getElementById('refreshDataBtn').addEventListener('click', () => {
-                    renderDashboard();
-                    setTimeout(() => { if (currentMatrix) showFullDataModal(); }, 500);
+                if (closeModal) {
+                    closeModal.addEventListener('click', () => {
+                        if (dataModal) dataModal.style.display = 'none';
+                    });
+                }
+                
+                window.addEventListener('click', (e) => {
+                    if (e.target === dataModal && dataModal) dataModal.style.display = 'none';
                 });
+
+                const downloadCsvBtn = document.getElementById('downloadCsvBtn');
+                if (downloadCsvBtn) downloadCsvBtn.addEventListener('click', downloadCSV);
+                
+                const refreshDataBtn = document.getElementById('refreshDataBtn');
+                if (refreshDataBtn) {
+                    refreshDataBtn.addEventListener('click', () => {
+                        renderDashboard();
+                        setTimeout(() => { if (currentMatrix) showFullDataModal(); }, 500);
+                    });
+                }
             }
 
+            // Initialize
             window.addEventListener('DOMContentLoaded', () => {
                 initEvents();
                 checkSession();
