@@ -689,6 +689,63 @@
             right: 1rem;
         }
 
+        /* NEW: Summary Stats Cards */
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem;
+            box-shadow: 0 8px 24px rgba(0,70,90,0.04);
+            border: 1px solid rgba(147,197,214,0.15);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 32px rgba(0,90,110,0.1);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            color: #c9a227;
+            margin-bottom: 0.8rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0e5a6b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a7f9e;
+            line-height: 1.2;
+        }
+
+        .stat-sub {
+            font-size: 0.85rem;
+            color: #4a7a86;
+            margin-top: 0.3rem;
+        }
+
         /* Section Headers */
         .section-header {
             grid-column: 1/-1;
@@ -1135,6 +1192,7 @@
             .filter-section { flex-direction: column; padding: 1.2rem; }
             .service-select { min-width: 250px; }
             .comparison-grid { grid-template-columns: 1fr; }
+            .summary-stats { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 1000px) {
@@ -1345,6 +1403,9 @@
                 <!-- Comparison charts will be inserted here -->
             </div>
         </div>
+
+        <!-- NEW: Summary Stats Section -->
+        <div id="summaryStats" class="summary-stats"></div>
 
         <!-- Main Content Grid -->
         <div class="chart-grid" id="mainChartGrid"></div>
@@ -1616,6 +1677,7 @@
             const externalServices = ['RID', 'FRA', 'HPP', 'HIC', 'PPC', 'FCC', 'RWS'];
             const internalServices = ['ROD', 'RIC', 'RWD', 'AGN', 'AGP', 'AGS', 'REP', 'RLC', 'LCA', 'PPF', 'PER', 'PCB', 'PRA', 'ITT', 'IPA', 'RLP', 'RLT'];
             
+            const summaryStatsEl = document.getElementById('summaryStats');
             const mainGridEl = document.getElementById('mainChartGrid');
             const sqdChartsContainer = document.getElementById('sqdChartsContainer');
             const externalSelect = document.getElementById('externalServiceSelect');
@@ -1669,9 +1731,15 @@
             };
 
             // ============================================================
-            // CELL MAPPINGS - FIXED: Sex includes N/S, Age uses E34-E41
+            // CELL MAPPINGS - ADDED I11, I12, I13
             // ============================================================
             const CELL_MAPPINGS = {
+                // NEW: Summary stats
+                summary: {
+                    totalRespondents: { colIndex: 8, rowIndex: 11 },  // I11
+                    totalTransactions: { colIndex: 8, rowIndex: 12 }, // I12
+                    responseRate: { colIndex: 8, rowIndex: 13 }       // I13
+                },
                 sex: {
                     male: { colIndex: 1, rowIndex: 42 },      // B42
                     female: { colIndex: 2, rowIndex: 42 },    // C42
@@ -1906,9 +1974,14 @@
                 return 0;
             }
 
-            // ----- Read All Cell Values - FIXED: Sex includes N/S, Age uses E34-E41 -----
+            // ----- Read All Cell Values - ADDED Summary Stats -----
             function readAllCells(matrix) {
                 const values = {};
+                
+                // NEW: Summary stats
+                values.totalRespondents = getCellValue(matrix, CELL_MAPPINGS.summary.totalRespondents.rowIndex, CELL_MAPPINGS.summary.totalRespondents.colIndex);
+                values.totalTransactions = getCellValue(matrix, CELL_MAPPINGS.summary.totalTransactions.rowIndex, CELL_MAPPINGS.summary.totalTransactions.colIndex);
+                values.responseRate = getCellValue(matrix, CELL_MAPPINGS.summary.responseRate.rowIndex, CELL_MAPPINGS.summary.responseRate.colIndex);
                 
                 // Sex - WITH Not Specified
                 values.male = getCellValue(matrix, CELL_MAPPINGS.sex.male.rowIndex, CELL_MAPPINGS.sex.male.colIndex);
@@ -1937,14 +2010,14 @@
                 values.region4a = getCellValue(matrix, CELL_MAPPINGS.region.region4a.rowIndex, CELL_MAPPINGS.region.region4a.colIndex);
                 values.ncr = getCellValue(matrix, CELL_MAPPINGS.region.ncr.rowIndex, CELL_MAPPINGS.region.ncr.colIndex);
                 
-                // CC1 - Using correct column indices
+                // CC1
                 values.cc1NS = getCellValue(matrix, CELL_MAPPINGS.cc1.ns.rowIndex, CELL_MAPPINGS.cc1.ns.colIndex);
                 values.knowSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowSaw.rowIndex, CELL_MAPPINGS.cc1.knowSaw.colIndex);
                 values.knowNotSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowNotSaw.rowIndex, CELL_MAPPINGS.cc1.knowNotSaw.colIndex);
                 values.learned = getCellValue(matrix, CELL_MAPPINGS.cc1.learned.rowIndex, CELL_MAPPINGS.cc1.learned.colIndex);
                 values.dontKnow = getCellValue(matrix, CELL_MAPPINGS.cc1.dontKnow.rowIndex, CELL_MAPPINGS.cc1.dontKnow.colIndex);
                 
-                // CC2 - Using correct column indices
+                // CC2
                 values.cc2NS = getCellValue(matrix, CELL_MAPPINGS.cc2.ns.rowIndex, CELL_MAPPINGS.cc2.ns.colIndex);
                 values.easy = getCellValue(matrix, CELL_MAPPINGS.cc2.easy.rowIndex, CELL_MAPPINGS.cc2.easy.colIndex);
                 values.somewhatEasy = getCellValue(matrix, CELL_MAPPINGS.cc2.somewhatEasy.rowIndex, CELL_MAPPINGS.cc2.somewhatEasy.colIndex);
@@ -1952,7 +2025,7 @@
                 values.notVisible = getCellValue(matrix, CELL_MAPPINGS.cc2.notVisible.rowIndex, CELL_MAPPINGS.cc2.notVisible.colIndex);
                 values.cc2na = getCellValue(matrix, CELL_MAPPINGS.cc2.na.rowIndex, CELL_MAPPINGS.cc2.na.colIndex);
                 
-                // CC3 - Using correct column indices
+                // CC3
                 values.cc3NS = getCellValue(matrix, CELL_MAPPINGS.cc3.ns.rowIndex, CELL_MAPPINGS.cc3.ns.colIndex);
                 values.helpedMuch = getCellValue(matrix, CELL_MAPPINGS.cc3.helpedMuch.rowIndex, CELL_MAPPINGS.cc3.helpedMuch.colIndex);
                 values.somewhatHelped = getCellValue(matrix, CELL_MAPPINGS.cc3.somewhatHelped.rowIndex, CELL_MAPPINGS.cc3.somewhatHelped.colIndex);
@@ -1974,10 +2047,15 @@
                 return values;
             }
 
-            // ----- Sample Data Generator - FIXED: Sex includes N/S, Age uses E34-E41 -----
+            // ----- Sample Data Generator - ADDED Summary Stats -----
             function generateSampleMatrix(type) {
                 const m = [];
                 for (let i = 0; i < 150; i++) m[i] = [];
+                
+                // NEW: Summary stats
+                m[11] = m[11] || []; m[11][8] = 450;  // I11 - Total Respondents
+                m[12] = m[12] || []; m[12][8] = 500;  // I12 - Total Transactions
+                m[13] = m[13] || []; m[13][8] = 90.0; // I13 - Response Rate %
                 
                 // Sex with Not Specified
                 m[42] = m[42] || []; 
@@ -2118,6 +2196,32 @@
                     }
                 }
             };
+
+            // ----- NEW: Render Summary Stats -----
+            function renderSummaryStats(values) {
+                const html = `
+                    <div class="stat-card" id="statRespondents">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-label">Total Respondents</div>
+                        <div class="stat-value">${values.totalRespondents.toLocaleString()}</div>
+                        <div class="stat-sub">Client Satisfaction Survey</div>
+                    </div>
+                    <div class="stat-card" id="statTransactions">
+                        <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+                        <div class="stat-label">Total Transactions</div>
+                        <div class="stat-value">${values.totalTransactions.toLocaleString()}</div>
+                        <div class="stat-sub">Service Transactions</div>
+                    </div>
+                    <div class="stat-card" id="statResponseRate">
+                        <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                        <div class="stat-label">Response Rate</div>
+                        <div class="stat-value">${values.responseRate.toFixed(1)}%</div>
+                        <div class="stat-sub">Survey Participation Rate</div>
+                    </div>
+                `;
+                
+                if (summaryStatsEl) summaryStatsEl.innerHTML = html;
+            }
 
             // ----- Render Main Charts - FIXED: Sex includes N/S, CC bars have no numbers -----
             function renderMainCharts(values) {
@@ -2469,11 +2573,20 @@
                 }
             }
 
-            // ----- Render Comparison (Multi-Service) -----
+            // ----- Render Comparison (Multi-Service) - ADDED Summary Stats Comparison -----
             async function renderComparison() {
                 if (compareValues.length === 0) return;
 
                 let html = '';
+
+                // NEW: Summary Stats Comparison Card
+                html += `<div class="compare-card" id="compareSummaryContainer">
+                    <div class="compare-chart-actions">
+                        <button class="download-btn" onclick="downloadCardAsPNG('compareSummaryContainer', 'Compare_Summary')"><i class="fas fa-download"></i> PNG</button>
+                    </div>
+                    <h3><i class="fas fa-chart-bar"></i> Service Performance Metrics</h3>
+                    <canvas id="compareSummary"></canvas>
+                </div>`;
 
                 // Sex Comparison
                 html += `<div class="compare-card" id="compareSexContainer">
@@ -2557,6 +2670,42 @@
                 </div>`;
 
                 if (comparisonGrid) comparisonGrid.innerHTML = html;
+
+                // NEW: Create Summary Stats Comparison Chart
+                const ctxSummary = document.getElementById('compareSummary');
+                if (ctxSummary) {
+                    new Chart(ctxSummary, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Total Respondents', 'Total Transactions', 'Response Rate (%)'],
+                            datasets: compareValues.map((v, i) => ({
+                                label: serviceNames[compareServices[i]] || compareServices[i],
+                                data: [v.totalRespondents, v.totalTransactions, v.responseRate],
+                                backgroundColor: compareColors[i % compareColors.length],
+                                borderRadius: 6
+                            }))
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: { 
+                                legend: { position: 'top' },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            const label = context.dataset.label || '';
+                                            const value = context.raw || 0;
+                                            if (context.dataIndex === 2) { // Response Rate
+                                                return `${label}: ${value.toFixed(1)}%`;
+                                            }
+                                            return `${label}: ${value.toLocaleString()}`;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
 
                 // Create Sex chart (with Not Specified)
                 const ctxSex = document.getElementById('compareSex');
@@ -2934,6 +3083,7 @@
                     if (isCompareMode) {
                         compareToggle.classList.add('active');
                         if (comparisonPanel) comparisonPanel.style.display = 'block';
+                        if (summaryStatsEl) summaryStatsEl.style.display = 'none';
                         if (mainGridEl) mainGridEl.style.display = 'none';
                         if (sqdChartsContainer) sqdChartsContainer.style.display = 'none';
                         const header = document.getElementById('sqdSectionHeader');
@@ -2943,6 +3093,7 @@
                     } else {
                         compareToggle.classList.remove('active');
                         if (comparisonPanel) comparisonPanel.style.display = 'none';
+                        if (summaryStatsEl) summaryStatsEl.style.display = 'grid';
                         if (mainGridEl) mainGridEl.style.display = 'grid';
                         if (sqdChartsContainer) sqdChartsContainer.style.display = 'grid';
                         const header = document.getElementById('sqdSectionHeader');
@@ -3016,9 +3167,12 @@
                 link.click();
             }
 
-            // ----- Render Dashboard -----
+            // ----- Render Dashboard - UPDATED with Summary Stats -----
             async function renderDashboard() {
                 if (isCompareMode) return;
+                if (summaryStatsEl) {
+                    summaryStatsEl.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-pulse"></i> Loading summary...</div>';
+                }
                 if (mainGridEl) {
                     mainGridEl.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-pulse" style="font-size:2rem; color:#c9a227;"></i><p style="color:#0f859e;">Loading...</p></div>';
                 }
@@ -3027,6 +3181,9 @@
                 const matrix = await fetchSheetData(currentServiceCode || currentService);
                 const values = readAllCells(matrix);
                 currentValues = values;
+                
+                // NEW: Render summary stats first
+                renderSummaryStats(values);
                 renderMainCharts(values);
                 renderSQDSection(values);
                 updateServiceDisplay();
