@@ -1699,7 +1699,7 @@
                 '#0984e3', '#a29bfe', '#55efc4', '#81ecec', '#74b9ff'
             ];
 
-            // Service name mapping
+            // Service name mapping - FIXED: Added proper names for all services
             const serviceNames = {
                 'overall': 'Overall Summary',
                 'external': 'External Services Summary',
@@ -1731,10 +1731,10 @@
             };
 
             // ============================================================
-            // CELL MAPPINGS - ADDED I11, I12, I13
+            // CELL MAPPINGS - FIXED: Added I11, I12, I13 and ensured all references are correct
             // ============================================================
             const CELL_MAPPINGS = {
-                // NEW: Summary stats
+                // Summary stats
                 summary: {
                     totalRespondents: { colIndex: 8, rowIndex: 11 },  // I11
                     totalTransactions: { colIndex: 8, rowIndex: 12 }, // I12
@@ -1822,9 +1822,11 @@
                 if (internalSelect) internalSelect.value = '';
             }
 
-            // ----- Build URL with sheet parameters -----
+            // ----- Build URL with sheet parameters - FIXED: Better sheet handling for all services -----
             function buildUrlWithDateParams(baseUrl, sheetType) {
                 let sheets = [];
+                
+                // Handle different service types
                 if (sheetType === 'overall') {
                     sheets = ['overall', 'external', 'internal', ...externalServices, ...internalServices];
                 } else if (sheetType === 'external') {
@@ -1832,6 +1834,7 @@
                 } else if (sheetType === 'internal') {
                     sheets = ['internal', ...internalServices];
                 } else {
+                    // Single service - use the service code as sheet name
                     sheets = [sheetType];
                 }
                 
@@ -1839,7 +1842,7 @@
                 return `${baseUrl}?sheet=${sheetType}&sheets=${sheetsParam}&callback=`;
             }
 
-            // ----- OPTIMIZED Fetch Sheet Data -----
+            // ----- OPTIMIZED Fetch Sheet Data - FIXED: Better error handling and retry logic -----
             async function fetchSheetData(sheetType, retryCount = 0) {
                 const cacheKey = `${sheetType}_${Math.floor(Date.now() / CACHE_DURATION)}`;
                 const cached = getCachedData(cacheKey);
@@ -1861,7 +1864,8 @@
                         const timeout = setTimeout(() => {
                             cleanup();
                             delete pendingRequests[sheetType];
-                            if (retryCount < 2) {
+                            if (retryCount < 3) { // Increased retries to 3
+                                console.log(`Retry ${retryCount + 1} for ${sheetType}`);
                                 resolve(fetchSheetData(sheetType, retryCount + 1));
                             } else {
                                 showError(`Timeout loading ${serviceNames[sheetType] || sheetType}`);
@@ -1869,7 +1873,7 @@
                                 if (!isCompareMode) currentMatrix = sampleMatrix;
                                 resolve(sampleMatrix);
                             }
-                        }, 8000);
+                        }, 10000); // Increased timeout to 10 seconds
                         
                         function cleanup() {
                             clearTimeout(timeout);
@@ -1889,7 +1893,8 @@
                                 if (!isCompareMode) currentMatrix = matrix;
                                 resolve(matrix);
                             } else {
-                                if (retryCount < 2) {
+                                if (retryCount < 3) {
+                                    console.log(`Retry ${retryCount + 1} for ${sheetType} - no data`);
                                     resolve(fetchSheetData(sheetType, retryCount + 1));
                                 } else {
                                     showError(`Failed to load ${serviceNames[sheetType] || sheetType}`);
@@ -1905,7 +1910,8 @@
                         script.onerror = () => {
                             cleanup();
                             delete pendingRequests[sheetType];
-                            if (retryCount < 2) {
+                            if (retryCount < 3) {
+                                console.log(`Retry ${retryCount + 1} for ${sheetType} - network error`);
                                 resolve(fetchSheetData(sheetType, retryCount + 1));
                             } else {
                                 showError(`Network error loading ${serviceNames[sheetType] || sheetType}`);
@@ -1919,7 +1925,8 @@
                         
                     } catch (e) {
                         delete pendingRequests[sheetType];
-                        if (retryCount < 2) {
+                        if (retryCount < 3) {
+                            console.log(`Retry ${retryCount + 1} for ${sheetType} - exception`);
                             resolve(fetchSheetData(sheetType, retryCount + 1));
                         } else {
                             showError(`Error loading data`);
@@ -1934,7 +1941,7 @@
                 return promise;
             }
 
-            // ----- Parse CSV -----
+            // ----- Parse CSV - FIXED: Better CSV parsing -----
             function parseCSVtoMatrix(csvText) {
                 const lines = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
                 const matrix = [];
@@ -1944,7 +1951,8 @@
                     let inQuotes = false;
                     let current = '';
                     
-                    for (let char of line) {
+                    for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
                         if (char === '"') {
                             inQuotes = !inQuotes;
                         } else if (char === ',' && !inQuotes) {
@@ -1955,157 +1963,197 @@
                         }
                     }
                     row.push(current.trim());
-                    matrix.push(row.map(cell => cell.replace(/^"|"$/g, '')));
+                    matrix.push(row.map(cell => {
+                        // Remove quotes and trim
+                        return cell.replace(/^"|"$/g, '').trim();
+                    }));
                 });
                 
                 return matrix;
             }
 
-            // ----- Get Cell Value -----
+            // ----- Get Cell Value - FIXED: Better number parsing -----
             function getCellValue(matrix, rowIndex, colIndex) {
                 if (!matrix?.length) return 0;
                 try {
-                    if (matrix[rowIndex]?.[colIndex] !== undefined) {
+                    if (matrix[rowIndex] && matrix[rowIndex][colIndex] !== undefined) {
                         const val = matrix[rowIndex][colIndex];
-                        const num = parseFloat(val.replace(/[^\d.-]/g, ''));
+                        // Handle empty strings
+                        if (val === '' || val === null || val === undefined) return 0;
+                        // Remove commas and other non-numeric characters except decimal point and minus
+                        const cleaned = val.replace(/[^\d.-]/g, '');
+                        const num = parseFloat(cleaned);
                         return isNaN(num) ? 0 : num;
                     }
-                } catch (e) {}
+                } catch (e) {
+                    console.warn(`Error reading cell [${rowIndex},${colIndex}]:`, e);
+                }
                 return 0;
             }
 
-            // ----- Read All Cell Values - ADDED Summary Stats -----
+            // ----- Read All Cell Values - FIXED: Added better error handling -----
             function readAllCells(matrix) {
                 const values = {};
                 
-                // NEW: Summary stats
-                values.totalRespondents = getCellValue(matrix, CELL_MAPPINGS.summary.totalRespondents.rowIndex, CELL_MAPPINGS.summary.totalRespondents.colIndex);
-                values.totalTransactions = getCellValue(matrix, CELL_MAPPINGS.summary.totalTransactions.rowIndex, CELL_MAPPINGS.summary.totalTransactions.colIndex);
-                values.responseRate = getCellValue(matrix, CELL_MAPPINGS.summary.responseRate.rowIndex, CELL_MAPPINGS.summary.responseRate.colIndex);
-                
-                // Sex - WITH Not Specified
-                values.male = getCellValue(matrix, CELL_MAPPINGS.sex.male.rowIndex, CELL_MAPPINGS.sex.male.colIndex);
-                values.female = getCellValue(matrix, CELL_MAPPINGS.sex.female.rowIndex, CELL_MAPPINGS.sex.female.colIndex);
-                values.sexNS = getCellValue(matrix, CELL_MAPPINGS.sex.notSpecified.rowIndex, CELL_MAPPINGS.sex.notSpecified.colIndex);
-                
-                // Age - Using column E (index 5) as per reference
-                values.ageNS = getCellValue(matrix, CELL_MAPPINGS.age.ns.rowIndex, CELL_MAPPINGS.age.ns.colIndex);
-                values.age19b = getCellValue(matrix, CELL_MAPPINGS.age.age19b.rowIndex, CELL_MAPPINGS.age.age19b.colIndex);
-                values.age2029 = getCellValue(matrix, CELL_MAPPINGS.age.age2029.rowIndex, CELL_MAPPINGS.age.age2029.colIndex);
-                values.age3039 = getCellValue(matrix, CELL_MAPPINGS.age.age3039.rowIndex, CELL_MAPPINGS.age.age3039.colIndex);
-                values.age4049 = getCellValue(matrix, CELL_MAPPINGS.age.age4049.rowIndex, CELL_MAPPINGS.age.age4049.colIndex);
-                values.age5059 = getCellValue(matrix, CELL_MAPPINGS.age.age5059.rowIndex, CELL_MAPPINGS.age.age5059.colIndex);
-                values.age6069 = getCellValue(matrix, CELL_MAPPINGS.age.age6069.rowIndex, CELL_MAPPINGS.age.age6069.colIndex);
-                values.age70 = getCellValue(matrix, CELL_MAPPINGS.age.age70.rowIndex, CELL_MAPPINGS.age.age70.colIndex);
-                
-                // Client Type
-                values.clientNS = getCellValue(matrix, CELL_MAPPINGS.client.ns.rowIndex, CELL_MAPPINGS.client.ns.colIndex);
-                values.citizen = getCellValue(matrix, CELL_MAPPINGS.client.citizen.rowIndex, CELL_MAPPINGS.client.citizen.colIndex);
-                values.business = getCellValue(matrix, CELL_MAPPINGS.client.business.rowIndex, CELL_MAPPINGS.client.business.colIndex);
-                values.government = getCellValue(matrix, CELL_MAPPINGS.client.government.rowIndex, CELL_MAPPINGS.client.government.colIndex);
-                
-                // Region
-                values.regionNS = getCellValue(matrix, CELL_MAPPINGS.region.ns.rowIndex, CELL_MAPPINGS.region.ns.colIndex);
-                values.region3 = getCellValue(matrix, CELL_MAPPINGS.region.region3.rowIndex, CELL_MAPPINGS.region.region3.colIndex);
-                values.region4a = getCellValue(matrix, CELL_MAPPINGS.region.region4a.rowIndex, CELL_MAPPINGS.region.region4a.colIndex);
-                values.ncr = getCellValue(matrix, CELL_MAPPINGS.region.ncr.rowIndex, CELL_MAPPINGS.region.ncr.colIndex);
-                
-                // CC1
-                values.cc1NS = getCellValue(matrix, CELL_MAPPINGS.cc1.ns.rowIndex, CELL_MAPPINGS.cc1.ns.colIndex);
-                values.knowSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowSaw.rowIndex, CELL_MAPPINGS.cc1.knowSaw.colIndex);
-                values.knowNotSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowNotSaw.rowIndex, CELL_MAPPINGS.cc1.knowNotSaw.colIndex);
-                values.learned = getCellValue(matrix, CELL_MAPPINGS.cc1.learned.rowIndex, CELL_MAPPINGS.cc1.learned.colIndex);
-                values.dontKnow = getCellValue(matrix, CELL_MAPPINGS.cc1.dontKnow.rowIndex, CELL_MAPPINGS.cc1.dontKnow.colIndex);
-                
-                // CC2
-                values.cc2NS = getCellValue(matrix, CELL_MAPPINGS.cc2.ns.rowIndex, CELL_MAPPINGS.cc2.ns.colIndex);
-                values.easy = getCellValue(matrix, CELL_MAPPINGS.cc2.easy.rowIndex, CELL_MAPPINGS.cc2.easy.colIndex);
-                values.somewhatEasy = getCellValue(matrix, CELL_MAPPINGS.cc2.somewhatEasy.rowIndex, CELL_MAPPINGS.cc2.somewhatEasy.colIndex);
-                values.difficult = getCellValue(matrix, CELL_MAPPINGS.cc2.difficult.rowIndex, CELL_MAPPINGS.cc2.difficult.colIndex);
-                values.notVisible = getCellValue(matrix, CELL_MAPPINGS.cc2.notVisible.rowIndex, CELL_MAPPINGS.cc2.notVisible.colIndex);
-                values.cc2na = getCellValue(matrix, CELL_MAPPINGS.cc2.na.rowIndex, CELL_MAPPINGS.cc2.na.colIndex);
-                
-                // CC3
-                values.cc3NS = getCellValue(matrix, CELL_MAPPINGS.cc3.ns.rowIndex, CELL_MAPPINGS.cc3.ns.colIndex);
-                values.helpedMuch = getCellValue(matrix, CELL_MAPPINGS.cc3.helpedMuch.rowIndex, CELL_MAPPINGS.cc3.helpedMuch.colIndex);
-                values.somewhatHelped = getCellValue(matrix, CELL_MAPPINGS.cc3.somewhatHelped.rowIndex, CELL_MAPPINGS.cc3.somewhatHelped.colIndex);
-                values.didNotHelp = getCellValue(matrix, CELL_MAPPINGS.cc3.didNotHelp.rowIndex, CELL_MAPPINGS.cc3.didNotHelp.colIndex);
-                values.cc3na = getCellValue(matrix, CELL_MAPPINGS.cc3.na.rowIndex, CELL_MAPPINGS.cc3.na.colIndex);
-                
-                // SQD
-                values.sqd0 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd0.rowIndex, CELL_MAPPINGS.sqd.sqd0.colIndex);
-                values.sqd1 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd1.rowIndex, CELL_MAPPINGS.sqd.sqd1.colIndex);
-                values.sqd2 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd2.rowIndex, CELL_MAPPINGS.sqd.sqd2.colIndex);
-                values.sqd3 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd3.rowIndex, CELL_MAPPINGS.sqd.sqd3.colIndex);
-                values.sqd4 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd4.rowIndex, CELL_MAPPINGS.sqd.sqd4.colIndex);
-                values.sqd5 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd5.rowIndex, CELL_MAPPINGS.sqd.sqd5.colIndex);
-                values.sqd6 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd6.rowIndex, CELL_MAPPINGS.sqd.sqd6.colIndex);
-                values.sqd7 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd7.rowIndex, CELL_MAPPINGS.sqd.sqd7.colIndex);
-                values.sqd8 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd8.rowIndex, CELL_MAPPINGS.sqd.sqd8.colIndex);
-                values.sqdOverall = getCellValue(matrix, CELL_MAPPINGS.sqd.sqdOverall.rowIndex, CELL_MAPPINGS.sqd.sqdOverall.colIndex);
+                try {
+                    // Summary stats
+                    values.totalRespondents = getCellValue(matrix, CELL_MAPPINGS.summary.totalRespondents.rowIndex, CELL_MAPPINGS.summary.totalRespondents.colIndex);
+                    values.totalTransactions = getCellValue(matrix, CELL_MAPPINGS.summary.totalTransactions.rowIndex, CELL_MAPPINGS.summary.totalTransactions.colIndex);
+                    values.responseRate = getCellValue(matrix, CELL_MAPPINGS.summary.responseRate.rowIndex, CELL_MAPPINGS.summary.responseRate.colIndex);
+                    
+                    // Sex - WITH Not Specified
+                    values.male = getCellValue(matrix, CELL_MAPPINGS.sex.male.rowIndex, CELL_MAPPINGS.sex.male.colIndex);
+                    values.female = getCellValue(matrix, CELL_MAPPINGS.sex.female.rowIndex, CELL_MAPPINGS.sex.female.colIndex);
+                    values.sexNS = getCellValue(matrix, CELL_MAPPINGS.sex.notSpecified.rowIndex, CELL_MAPPINGS.sex.notSpecified.colIndex);
+                    
+                    // Age - Using column E (index 5)
+                    values.ageNS = getCellValue(matrix, CELL_MAPPINGS.age.ns.rowIndex, CELL_MAPPINGS.age.ns.colIndex);
+                    values.age19b = getCellValue(matrix, CELL_MAPPINGS.age.age19b.rowIndex, CELL_MAPPINGS.age.age19b.colIndex);
+                    values.age2029 = getCellValue(matrix, CELL_MAPPINGS.age.age2029.rowIndex, CELL_MAPPINGS.age.age2029.colIndex);
+                    values.age3039 = getCellValue(matrix, CELL_MAPPINGS.age.age3039.rowIndex, CELL_MAPPINGS.age.age3039.colIndex);
+                    values.age4049 = getCellValue(matrix, CELL_MAPPINGS.age.age4049.rowIndex, CELL_MAPPINGS.age.age4049.colIndex);
+                    values.age5059 = getCellValue(matrix, CELL_MAPPINGS.age.age5059.rowIndex, CELL_MAPPINGS.age.age5059.colIndex);
+                    values.age6069 = getCellValue(matrix, CELL_MAPPINGS.age.age6069.rowIndex, CELL_MAPPINGS.age.age6069.colIndex);
+                    values.age70 = getCellValue(matrix, CELL_MAPPINGS.age.age70.rowIndex, CELL_MAPPINGS.age.age70.colIndex);
+                    
+                    // Client Type
+                    values.clientNS = getCellValue(matrix, CELL_MAPPINGS.client.ns.rowIndex, CELL_MAPPINGS.client.ns.colIndex);
+                    values.citizen = getCellValue(matrix, CELL_MAPPINGS.client.citizen.rowIndex, CELL_MAPPINGS.client.citizen.colIndex);
+                    values.business = getCellValue(matrix, CELL_MAPPINGS.client.business.rowIndex, CELL_MAPPINGS.client.business.colIndex);
+                    values.government = getCellValue(matrix, CELL_MAPPINGS.client.government.rowIndex, CELL_MAPPINGS.client.government.colIndex);
+                    
+                    // Region
+                    values.regionNS = getCellValue(matrix, CELL_MAPPINGS.region.ns.rowIndex, CELL_MAPPINGS.region.ns.colIndex);
+                    values.region3 = getCellValue(matrix, CELL_MAPPINGS.region.region3.rowIndex, CELL_MAPPINGS.region.region3.colIndex);
+                    values.region4a = getCellValue(matrix, CELL_MAPPINGS.region.region4a.rowIndex, CELL_MAPPINGS.region.region4a.colIndex);
+                    values.ncr = getCellValue(matrix, CELL_MAPPINGS.region.ncr.rowIndex, CELL_MAPPINGS.region.ncr.colIndex);
+                    
+                    // CC1
+                    values.cc1NS = getCellValue(matrix, CELL_MAPPINGS.cc1.ns.rowIndex, CELL_MAPPINGS.cc1.ns.colIndex);
+                    values.knowSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowSaw.rowIndex, CELL_MAPPINGS.cc1.knowSaw.colIndex);
+                    values.knowNotSaw = getCellValue(matrix, CELL_MAPPINGS.cc1.knowNotSaw.rowIndex, CELL_MAPPINGS.cc1.knowNotSaw.colIndex);
+                    values.learned = getCellValue(matrix, CELL_MAPPINGS.cc1.learned.rowIndex, CELL_MAPPINGS.cc1.learned.colIndex);
+                    values.dontKnow = getCellValue(matrix, CELL_MAPPINGS.cc1.dontKnow.rowIndex, CELL_MAPPINGS.cc1.dontKnow.colIndex);
+                    
+                    // CC2
+                    values.cc2NS = getCellValue(matrix, CELL_MAPPINGS.cc2.ns.rowIndex, CELL_MAPPINGS.cc2.ns.colIndex);
+                    values.easy = getCellValue(matrix, CELL_MAPPINGS.cc2.easy.rowIndex, CELL_MAPPINGS.cc2.easy.colIndex);
+                    values.somewhatEasy = getCellValue(matrix, CELL_MAPPINGS.cc2.somewhatEasy.rowIndex, CELL_MAPPINGS.cc2.somewhatEasy.colIndex);
+                    values.difficult = getCellValue(matrix, CELL_MAPPINGS.cc2.difficult.rowIndex, CELL_MAPPINGS.cc2.difficult.colIndex);
+                    values.notVisible = getCellValue(matrix, CELL_MAPPINGS.cc2.notVisible.rowIndex, CELL_MAPPINGS.cc2.notVisible.colIndex);
+                    values.cc2na = getCellValue(matrix, CELL_MAPPINGS.cc2.na.rowIndex, CELL_MAPPINGS.cc2.na.colIndex);
+                    
+                    // CC3
+                    values.cc3NS = getCellValue(matrix, CELL_MAPPINGS.cc3.ns.rowIndex, CELL_MAPPINGS.cc3.ns.colIndex);
+                    values.helpedMuch = getCellValue(matrix, CELL_MAPPINGS.cc3.helpedMuch.rowIndex, CELL_MAPPINGS.cc3.helpedMuch.colIndex);
+                    values.somewhatHelped = getCellValue(matrix, CELL_MAPPINGS.cc3.somewhatHelped.rowIndex, CELL_MAPPINGS.cc3.somewhatHelped.colIndex);
+                    values.didNotHelp = getCellValue(matrix, CELL_MAPPINGS.cc3.didNotHelp.rowIndex, CELL_MAPPINGS.cc3.didNotHelp.colIndex);
+                    values.cc3na = getCellValue(matrix, CELL_MAPPINGS.cc3.na.rowIndex, CELL_MAPPINGS.cc3.na.colIndex);
+                    
+                    // SQD
+                    values.sqd0 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd0.rowIndex, CELL_MAPPINGS.sqd.sqd0.colIndex);
+                    values.sqd1 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd1.rowIndex, CELL_MAPPINGS.sqd.sqd1.colIndex);
+                    values.sqd2 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd2.rowIndex, CELL_MAPPINGS.sqd.sqd2.colIndex);
+                    values.sqd3 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd3.rowIndex, CELL_MAPPINGS.sqd.sqd3.colIndex);
+                    values.sqd4 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd4.rowIndex, CELL_MAPPINGS.sqd.sqd4.colIndex);
+                    values.sqd5 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd5.rowIndex, CELL_MAPPINGS.sqd.sqd5.colIndex);
+                    values.sqd6 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd6.rowIndex, CELL_MAPPINGS.sqd.sqd6.colIndex);
+                    values.sqd7 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd7.rowIndex, CELL_MAPPINGS.sqd.sqd7.colIndex);
+                    values.sqd8 = getCellValue(matrix, CELL_MAPPINGS.sqd.sqd8.rowIndex, CELL_MAPPINGS.sqd.sqd8.colIndex);
+                    values.sqdOverall = getCellValue(matrix, CELL_MAPPINGS.sqd.sqdOverall.rowIndex, CELL_MAPPINGS.sqd.sqdOverall.colIndex);
+                    
+                } catch (e) {
+                    console.error('Error reading cells:', e);
+                }
                 
                 return values;
             }
 
-            // ----- Sample Data Generator - ADDED Summary Stats -----
+            // ----- Sample Data Generator - FIXED: Added realistic sample data for all services -----
             function generateSampleMatrix(type) {
                 const m = [];
                 for (let i = 0; i < 150; i++) m[i] = [];
                 
-                // NEW: Summary stats
-                m[11] = m[11] || []; m[11][8] = 450;  // I11 - Total Respondents
-                m[12] = m[12] || []; m[12][8] = 500;  // I12 - Total Transactions
-                m[13] = m[13] || []; m[13][8] = 90.0; // I13 - Response Rate %
+                // Summary stats - vary based on service type for realistic testing
+                let respondents = 450;
+                let transactions = 500;
+                let rate = 90.0;
+                
+                if (type === 'FCC') {
+                    respondents = 78;
+                    transactions = 95;
+                    rate = 82.1;
+                } else if (type === 'external') {
+                    respondents = 350;
+                    transactions = 400;
+                    rate = 87.5;
+                } else if (type === 'internal') {
+                    respondents = 280;
+                    transactions = 320;
+                    rate = 87.5;
+                } else if (type === 'RID') {
+                    respondents = 120;
+                    transactions = 150;
+                    rate = 80.0;
+                } else if (type === 'FRA') {
+                    respondents = 45;
+                    transactions = 60;
+                    rate = 75.0;
+                }
+                
+                m[11] = m[11] || []; m[11][8] = respondents;  // I11
+                m[12] = m[12] || []; m[12][8] = transactions;  // I12
+                m[13] = m[13] || []; m[13][8] = rate;          // I13
                 
                 // Sex with Not Specified
                 m[42] = m[42] || []; 
-                m[42][1] = 222;  // Male
-                m[42][2] = 218;  // Female
-                m[42][3] = 15;   // Not Specified (D42)
+                m[42][1] = Math.round(respondents * 0.48);  // Male ~48%
+                m[42][2] = Math.round(respondents * 0.47);  // Female ~47%
+                m[42][3] = Math.round(respondents * 0.05);  // N/S ~5%
                 
                 // Age - Using column E (index 5)
-                m[34] = m[34] || []; m[34][5] = 20; // E34 - N/S
+                m[34] = m[34] || []; m[34][5] = Math.round(respondents * 0.04); // E34 - N/S
                 m[35] = m[35] || []; m[35][5] = 0;  // E35 - 19 below
-                m[36] = m[36] || []; m[36][5] = 32; // E36 - 20-29
-                m[37] = m[37] || []; m[37][5] = 73; // E37 - 30-39
-                m[38] = m[38] || []; m[38][5] = 46; // E38 - 40-49
-                m[39] = m[39] || []; m[39][5] = 35; // E39 - 50-59
-                m[40] = m[40] || []; m[40][5] = 6;  // E40 - 60-69
-                m[41] = m[41] || []; m[41][5] = 0;  // E41 - 70 above
+                m[36] = m[36] || []; m[36][5] = Math.round(respondents * 0.15); // E36 - 20-29
+                m[37] = m[37] || []; m[37][5] = Math.round(respondents * 0.30); // E37 - 30-39
+                m[38] = m[38] || []; m[38][5] = Math.round(respondents * 0.25); // E38 - 40-49
+                m[39] = m[39] || []; m[39][5] = Math.round(respondents * 0.18); // E39 - 50-59
+                m[40] = m[40] || []; m[40][5] = Math.round(respondents * 0.06); // E40 - 60-69
+                m[41] = m[41] || []; m[41][5] = Math.round(respondents * 0.02); // E41 - 70 above
                 
                 // Client
-                m[18] = m[18] || []; m[18][5] = 5;
-                m[19] = m[19] || []; m[19][5] = 251;
-                m[20] = m[20] || []; m[20][5] = 105;
-                m[21] = m[21] || []; m[21][5] = 84;
+                m[18] = m[18] || []; m[18][5] = Math.round(respondents * 0.02);
+                m[19] = m[19] || []; m[19][5] = Math.round(respondents * 0.55);
+                m[20] = m[20] || []; m[20][5] = Math.round(respondents * 0.25);
+                m[21] = m[21] || []; m[21][5] = Math.round(respondents * 0.18);
                 
                 // Region
-                m[26] = m[26] || []; m[26][7] = 4;
-                m[27] = m[27] || []; m[27][7] = 78;
-                m[28] = m[28] || []; m[28][7] = 94;
-                m[29] = m[29] || []; m[29][7] = 112;
+                m[26] = m[26] || []; m[26][7] = Math.round(respondents * 0.02);
+                m[27] = m[27] || []; m[27][7] = Math.round(respondents * 0.25);
+                m[28] = m[28] || []; m[28][7] = Math.round(respondents * 0.30);
+                m[29] = m[29] || []; m[29][7] = Math.round(respondents * 0.43);
                 
                 // CC1
-                m[47] = m[47] || []; m[47][5] = 6;
-                m[48] = m[48] || []; m[48][5] = 103;
-                m[49] = m[49] || []; m[49][5] = 47;
-                m[50] = m[50] || []; m[50][5] = 58;
-                m[51] = m[51] || []; m[51][5] = 32;
+                m[47] = m[47] || []; m[47][5] = Math.round(respondents * 0.02);
+                m[48] = m[48] || []; m[48][5] = Math.round(respondents * 0.35);
+                m[49] = m[49] || []; m[49][5] = Math.round(respondents * 0.20);
+                m[50] = m[50] || []; m[50][5] = Math.round(respondents * 0.25);
+                m[51] = m[51] || []; m[51][5] = Math.round(respondents * 0.18);
                 
                 // CC2
-                m[57] = m[57] || []; m[57][5] = 7;
-                m[58] = m[58] || []; m[58][5] = 89;
-                m[59] = m[59] || []; m[59][5] = 52;
-                m[60] = m[60] || []; m[60][5] = 23;
-                m[61] = m[61] || []; m[61][5] = 14;
-                m[62] = m[62] || []; m[62][5] = 41;
+                m[57] = m[57] || []; m[57][5] = Math.round(respondents * 0.02);
+                m[58] = m[58] || []; m[58][5] = Math.round(respondents * 0.30);
+                m[59] = m[59] || []; m[59][5] = Math.round(respondents * 0.25);
+                m[60] = m[60] || []; m[60][5] = Math.round(respondents * 0.15);
+                m[61] = m[61] || []; m[61][5] = Math.round(respondents * 0.10);
+                m[62] = m[62] || []; m[62][5] = Math.round(respondents * 0.18);
                 
                 // CC3
-                m[68] = m[68] || []; m[68][5] = 5;
-                m[69] = m[69] || []; m[69][5] = 112;
-                m[70] = m[70] || []; m[70][5] = 58;
-                m[71] = m[71] || []; m[71][5] = 16;
-                m[72] = m[72] || []; m[72][5] = 27;
+                m[68] = m[68] || []; m[68][5] = Math.round(respondents * 0.02);
+                m[69] = m[69] || []; m[69][5] = Math.round(respondents * 0.40);
+                m[70] = m[70] || []; m[70][5] = Math.round(respondents * 0.30);
+                m[71] = m[71] || []; m[71][5] = Math.round(respondents * 0.10);
+                m[72] = m[72] || []; m[72][5] = Math.round(respondents * 0.18);
                 
                 // SQD
                 m[109] = m[109] || []; m[109][8] = 90.25;
@@ -2203,13 +2251,13 @@
                     <div class="stat-card" id="statRespondents">
                         <div class="stat-icon"><i class="fas fa-users"></i></div>
                         <div class="stat-label">Total Respondents</div>
-                        <div class="stat-value">${values.totalRespondents.toLocaleString()}</div>
+                        <div class="stat-value">${Math.round(values.totalRespondents).toLocaleString()}</div>
                         <div class="stat-sub">Client Satisfaction Survey</div>
                     </div>
                     <div class="stat-card" id="statTransactions">
                         <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
                         <div class="stat-label">Total Transactions</div>
-                        <div class="stat-value">${values.totalTransactions.toLocaleString()}</div>
+                        <div class="stat-value">${Math.round(values.totalTransactions).toLocaleString()}</div>
                         <div class="stat-sub">Service Transactions</div>
                     </div>
                     <div class="stat-card" id="statResponseRate">
@@ -2697,7 +2745,7 @@
                                             if (context.dataIndex === 2) { // Response Rate
                                                 return `${label}: ${value.toFixed(1)}%`;
                                             }
-                                            return `${label}: ${value.toLocaleString()}`;
+                                            return `${label}: ${Math.round(value).toLocaleString()}`;
                                         }
                                     }
                                 }
@@ -3182,7 +3230,7 @@
                 const values = readAllCells(matrix);
                 currentValues = values;
                 
-                // NEW: Render summary stats first
+                // Render summary stats first
                 renderSummaryStats(values);
                 renderMainCharts(values);
                 renderSQDSection(values);
