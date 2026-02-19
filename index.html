@@ -746,6 +746,136 @@
             margin-top: 0.3rem;
         }
 
+        /* NEW: Funnel Chart Container */
+        .funnel-container {
+            background: white;
+            border-radius: 28px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(0,70,90,0.04);
+            border: 1px solid rgba(147,197,214,0.15);
+            animation: fadeIn 0.6s ease-out;
+            position: relative;
+        }
+
+        .funnel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        }
+
+        .funnel-header h2 {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0e5a6b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .funnel-header i {
+            color: #c9a227;
+            font-size: 1.2rem;
+        }
+
+        .funnel-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .funnel-visual {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .funnel-bar {
+            width: 100%;
+            height: 60px;
+            margin: 5px 0;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .funnel-bar.top {
+            background: linear-gradient(145deg, #1a7f9e, #2f98b3);
+            width: 100%;
+        }
+
+        .funnel-bar.middle {
+            background: linear-gradient(145deg, #c9a227, #d9b44a);
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        .funnel-bar.bottom {
+            background: linear-gradient(145deg, #45b0c9, #7fc5d9);
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        .funnel-label {
+            position: absolute;
+            left: 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .funnel-value {
+            position: absolute;
+            right: 20px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .funnel-stats {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 16px;
+        }
+
+        .funnel-stat-item {
+            text-align: center;
+        }
+
+        .funnel-stat-label {
+            font-size: 0.8rem;
+            color: #0e5a6b;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .funnel-stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a7f9e;
+        }
+
+        .funnel-stat-percent {
+            font-size: 0.9rem;
+            color: #c9a227;
+            font-weight: 600;
+            margin-top: 0.2rem;
+        }
+
         /* Section Headers */
         .section-header {
             grid-column: 1/-1;
@@ -1404,8 +1534,21 @@
             </div>
         </div>
 
-        <!-- NEW: Summary Stats Section -->
+        <!-- Summary Stats Cards -->
         <div id="summaryStats" class="summary-stats"></div>
+
+        <!-- NEW: Funnel View -->
+        <div id="funnelContainer" class="funnel-container">
+            <div class="funnel-header">
+                <h2><i class="fas fa-filter"></i> Response Funnel View</h2>
+                <div class="chart-actions">
+                    <button class="download-btn" id="downloadFunnelBtn"><i class="fas fa-download"></i> PNG</button>
+                </div>
+            </div>
+            <div class="funnel-content" id="funnelContent">
+                <!-- Funnel will be populated by JavaScript -->
+            </div>
+        </div>
 
         <!-- Main Content Grid -->
         <div class="chart-grid" id="mainChartGrid"></div>
@@ -1678,6 +1821,9 @@
             const internalServices = ['ROD', 'RIC', 'RWD', 'AGN', 'AGP', 'AGS', 'REP', 'RLC', 'LCA', 'PPF', 'PER', 'PCB', 'PRA', 'ITT', 'IPA', 'RLP', 'RLT'];
             
             const summaryStatsEl = document.getElementById('summaryStats');
+            const funnelContainer = document.getElementById('funnelContainer');
+            const funnelContent = document.getElementById('funnelContent');
+            const downloadFunnelBtn = document.getElementById('downloadFunnelBtn');
             const mainGridEl = document.getElementById('mainChartGrid');
             const sqdChartsContainer = document.getElementById('sqdChartsContainer');
             const externalSelect = document.getElementById('externalServiceSelect');
@@ -1699,7 +1845,7 @@
                 '#0984e3', '#a29bfe', '#55efc4', '#81ecec', '#74b9ff'
             ];
 
-            // Service name mapping - FIXED: Added proper names for all services
+            // Service name mapping
             const serviceNames = {
                 'overall': 'Overall Summary',
                 'external': 'External Services Summary',
@@ -1731,7 +1877,7 @@
             };
 
             // ============================================================
-            // CELL MAPPINGS - FIXED: Added I11, I12, I13 and ensured all references are correct
+            // CELL MAPPINGS
             // ============================================================
             const CELL_MAPPINGS = {
                 // Summary stats
@@ -1822,11 +1968,10 @@
                 if (internalSelect) internalSelect.value = '';
             }
 
-            // ----- Build URL with sheet parameters - FIXED: Better sheet handling for all services -----
+            // ----- Build URL with sheet parameters -----
             function buildUrlWithDateParams(baseUrl, sheetType) {
                 let sheets = [];
                 
-                // Handle different service types
                 if (sheetType === 'overall') {
                     sheets = ['overall', 'external', 'internal', ...externalServices, ...internalServices];
                 } else if (sheetType === 'external') {
@@ -1834,7 +1979,6 @@
                 } else if (sheetType === 'internal') {
                     sheets = ['internal', ...internalServices];
                 } else {
-                    // Single service - use the service code as sheet name
                     sheets = [sheetType];
                 }
                 
@@ -1842,7 +1986,7 @@
                 return `${baseUrl}?sheet=${sheetType}&sheets=${sheetsParam}&callback=`;
             }
 
-            // ----- OPTIMIZED Fetch Sheet Data - FIXED: Better error handling and retry logic -----
+            // ----- OPTIMIZED Fetch Sheet Data -----
             async function fetchSheetData(sheetType, retryCount = 0) {
                 const cacheKey = `${sheetType}_${Math.floor(Date.now() / CACHE_DURATION)}`;
                 const cached = getCachedData(cacheKey);
@@ -1864,7 +2008,7 @@
                         const timeout = setTimeout(() => {
                             cleanup();
                             delete pendingRequests[sheetType];
-                            if (retryCount < 3) { // Increased retries to 3
+                            if (retryCount < 3) {
                                 console.log(`Retry ${retryCount + 1} for ${sheetType}`);
                                 resolve(fetchSheetData(sheetType, retryCount + 1));
                             } else {
@@ -1873,7 +2017,7 @@
                                 if (!isCompareMode) currentMatrix = sampleMatrix;
                                 resolve(sampleMatrix);
                             }
-                        }, 10000); // Increased timeout to 10 seconds
+                        }, 10000);
                         
                         function cleanup() {
                             clearTimeout(timeout);
@@ -1941,7 +2085,7 @@
                 return promise;
             }
 
-            // ----- Parse CSV - FIXED: Better CSV parsing -----
+            // ----- Parse CSV -----
             function parseCSVtoMatrix(csvText) {
                 const lines = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
                 const matrix = [];
@@ -1964,7 +2108,6 @@
                     }
                     row.push(current.trim());
                     matrix.push(row.map(cell => {
-                        // Remove quotes and trim
                         return cell.replace(/^"|"$/g, '').trim();
                     }));
                 });
@@ -1972,15 +2115,13 @@
                 return matrix;
             }
 
-            // ----- Get Cell Value - FIXED: Better number parsing -----
+            // ----- Get Cell Value -----
             function getCellValue(matrix, rowIndex, colIndex) {
                 if (!matrix?.length) return 0;
                 try {
                     if (matrix[rowIndex] && matrix[rowIndex][colIndex] !== undefined) {
                         const val = matrix[rowIndex][colIndex];
-                        // Handle empty strings
                         if (val === '' || val === null || val === undefined) return 0;
-                        // Remove commas and other non-numeric characters except decimal point and minus
                         const cleaned = val.replace(/[^\d.-]/g, '');
                         const num = parseFloat(cleaned);
                         return isNaN(num) ? 0 : num;
@@ -1991,7 +2132,7 @@
                 return 0;
             }
 
-            // ----- Read All Cell Values - FIXED: Added better error handling -----
+            // ----- Read All Cell Values -----
             function readAllCells(matrix) {
                 const values = {};
                 
@@ -2006,7 +2147,7 @@
                     values.female = getCellValue(matrix, CELL_MAPPINGS.sex.female.rowIndex, CELL_MAPPINGS.sex.female.colIndex);
                     values.sexNS = getCellValue(matrix, CELL_MAPPINGS.sex.notSpecified.rowIndex, CELL_MAPPINGS.sex.notSpecified.colIndex);
                     
-                    // Age - Using column E (index 5)
+                    // Age
                     values.ageNS = getCellValue(matrix, CELL_MAPPINGS.age.ns.rowIndex, CELL_MAPPINGS.age.ns.colIndex);
                     values.age19b = getCellValue(matrix, CELL_MAPPINGS.age.age19b.rowIndex, CELL_MAPPINGS.age.age19b.colIndex);
                     values.age2029 = getCellValue(matrix, CELL_MAPPINGS.age.age2029.rowIndex, CELL_MAPPINGS.age.age2029.colIndex);
@@ -2069,12 +2210,11 @@
                 return values;
             }
 
-            // ----- Sample Data Generator - FIXED: Added realistic sample data for all services -----
+            // ----- Sample Data Generator -----
             function generateSampleMatrix(type) {
                 const m = [];
                 for (let i = 0; i < 150; i++) m[i] = [];
                 
-                // Summary stats - vary based on service type for realistic testing
                 let respondents = 450;
                 let transactions = 500;
                 let rate = 90.0;
@@ -2101,46 +2241,40 @@
                     rate = 75.0;
                 }
                 
-                m[11] = m[11] || []; m[11][8] = respondents;  // I11
-                m[12] = m[12] || []; m[12][8] = transactions;  // I12
-                m[13] = m[13] || []; m[13][8] = rate;          // I13
+                m[11] = m[11] || []; m[11][8] = respondents;
+                m[12] = m[12] || []; m[12][8] = transactions;
+                m[13] = m[13] || []; m[13][8] = rate;
                 
-                // Sex with Not Specified
                 m[42] = m[42] || []; 
-                m[42][1] = Math.round(respondents * 0.48);  // Male ~48%
-                m[42][2] = Math.round(respondents * 0.47);  // Female ~47%
-                m[42][3] = Math.round(respondents * 0.05);  // N/S ~5%
+                m[42][1] = Math.round(respondents * 0.48);
+                m[42][2] = Math.round(respondents * 0.47);
+                m[42][3] = Math.round(respondents * 0.05);
                 
-                // Age - Using column E (index 5)
-                m[34] = m[34] || []; m[34][5] = Math.round(respondents * 0.04); // E34 - N/S
-                m[35] = m[35] || []; m[35][5] = 0;  // E35 - 19 below
-                m[36] = m[36] || []; m[36][5] = Math.round(respondents * 0.15); // E36 - 20-29
-                m[37] = m[37] || []; m[37][5] = Math.round(respondents * 0.30); // E37 - 30-39
-                m[38] = m[38] || []; m[38][5] = Math.round(respondents * 0.25); // E38 - 40-49
-                m[39] = m[39] || []; m[39][5] = Math.round(respondents * 0.18); // E39 - 50-59
-                m[40] = m[40] || []; m[40][5] = Math.round(respondents * 0.06); // E40 - 60-69
-                m[41] = m[41] || []; m[41][5] = Math.round(respondents * 0.02); // E41 - 70 above
+                m[34] = m[34] || []; m[34][5] = Math.round(respondents * 0.04);
+                m[35] = m[35] || []; m[35][5] = 0;
+                m[36] = m[36] || []; m[36][5] = Math.round(respondents * 0.15);
+                m[37] = m[37] || []; m[37][5] = Math.round(respondents * 0.30);
+                m[38] = m[38] || []; m[38][5] = Math.round(respondents * 0.25);
+                m[39] = m[39] || []; m[39][5] = Math.round(respondents * 0.18);
+                m[40] = m[40] || []; m[40][5] = Math.round(respondents * 0.06);
+                m[41] = m[41] || []; m[41][5] = Math.round(respondents * 0.02);
                 
-                // Client
                 m[18] = m[18] || []; m[18][5] = Math.round(respondents * 0.02);
                 m[19] = m[19] || []; m[19][5] = Math.round(respondents * 0.55);
                 m[20] = m[20] || []; m[20][5] = Math.round(respondents * 0.25);
                 m[21] = m[21] || []; m[21][5] = Math.round(respondents * 0.18);
                 
-                // Region
                 m[26] = m[26] || []; m[26][7] = Math.round(respondents * 0.02);
                 m[27] = m[27] || []; m[27][7] = Math.round(respondents * 0.25);
                 m[28] = m[28] || []; m[28][7] = Math.round(respondents * 0.30);
                 m[29] = m[29] || []; m[29][7] = Math.round(respondents * 0.43);
                 
-                // CC1
                 m[47] = m[47] || []; m[47][5] = Math.round(respondents * 0.02);
                 m[48] = m[48] || []; m[48][5] = Math.round(respondents * 0.35);
                 m[49] = m[49] || []; m[49][5] = Math.round(respondents * 0.20);
                 m[50] = m[50] || []; m[50][5] = Math.round(respondents * 0.25);
                 m[51] = m[51] || []; m[51][5] = Math.round(respondents * 0.18);
                 
-                // CC2
                 m[57] = m[57] || []; m[57][5] = Math.round(respondents * 0.02);
                 m[58] = m[58] || []; m[58][5] = Math.round(respondents * 0.30);
                 m[59] = m[59] || []; m[59][5] = Math.round(respondents * 0.25);
@@ -2148,14 +2282,12 @@
                 m[61] = m[61] || []; m[61][5] = Math.round(respondents * 0.10);
                 m[62] = m[62] || []; m[62][5] = Math.round(respondents * 0.18);
                 
-                // CC3
                 m[68] = m[68] || []; m[68][5] = Math.round(respondents * 0.02);
                 m[69] = m[69] || []; m[69][5] = Math.round(respondents * 0.40);
                 m[70] = m[70] || []; m[70][5] = Math.round(respondents * 0.30);
                 m[71] = m[71] || []; m[71][5] = Math.round(respondents * 0.10);
                 m[72] = m[72] || []; m[72][5] = Math.round(respondents * 0.18);
                 
-                // SQD
                 m[109] = m[109] || []; m[109][8] = 90.25;
                 m[111] = m[111] || []; m[111][8] = 89.25;
                 m[112] = m[112] || []; m[112][8] = 91.50;
@@ -2210,13 +2342,12 @@
 
             window.downloadCardAsPNG = downloadCardAsPNG;
 
-            // ----- Plugin for value labels (modified to NOT show numbers on CC bars) -----
+            // ----- Plugin for value labels (only on Age chart) -----
             const valueLabelPlugin = {
                 id: 'valueLabel',
                 afterDatasetsDraw(chart) {
                     const { ctx, data } = chart;
                     
-                    // Only show numbers on Age bar chart (chartAge), NOT on CC charts
                     if (chart.config.type === 'bar' && chart.canvas.id === 'chartAge') {
                         ctx.save();
                         ctx.font = 'bold 11px Inter';
@@ -2245,7 +2376,52 @@
                 }
             };
 
-            // ----- NEW: Render Summary Stats -----
+            // ----- NEW: Render Funnel View -----
+            function renderFunnelView(values) {
+                const transactions = Math.round(values.totalTransactions);
+                const respondents = Math.round(values.totalRespondents);
+                const rate = values.responseRate.toFixed(1);
+                const gap = transactions - respondents;
+                const gapPercent = ((gap / transactions) * 100).toFixed(1);
+                
+                const html = `
+                    <div class="funnel-visual">
+                        <div class="funnel-bar top">
+                            <span class="funnel-label">Total Transactions</span>
+                            <span class="funnel-value">${transactions.toLocaleString()}</span>
+                        </div>
+                        <div class="funnel-bar middle">
+                            <span class="funnel-label">Response Gap</span>
+                            <span class="funnel-value">-${gap.toLocaleString()} (${gapPercent}%)</span>
+                        </div>
+                        <div class="funnel-bar bottom">
+                            <span class="funnel-label">Total Respondents</span>
+                            <span class="funnel-value">${respondents.toLocaleString()}</span>
+                        </div>
+                    </div>
+                    <div class="funnel-stats">
+                        <div class="funnel-stat-item">
+                            <div class="funnel-stat-label">Transactions</div>
+                            <div class="funnel-stat-value">${transactions.toLocaleString()}</div>
+                            <div class="funnel-stat-percent">100%</div>
+                        </div>
+                        <div class="funnel-stat-item">
+                            <div class="funnel-stat-label">Drop-off</div>
+                            <div class="funnel-stat-value">${gap.toLocaleString()}</div>
+                            <div class="funnel-stat-percent">${gapPercent}%</div>
+                        </div>
+                        <div class="funnel-stat-item">
+                            <div class="funnel-stat-label">Respondents</div>
+                            <div class="funnel-stat-value">${respondents.toLocaleString()}</div>
+                            <div class="funnel-stat-percent">${rate}%</div>
+                        </div>
+                    </div>
+                `;
+                
+                if (funnelContent) funnelContent.innerHTML = html;
+            }
+
+            // ----- Render Summary Stats -----
             function renderSummaryStats(values) {
                 const html = `
                     <div class="stat-card" id="statRespondents">
@@ -2271,7 +2447,7 @@
                 if (summaryStatsEl) summaryStatsEl.innerHTML = html;
             }
 
-            // ----- Render Main Charts - FIXED: Sex includes N/S, CC bars have no numbers -----
+            // ----- Render Main Charts -----
             function renderMainCharts(values) {
                 const totalSex = values.male + values.female + values.sexNS;
                 const totalAge = values.ageNS + values.age19b + values.age2029 + values.age3039 + values.age4049 + values.age5059 + values.age6069 + values.age70;
@@ -2283,7 +2459,7 @@
 
                 let html = '';
 
-                // Card 1: Sex - WITH Not Specified
+                // Card 1: Sex
                 html += `<div class="chart-card" id="chartSexContainer">
                     <div class="chart-header">
                         <h2><i class="fas fa-venus-mars"></i> Sex Disaggregated Data (SDD) by Service Type</h2>
@@ -2300,7 +2476,7 @@
                     </div>
                 </div>`;
 
-                // Card 2: Age - Bar chart with numbers INSIDE (dark blue) and percentages in legend
+                // Card 2: Age
                 html += `<div class="chart-card" id="chartAgeContainer">
                     <div class="chart-header">
                         <h2><i class="fas fa-calendar-alt"></i> Age Distribution by Service Type</h2>
@@ -2324,7 +2500,7 @@
                     </div>
                 </div>`;
 
-                // Card 3: Client Type - Donut (no numbers inside)
+                // Card 3: Client Type
                 html += `<div class="chart-card" id="chartClientContainer">
                     <div class="chart-header">
                         <h2><i class="fas fa-users"></i> Client Type by Service</h2>
@@ -2342,7 +2518,7 @@
                     </div>
                 </div>`;
 
-                // Card 4: Region - Pie (no numbers inside)
+                // Card 4: Region
                 html += `<div class="chart-card" id="chartRegionContainer">
                     <div class="chart-header">
                         <h2><i class="fas fa-map-marker-alt"></i> Client by Region</h2>
@@ -2360,7 +2536,7 @@
                     </div>
                 </div>`;
 
-                // Card 5: CC1 - Bar WITHOUT numbers inside (only legend)
+                // Card 5: CC1
                 html += `<div class="chart-card" id="chartCC1Container">
                     <div class="chart-header">
                         <h2><i class="fas fa-eye"></i> Citizen's Charter Awareness</h2>
@@ -2379,7 +2555,7 @@
                     </div>
                 </div>`;
 
-                // Card 6: CC2 - Bar WITHOUT numbers inside (only legend)
+                // Card 6: CC2
                 html += `<div class="chart-card" id="chartCC2Container">
                     <div class="chart-header">
                         <h2><i class="fas fa-low-vision"></i> Citizen's Charter Visibility</h2>
@@ -2399,7 +2575,7 @@
                     </div>
                 </div>`;
 
-                // Card 7: CC3 - Bar WITHOUT numbers inside (only legend)
+                // Card 7: CC3
                 html += `<div class="chart-card" id="chartCC3Container">
                     <div class="chart-header">
                         <h2><i class="fas fa-check-circle"></i> Citizen's Charter Effectivity</h2>
@@ -2621,13 +2797,22 @@
                 }
             }
 
-            // ----- Render Comparison (Multi-Service) - ADDED Summary Stats Comparison -----
+            // ----- Render Comparison (Multi-Service) - IMPROVED: Separate Response Rate Chart -----
             async function renderComparison() {
                 if (compareValues.length === 0) return;
 
                 let html = '';
 
-                // NEW: Summary Stats Comparison Card
+                // NEW: Dedicated Response Rate Comparison Card
+                html += `<div class="compare-card" id="compareResponseRateContainer">
+                    <div class="compare-chart-actions">
+                        <button class="download-btn" onclick="downloadCardAsPNG('compareResponseRateContainer', 'Compare_Response_Rate')"><i class="fas fa-download"></i> PNG</button>
+                    </div>
+                    <h3><i class="fas fa-chart-line"></i> Response Rate Comparison</h3>
+                    <canvas id="compareResponseRate"></canvas>
+                </div>`;
+
+                // Summary Stats Comparison Card
                 html += `<div class="compare-card" id="compareSummaryContainer">
                     <div class="compare-chart-actions">
                         <button class="download-btn" onclick="downloadCardAsPNG('compareSummaryContainer', 'Compare_Summary')"><i class="fas fa-download"></i> PNG</button>
@@ -2719,16 +2904,52 @@
 
                 if (comparisonGrid) comparisonGrid.innerHTML = html;
 
-                // NEW: Create Summary Stats Comparison Chart
+                // NEW: Create Response Rate Comparison Chart
+                const ctxResponseRate = document.getElementById('compareResponseRate');
+                if (ctxResponseRate) {
+                    new Chart(ctxResponseRate, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Response Rate (%)'],
+                            datasets: compareValues.map((v, i) => ({
+                                label: serviceNames[compareServices[i]] || compareServices[i],
+                                data: [v.responseRate],
+                                backgroundColor: compareColors[i % compareColors.length],
+                                borderRadius: 6
+                            }))
+                        },
+                        options: {
+                            responsive: true,
+                            indexAxis: 'y',
+                            plugins: { 
+                                legend: { position: 'top' },
+                                tooltip: {
+                                    callbacks: {
+                                        label: (c) => `${c.dataset.label}: ${c.raw.toFixed(1)}%`
+                                    }
+                                }
+                            },
+                            scales: { 
+                                x: { 
+                                    beginAtZero: true, 
+                                    max: 100,
+                                    title: { display: true, text: 'Percentage (%)' }
+                                } 
+                            }
+                        }
+                    });
+                }
+
+                // Create Summary Stats Comparison Chart
                 const ctxSummary = document.getElementById('compareSummary');
                 if (ctxSummary) {
                     new Chart(ctxSummary, {
                         type: 'bar',
                         data: {
-                            labels: ['Total Respondents', 'Total Transactions', 'Response Rate (%)'],
+                            labels: ['Total Respondents', 'Total Transactions'],
                             datasets: compareValues.map((v, i) => ({
                                 label: serviceNames[compareServices[i]] || compareServices[i],
-                                data: [v.totalRespondents, v.totalTransactions, v.responseRate],
+                                data: [v.totalRespondents, v.totalTransactions],
                                 backgroundColor: compareColors[i % compareColors.length],
                                 borderRadius: 6
                             }))
@@ -2742,9 +2963,6 @@
                                         label: function(context) {
                                             const label = context.dataset.label || '';
                                             const value = context.raw || 0;
-                                            if (context.dataIndex === 2) { // Response Rate
-                                                return `${label}: ${value.toFixed(1)}%`;
-                                            }
                                             return `${label}: ${Math.round(value).toLocaleString()}`;
                                         }
                                     }
@@ -2755,7 +2973,7 @@
                     });
                 }
 
-                // Create Sex chart (with Not Specified)
+                // Create Sex chart
                 const ctxSex = document.getElementById('compareSex');
                 if (ctxSex) {
                     new Chart(ctxSex, {
@@ -3132,6 +3350,7 @@
                         compareToggle.classList.add('active');
                         if (comparisonPanel) comparisonPanel.style.display = 'block';
                         if (summaryStatsEl) summaryStatsEl.style.display = 'none';
+                        if (funnelContainer) funnelContainer.style.display = 'none';
                         if (mainGridEl) mainGridEl.style.display = 'none';
                         if (sqdChartsContainer) sqdChartsContainer.style.display = 'none';
                         const header = document.getElementById('sqdSectionHeader');
@@ -3142,6 +3361,7 @@
                         compareToggle.classList.remove('active');
                         if (comparisonPanel) comparisonPanel.style.display = 'none';
                         if (summaryStatsEl) summaryStatsEl.style.display = 'grid';
+                        if (funnelContainer) funnelContainer.style.display = 'block';
                         if (mainGridEl) mainGridEl.style.display = 'grid';
                         if (sqdChartsContainer) sqdChartsContainer.style.display = 'grid';
                         const header = document.getElementById('sqdSectionHeader');
@@ -3161,6 +3381,13 @@
             if (executeCompareBtn) {
                 executeCompareBtn.addEventListener('click', function() {
                     loadComparisonData();
+                });
+            }
+
+            // ----- Funnel Download -----
+            if (downloadFunnelBtn) {
+                downloadFunnelBtn.addEventListener('click', function() {
+                    downloadCardAsPNG('funnelContainer', 'Response_Funnel');
                 });
             }
 
@@ -3215,11 +3442,14 @@
                 link.click();
             }
 
-            // ----- Render Dashboard - UPDATED with Summary Stats -----
+            // ----- Render Dashboard - UPDATED with Funnel View -----
             async function renderDashboard() {
                 if (isCompareMode) return;
                 if (summaryStatsEl) {
                     summaryStatsEl.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-pulse"></i> Loading summary...</div>';
+                }
+                if (funnelContent) {
+                    funnelContent.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-pulse"></i> Loading funnel...</div>';
                 }
                 if (mainGridEl) {
                     mainGridEl.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-pulse" style="font-size:2rem; color:#c9a227;"></i><p style="color:#0f859e;">Loading...</p></div>';
@@ -3230,8 +3460,8 @@
                 const values = readAllCells(matrix);
                 currentValues = values;
                 
-                // Render summary stats first
                 renderSummaryStats(values);
+                renderFunnelView(values);
                 renderMainCharts(values);
                 renderSQDSection(values);
                 updateServiceDisplay();
