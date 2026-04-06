@@ -2055,7 +2055,7 @@
                         const timeout = setTimeout(() => {
                             cleanup();
                             delete pendingRequests[sheetType];
-                            if (retryCount < 2) { // Reduced retries for speed
+                            if (retryCount < 2) {
                                 console.log(`Retry ${retryCount + 1} for ${sheetType}`);
                                 resolve(fetchSheetData(sheetType, retryCount + 1));
                             } else {
@@ -2064,7 +2064,7 @@
                                 if (!isCompareMode) currentMatrix = emptyMatrix;
                                 resolve(emptyMatrix);
                             }
-                        }, 8000); // Reduced timeout for faster feedback
+                        }, 8000);
                         
                         function cleanup() {
                             clearTimeout(timeout);
@@ -2421,7 +2421,7 @@
                 if (summaryStatsEl) summaryStatsEl.innerHTML = html;
             }
 
-            // ----- Render Main Charts (unchanged from previous improvement) -----
+            // ----- Render Main Charts (unchanged) -----
             function renderMainCharts(values) {
                 const totalSex = values.male + values.female + values.sexNS;
                 const totalAge = values.ageNS + values.age19b + values.age2029 + values.age3039 + values.age4049 + values.age5059 + values.age6069 + values.age70;
@@ -2687,7 +2687,7 @@
                 });
             }
 
-            // ----- Render SQD Section (unchanged from previous improvement) -----
+            // ----- Render SQD Section (unchanged) -----
             function renderSQDSection(values) {
                 const sqdLabels = ['SQD 1','SQD 2','SQD 3','SQD 4','SQD 5','SQD 6','SQD 7','SQD 8'];
                 const sqdFullLabels = ['Responsiveness','Reliability','Access','Communication','Costs','Integrity','Assurance','Outcome'];
@@ -2771,7 +2771,7 @@
                 }
             }
 
-            // ----- Render Comparison (Multi-Service) with larger charts -----
+            // ----- Render Comparison (Multi-Service) -----
             async function renderComparison() {
                 if (compareValues.length === 0) return;
 
@@ -3260,7 +3260,7 @@
                 await renderComparison();
             }
 
-            // ----- Update Comparison Selectors (unchanged) -----
+            // ----- Update Comparison Selectors -----
             function updateComparisonSelectors() {
                 let html = '';
                 compareServices.forEach((service, index) => {
@@ -3354,10 +3354,10 @@
                 });
             }
 
-            // ----- Show Full Data Modal (unchanged) -----
+            // ----- Show Full Data Modal - FIXED -----
             function showFullDataModal() {
-                if (!currentMatrix) { 
-                    alert('No data available. Please load a service first.'); 
+                if (!currentMatrix || !currentMatrix.length || currentMatrix.length === 0 || (currentMatrix.length === 1 && currentMatrix[0].length === 0)) { 
+                    alert('No data available for the selected service. Please try loading a different service or refresh the data.'); 
                     return; 
                 }
                 
@@ -3368,11 +3368,11 @@
                 if (modalTitle) modalTitle.innerHTML = `${currentServiceDisplayName} - Complete Data (${currentMatrix.length} rows)`;
                 
                 let tableHTML = '<table class="data-table"><thead><tr>';
-                if (currentMatrix.length > 0) {
+                if (currentMatrix.length > 0 && currentMatrix[0].length > 0) {
                     for (let i = 0; i < currentMatrix[0].length; i++) {
                         tableHTML += `<th><span class="col-letter">${String.fromCharCode(65 + i)}</span></th>`;
                     }
-                    tableHTML += '</table></thead><tbody>';
+                    tableHTML += '</tr></thead><tbody>';
                     
                     for (let i = 0; i < currentMatrix.length; i++) {
                         tableHTML += '<tr>';
@@ -3383,6 +3383,8 @@
                         tableHTML += '</tr>';
                     }
                     tableHTML += '</tbody></table>';
+                } else {
+                    tableHTML = '<div style="padding: 2rem; text-align: center; color: #721c24;">No data available for this service.</div>';
                 }
                 
                 if (modalTableContainer) modalTableContainer.innerHTML = tableHTML;
@@ -3390,8 +3392,8 @@
             }
 
             function downloadCSV() {
-                if (!currentMatrix) { 
-                    alert('No data available'); 
+                if (!currentMatrix || !currentMatrix.length || currentMatrix.length === 0 || (currentMatrix.length === 1 && currentMatrix[0].length === 0)) { 
+                    alert('No data available to export'); 
                     return; 
                 }
                 let csv = currentMatrix.map(r => r.map(c => {
@@ -3488,7 +3490,7 @@
                 if (refreshDataBtn) {
                     refreshDataBtn.addEventListener('click', () => {
                         renderDashboard();
-                        setTimeout(() => { if (currentMatrix) showFullDataModal(); }, 500);
+                        setTimeout(() => { if (currentMatrix && currentMatrix.length > 0 && !(currentMatrix.length === 1 && currentMatrix[0].length === 0)) showFullDataModal(); }, 500);
                     });
                 }
             }
