@@ -701,10 +701,10 @@
             right: 1rem;
         }
 
-        /* Summary Stats Cards */
+        /* Summary Stats Cards - Updated for 4 cards */
         .summary-stats {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
             margin-bottom: 2rem;
             animation: fadeIn 0.6s ease-out;
@@ -1366,7 +1366,7 @@
             .filter-section { flex-direction: column; padding: 1.2rem; }
             .service-select { min-width: 250px; }
             .comparison-grid { grid-template-columns: 1fr; }
-            .summary-stats { grid-template-columns: 1fr; }
+            .summary-stats { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 1000px) {
@@ -1375,6 +1375,7 @@
             .dashboard-subtitle { font-size: 1.2rem; }
             .modal-content { width: 98%; margin: 1% auto; }
             .header-actions { justify-content: center; }
+            .summary-stats { grid-template-columns: 1fr; }
         }
 
         /* ========== SESSION TIMEOUT INDICATOR ========== */
@@ -1578,7 +1579,7 @@
             </div>
         </div>
 
-        <!-- Summary Stats Cards -->
+        <!-- Summary Stats Cards (Now with 4 cards) -->
         <div id="summaryStats" class="summary-stats"></div>
 
         <!-- Funnel View -->
@@ -1921,13 +1922,16 @@
             };
 
             // ============================================================
-            // CELL MAPPINGS (unchanged)
+            // CELL MAPPINGS - CORRECTED for Minimum Respondents (I14)
+            // I14 = Column I (index 8), Row 14 (index 14)
+            // Response Rate is at I13 (row index 13)
             // ============================================================
             const CELL_MAPPINGS = {
                 summary: {
-                    totalRespondents: { colIndex: 8, rowIndex: 11 },
-                    totalTransactions: { colIndex: 8, rowIndex: 12 },
-                    responseRate: { colIndex: 8, rowIndex: 13 }
+                    totalRespondents: { colIndex: 8, rowIndex: 11 },  // Row 12? Actually row 11 index = row 12
+                    totalTransactions: { colIndex: 8, rowIndex: 12 }, // Row 13? Actually row 12 index = row 13
+                    responseRate: { colIndex: 8, rowIndex: 13 },      // I13 - row 13 (index 13)
+                    minimumRespondents: { colIndex: 8, rowIndex: 14 } // I14 - row 14 (index 14)
                 },
                 sex: {
                     male: { colIndex: 1, rowIndex: 42 },
@@ -2056,9 +2060,9 @@
                                 resolve(fetchSheetData(sheetType, retryCount + 1));
                             } else {
                                 showError(`Timeout loading ${serviceNames[sheetType] || sheetType}`);
-                                const sampleMatrix = generateSampleMatrix(sheetType);
-                                if (!isCompareMode) currentMatrix = sampleMatrix;
-                                resolve(sampleMatrix);
+                                const emptyMatrix = [[]];
+                                if (!isCompareMode) currentMatrix = emptyMatrix;
+                                resolve(emptyMatrix);
                             }
                         }, 8000); // Reduced timeout for faster feedback
                         
@@ -2085,9 +2089,9 @@
                                     resolve(fetchSheetData(sheetType, retryCount + 1));
                                 } else {
                                     showError(`Failed to load ${serviceNames[sheetType] || sheetType}`);
-                                    const sampleMatrix = generateSampleMatrix(sheetType);
-                                    if (!isCompareMode) currentMatrix = sampleMatrix;
-                                    resolve(sampleMatrix);
+                                    const emptyMatrix = [[]];
+                                    if (!isCompareMode) currentMatrix = emptyMatrix;
+                                    resolve(emptyMatrix);
                                 }
                             }
                         };
@@ -2102,9 +2106,9 @@
                                 resolve(fetchSheetData(sheetType, retryCount + 1));
                             } else {
                                 showError(`Network error loading ${serviceNames[sheetType] || sheetType}`);
-                                const sampleMatrix = generateSampleMatrix(sheetType);
-                                if (!isCompareMode) currentMatrix = sampleMatrix;
-                                resolve(sampleMatrix);
+                                const emptyMatrix = [[]];
+                                if (!isCompareMode) currentMatrix = emptyMatrix;
+                                resolve(emptyMatrix);
                             }
                         };
                         
@@ -2117,9 +2121,9 @@
                             resolve(fetchSheetData(sheetType, retryCount + 1));
                         } else {
                             showError(`Error loading data`);
-                            const sampleMatrix = generateSampleMatrix(sheetType);
-                            if (!isCompareMode) currentMatrix = sampleMatrix;
-                            resolve(sampleMatrix);
+                            const emptyMatrix = [[]];
+                            if (!isCompareMode) currentMatrix = emptyMatrix;
+                            resolve(emptyMatrix);
                         }
                     }
                 });
@@ -2175,7 +2179,7 @@
                 return 0;
             }
 
-            // ----- Read All Cell Values (unchanged) -----
+            // ----- Read All Cell Values - CORRECTED to read minimumRespondents from I14 (row index 14) -----
             function readAllCells(matrix) {
                 const values = {};
                 
@@ -2183,6 +2187,7 @@
                     values.totalRespondents = getCellValue(matrix, CELL_MAPPINGS.summary.totalRespondents.rowIndex, CELL_MAPPINGS.summary.totalRespondents.colIndex);
                     values.totalTransactions = getCellValue(matrix, CELL_MAPPINGS.summary.totalTransactions.rowIndex, CELL_MAPPINGS.summary.totalTransactions.colIndex);
                     values.responseRate = getCellValue(matrix, CELL_MAPPINGS.summary.responseRate.rowIndex, CELL_MAPPINGS.summary.responseRate.colIndex);
+                    values.minimumRespondents = getCellValue(matrix, CELL_MAPPINGS.summary.minimumRespondents.rowIndex, CELL_MAPPINGS.summary.minimumRespondents.colIndex);
                     
                     values.male = getCellValue(matrix, CELL_MAPPINGS.sex.male.rowIndex, CELL_MAPPINGS.sex.male.colIndex);
                     values.female = getCellValue(matrix, CELL_MAPPINGS.sex.female.rowIndex, CELL_MAPPINGS.sex.female.colIndex);
@@ -2242,98 +2247,6 @@
                 }
                 
                 return values;
-            }
-
-            // ----- Sample Data Generator (unchanged) -----
-            function generateSampleMatrix(type) {
-                const m = [];
-                for (let i = 0; i < 150; i++) m[i] = [];
-                
-                let respondents = 450;
-                let transactions = 500;
-                let rate = 90.0;
-                
-                if (type === 'FCC') {
-                    respondents = 78;
-                    transactions = 95;
-                    rate = 82.1;
-                } else if (type === 'external') {
-                    respondents = 350;
-                    transactions = 400;
-                    rate = 87.5;
-                } else if (type === 'internal') {
-                    respondents = 280;
-                    transactions = 320;
-                    rate = 87.5;
-                } else if (type === 'RID') {
-                    respondents = 120;
-                    transactions = 150;
-                    rate = 80.0;
-                } else if (type === 'FRA') {
-                    respondents = 45;
-                    transactions = 60;
-                    rate = 75.0;
-                }
-                
-                m[11] = m[11] || []; m[11][8] = respondents;
-                m[12] = m[12] || []; m[12][8] = transactions;
-                m[13] = m[13] || []; m[13][8] = rate;
-                
-                m[42] = m[42] || []; 
-                m[42][1] = Math.round(respondents * 0.48);
-                m[42][2] = Math.round(respondents * 0.47);
-                m[42][3] = Math.round(respondents * 0.05);
-                
-                m[34] = m[34] || []; m[34][5] = Math.round(respondents * 0.04);
-                m[35] = m[35] || []; m[35][5] = 0;
-                m[36] = m[36] || []; m[36][5] = Math.round(respondents * 0.15);
-                m[37] = m[37] || []; m[37][5] = Math.round(respondents * 0.30);
-                m[38] = m[38] || []; m[38][5] = Math.round(respondents * 0.25);
-                m[39] = m[39] || []; m[39][5] = Math.round(respondents * 0.18);
-                m[40] = m[40] || []; m[40][5] = Math.round(respondents * 0.06);
-                m[41] = m[41] || []; m[41][5] = Math.round(respondents * 0.02);
-                
-                m[18] = m[18] || []; m[18][5] = Math.round(respondents * 0.02);
-                m[19] = m[19] || []; m[19][5] = Math.round(respondents * 0.55);
-                m[20] = m[20] || []; m[20][5] = Math.round(respondents * 0.25);
-                m[21] = m[21] || []; m[21][5] = Math.round(respondents * 0.18);
-                
-                m[26] = m[26] || []; m[26][7] = Math.round(respondents * 0.02);
-                m[27] = m[27] || []; m[27][7] = Math.round(respondents * 0.25);
-                m[28] = m[28] || []; m[28][7] = Math.round(respondents * 0.30);
-                m[29] = m[29] || []; m[29][7] = Math.round(respondents * 0.43);
-                
-                m[47] = m[47] || []; m[47][5] = Math.round(respondents * 0.02);
-                m[48] = m[48] || []; m[48][5] = Math.round(respondents * 0.35);
-                m[49] = m[49] || []; m[49][5] = Math.round(respondents * 0.20);
-                m[50] = m[50] || []; m[50][5] = Math.round(respondents * 0.25);
-                m[51] = m[51] || []; m[51][5] = Math.round(respondents * 0.18);
-                
-                m[57] = m[57] || []; m[57][5] = Math.round(respondents * 0.02);
-                m[58] = m[58] || []; m[58][5] = Math.round(respondents * 0.30);
-                m[59] = m[59] || []; m[59][5] = Math.round(respondents * 0.25);
-                m[60] = m[60] || []; m[60][5] = Math.round(respondents * 0.15);
-                m[61] = m[61] || []; m[61][5] = Math.round(respondents * 0.10);
-                m[62] = m[62] || []; m[62][5] = Math.round(respondents * 0.18);
-                
-                m[68] = m[68] || []; m[68][5] = Math.round(respondents * 0.02);
-                m[69] = m[69] || []; m[69][5] = Math.round(respondents * 0.40);
-                m[70] = m[70] || []; m[70][5] = Math.round(respondents * 0.30);
-                m[71] = m[71] || []; m[71][5] = Math.round(respondents * 0.10);
-                m[72] = m[72] || []; m[72][5] = Math.round(respondents * 0.18);
-                
-                m[109] = m[109] || []; m[109][8] = 90.25;
-                m[111] = m[111] || []; m[111][8] = 89.25;
-                m[112] = m[112] || []; m[112][8] = 91.50;
-                m[113] = m[113] || []; m[113][8] = 87.75;
-                m[114] = m[114] || []; m[114][8] = 93.25;
-                m[115] = m[115] || []; m[115][8] = 90.50;
-                m[116] = m[116] || []; m[116][8] = 88.25;
-                m[117] = m[117] || []; m[117][8] = 92.75;
-                m[118] = m[118] || []; m[118][8] = 89.50;
-                m[119] = m[119] || []; m[119][8] = 90.35;
-                
-                return m;
             }
 
             // ============================================================
@@ -2455,13 +2368,34 @@
                 if (funnelContent) funnelContent.innerHTML = html;
             }
 
-            // ----- Render Summary Stats -----
+            // ----- Render Summary Stats - Shows Red X icon when minimum respondents NOT met -----
             function renderSummaryStats(values) {
+                const minRespondents = Math.round(values.minimumRespondents || 0);
+                const currentRespondents = Math.round(values.totalRespondents);
+                const isMet = currentRespondents >= minRespondents && minRespondents > 0;
+                
+                // Use red X icon when not met, green check when met
+                let statusIcon, statusColor, statusText;
+                
+                if (minRespondents === 0) {
+                    statusIcon = 'fa-question-circle';
+                    statusColor = '#6c757d';
+                    statusText = 'No Target Set';
+                } else if (isMet) {
+                    statusIcon = 'fa-check-circle';
+                    statusColor = '#28a745';
+                    statusText = 'Met ✓';
+                } else {
+                    statusIcon = 'fa-times-circle';
+                    statusColor = '#dc3545';
+                    statusText = 'Not Met ✗';
+                }
+                
                 const html = `
                     <div class="stat-card" id="statRespondents">
                         <div class="stat-icon"><i class="fas fa-users"></i></div>
                         <div class="stat-label">Total Respondents</div>
-                        <div class="stat-value">${Math.round(values.totalRespondents).toLocaleString()}</div>
+                        <div class="stat-value">${currentRespondents.toLocaleString()}</div>
                         <div class="stat-sub">Client Satisfaction Survey</div>
                     </div>
                     <div class="stat-card" id="statTransactions">
@@ -2475,6 +2409,12 @@
                         <div class="stat-label">Response Rate</div>
                         <div class="stat-value">${values.responseRate.toFixed(1)}%</div>
                         <div class="stat-sub">Survey Participation Rate</div>
+                    </div>
+                    <div class="stat-card" id="statMinimumRespondents">
+                        <div class="stat-icon"><i class="fas ${statusIcon}" style="color: ${statusColor};"></i></div>
+                        <div class="stat-label">Minimum Respondents</div>
+                        <div class="stat-value" style="color: ${statusColor};">${minRespondents.toLocaleString()}</div>
+                        <div class="stat-sub" style="color: ${statusColor};">${statusText}</div>
                     </div>
                 `;
                 
@@ -3432,7 +3372,7 @@
                     for (let i = 0; i < currentMatrix[0].length; i++) {
                         tableHTML += `<th><span class="col-letter">${String.fromCharCode(65 + i)}</span></th>`;
                     }
-                    tableHTML += '</tr></thead><tbody>';
+                    tableHTML += '</table></thead><tbody>';
                     
                     for (let i = 0; i < currentMatrix.length; i++) {
                         tableHTML += '<tr>';
